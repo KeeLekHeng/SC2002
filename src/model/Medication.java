@@ -37,14 +37,6 @@ public class Medication implements Serializable {
         this.stock = amount;
     }
 
-    public void addStock(int amount) {
-        this.stock += amount;
-    }
-
-    public void removeStock(int amount) {
-        this.stock -= amount;
-    }
-
     public int getLowStockAlert () {
         return this.lowStockAlert;
     }
@@ -59,6 +51,15 @@ public class Medication implements Serializable {
 
     public void setReplenishRequestStatus (RequestStatus replenishRequestStatus) {
         this.replenishRequestStatus = replenishRequestStatus;
+    }
+
+    //additional functions
+    public void addStock(int amount) {
+        this.stock += amount;
+    }
+
+    public void removeStock(int amount) {
+        this.stock -= amount;
     }
 }
 
