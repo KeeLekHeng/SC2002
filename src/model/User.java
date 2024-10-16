@@ -18,11 +18,28 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    //security need enhance??
+    public int getId () {
+        return this.id;
+    }
+
+    public int getAge () {
+        return this.age;
+    }
+        
+    ////////security need enhance??
+    public String getPassword () {
+        return this.password;
+    }
+
     public boolean setPassword(String password)
     {
         this.password = password;
         return true; //return true if successfull
+    }
+    /////////////
+
+    public Role getRole () {
+        return this.role;
     }
 
     public boolean isPatient() {

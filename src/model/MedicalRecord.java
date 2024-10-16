@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import src.model.enums.BloodType;
+import src.model.enums.Gender;
 
 
 public class MedicalRecord implements Serializable {
@@ -10,7 +11,7 @@ public class MedicalRecord implements Serializable {
     public final int id;
     public String name;
     public final String dob;
-    public final String gender;
+    public final Gender gender;
     public String phonenumber;
     public String email;
     private final BloodType bloodType;
@@ -18,7 +19,7 @@ public class MedicalRecord implements Serializable {
     private List<MedicalHistoryEntry> history;
     //past diagnosis and treatment
 
-    public MedicalRecord(int id, String name, String dob, String gender, 
+    public MedicalRecord(int id, String name, String dob, Gender gender, 
             String phonenumber, String email, BloodType bloodType) {
 
             this.id = id;
@@ -31,12 +32,44 @@ public class MedicalRecord implements Serializable {
             this.history = new ArrayList<>();
             }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public int getId () {
+        return this.id;
+    }
+
+    public String getName () {
+        return this.name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+    public String getDob () {
+        return this.dob;
+    }
+
+    public Gender getGender () {
+        return this.gender;
+    }
+
+    public String getPhonenumber () {
+        return this.phonenumber;
     }
 
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
+    }
+
+    public String getEmail () {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public BloodType getBloodType () {
+        return this.bloodType;
     }
 
     public void viewMedicalRecord()

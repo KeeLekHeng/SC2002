@@ -13,6 +13,18 @@ public class PrescribeMedication implements Serializable {
         this.prescribeStatus = PrescribeStatus.PENDING;
     }
 
+    public String getName () {
+        return this.name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+    public PrescribeStatus getPrescribeStatus () {
+        return this.prescribeStatus;
+    }
+
     public void setPrescribeStatus (PrescribeStatus prescribeStatus) {
         this.prescribeStatus = prescribeStatus;
     }

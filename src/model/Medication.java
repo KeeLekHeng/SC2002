@@ -21,6 +21,14 @@ public class Medication implements Serializable {
         this.replenishRequestStatus = RequestStatus.NA;
     }
 
+    public String getName () {
+        return this.name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
     public int getStock () {
         return this.stock;
     }
@@ -37,7 +45,20 @@ public class Medication implements Serializable {
         this.stock -= amount;
     }
 
+    public int getLowStockAlert () {
+        return this.lowStockAlert;
+    }
+
     public void setLowStockAlert (int alert) {
         this.lowStockAlert = alert;
     }
+
+    public RequestStatus getReplenishRequestStatus () {
+        return this.replenishRequestStatus;
+    }
+
+    public void setReplenishRequestStatus (RequestStatus replenishRequestStatus) {
+        this.replenishRequestStatus = replenishRequestStatus;
+    }
 }
+
