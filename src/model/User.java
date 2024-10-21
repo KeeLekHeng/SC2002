@@ -5,15 +5,13 @@ import src.model.enums.Role;
 
 public class User implements Serializable {
     public final int id;
-    public final int age;
     private String password;
 
     private final Role role;
 
-    public User (int id, int age, Role role)
+    public User (int id, Role role)
     {
         this.id = id;
-        this.age = age;
         password = "password";
         this.role = role;
     }
@@ -22,10 +20,7 @@ public class User implements Serializable {
         return this.id;
     }
 
-    public int getAge () {
-        return this.age;
-    }
-        
+ 
     ////////security need enhance??
     public String getPassword () {
         return this.password;

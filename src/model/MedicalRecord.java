@@ -8,7 +8,7 @@ import src.model.enums.Gender;
 
 public class MedicalRecord implements Serializable {
 
-    public final int id;
+    public final int doctorID;
     public String name;
     public final String dob;
     public final Gender gender;
@@ -19,10 +19,10 @@ public class MedicalRecord implements Serializable {
     private List<MedicalHistoryEntry> history;
     //past diagnosis and treatment
 
-    public MedicalRecord(int id, String name, String dob, Gender gender, 
+    public MedicalRecord(int doctorID, String name, String dob, Gender gender, 
             String phonenumber, String email, BloodType bloodType) {
 
-            this.id = id;
+            this.doctorID = doctorID;
             this.name = name;
             this.dob = dob;
             this.gender = gender;
@@ -33,7 +33,7 @@ public class MedicalRecord implements Serializable {
             }
 
     public int getId () {
-        return this.id;
+        return this.doctorID;
     }
 
     public String getName () {
@@ -72,6 +72,8 @@ public class MedicalRecord implements Serializable {
         return this.bloodType;
     }
 
+
+    /* 
     public void viewMedicalRecord()
     {
         System.out.printf("Medical Record\nID: %d\nName: %s\nDOB: %s\nGender: %s\nPhone number:%s\nEmail:%s\nBloodType: %s\n", id, name, dob, gender, phonenumber,email,bloodType);
@@ -87,5 +89,5 @@ public class MedicalRecord implements Serializable {
             MedicalHistoryEntry entry = new MedicalHistoryEntry(diagnosis, prescription, treatment);
             this.history.add(entry);            
         }
-    }
+    }*/
 }
