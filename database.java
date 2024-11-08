@@ -16,9 +16,11 @@ import src.model.enums.FileType;
  */
 public class Database {
     
-    public static HashMap<Integer, Patient> patientMap = new HashMap<>();
+    public static HashMap<String, Patient> patientMap = new HashMap<>();
     
-    public static HashMap<Integer, Staff> staffMap = new HashMap<>();
+    public static HashMap<String, Staff> staffMap = new HashMap<>();
+
+    public static HashMap<String, Medication> medicationMap = new HashMap<>();
 
      public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
@@ -26,7 +28,10 @@ public class Database {
         }
         if (!readSerializedObject(FileType.STAFF)) {
             System.out.println("Read into Staff failed!")
-    }
+        }
+        if (!readSerializedObject(FileType.MEDICATION)) {
+            System.out.println("Read into Medication failed!")
+        }
 
     public static void saveFileIntoDatabase(FileType fileType) {
         writeSerializedObject(fileType);
@@ -35,6 +40,7 @@ public class Database {
     public static void saveAllFiles() {
         saveFileIntoDatabase(FileType.PATIENTS);
         saveFileIntoDatabase(FileType.STAFF);
+        saveFileIntoDatabase(FileType.MEDICATION);
     }
 
    /**
@@ -53,6 +59,8 @@ public class Database {
                 patientMap = (HashMap<Integer, Patient>) objectInputStream.readObject();
             } else if (fileType == FileType.STAFF) {
                 staffMap = (HashMap<Integer, Staff>) objectInputStream.readObject();
+            } else if (fileType == FileType.MEDICATION) {
+                staffMap = (HashMap<Integer, Medication>) objectInputStream.readObject();
             }
 
         } catch (EOFException err) {
