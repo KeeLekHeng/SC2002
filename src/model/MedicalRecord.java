@@ -20,6 +20,9 @@ public class MedicalRecord implements Serializable {
     private List<MedicalHistoryEntry> history;
     //past diagnosis and treatment
 
+    private static final long serialVersionUID = 4L;
+
+
     public MedicalRecord(int doctorID, int patientID, String name, String dob, Gender gender, 
             String phonenumber, String email, BloodType bloodType) {
 
