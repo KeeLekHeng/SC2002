@@ -5,6 +5,7 @@ import java.io.*;
 
 import src.model.Patient;
 import src.model.Staff;
+import src.model.Medicine;
 import src.model.enums.FileType;
 
 /**
@@ -94,6 +95,24 @@ public class Database {
             System.out.println("Error: " + err.getMessage());
             return false;
         }
+        return true;
+    }
+
+    public static boolean initializeDummyPatients() {
+        if (PATIENTS.size() != 0) {
+            System.out.println("The database already has patients. Reset database first to initialize patients");
+            return false;
+        }
+        GuestManager.initializeDummyPatients();
+        return true;
+    }
+
+    public static boolean initializeDummyStaff() {
+        if (STAFF.size() != 0) {
+            System.out.println("The database already has staff. Reset database first to initialize staff");
+            return false;
+        }
+        GuestManager.initializeDummyStaff();
         return true;
     }
 
