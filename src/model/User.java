@@ -6,8 +6,9 @@ import src.model.enums.Role;
 public class User implements Serializable {
     public final int id;
     private String password;
-
     private final Role role;
+
+    private static final long serialVersionUID = 1L;
 
     public User (int id, Role role)
     {
