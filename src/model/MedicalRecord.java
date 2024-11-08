@@ -1,7 +1,7 @@
 package src.model;
 import java.io.Serializable;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import src.model.enums.BloodType;
 import src.model.enums.Gender;
 

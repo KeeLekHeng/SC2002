@@ -12,10 +12,12 @@ public class Patient extends User {
         super(patientID,role);
 
         //doctorID in medical record set to default 0
-        this.medicalRecord = new MedicalRecord(0,patientID, name, dob, gender, phonenumber, email,bloodType); 
+        this.medicalRecord = new MedicalRecord(0, patientID, name, dob, gender, phonenumber, email,bloodType); 
     }
 
     public MedicalRecord getMedicalRecord () {
         return this.medicalRecord;
     }
+
+    public String getEmail ()
 }
