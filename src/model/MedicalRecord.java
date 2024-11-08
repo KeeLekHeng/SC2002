@@ -1,7 +1,7 @@
 package src.model;
 import java.io.Serializable;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import src.model.enums.BloodType;
 import src.model.enums.Gender;
 
@@ -9,6 +9,7 @@ import src.model.enums.Gender;
 public class MedicalRecord implements Serializable {
 
     public final int doctorID;
+    public final int patientID;
     public String name;
     public final String dob;
     public final Gender gender;
@@ -19,10 +20,11 @@ public class MedicalRecord implements Serializable {
     private List<MedicalHistoryEntry> history;
     //past diagnosis and treatment
 
-    public MedicalRecord(int doctorID, String name, String dob, Gender gender, 
+    public MedicalRecord(int doctorID, int patientID, String name, String dob, Gender gender, 
             String phonenumber, String email, BloodType bloodType) {
 
             this.doctorID = doctorID;
+            this.patientID = patientID;
             this.name = name;
             this.dob = dob;
             this.gender = gender;
@@ -32,8 +34,12 @@ public class MedicalRecord implements Serializable {
             this.history = new ArrayList<>();
             }
 
-    public int getId () {
+    public int getDoctorId () {
         return this.doctorID;
+    }
+
+    public int getPatientId () {
+        return this.patientID;
     }
 
     public String getName () {
