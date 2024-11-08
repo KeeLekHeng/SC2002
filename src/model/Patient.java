@@ -13,7 +13,7 @@ public class Patient extends User implements Serializable {
         super(patientID,role);
 
         //doctorID in medical record set to default 0
-        this.medicalRecord = new MedicalRecord(0, name, dob, gender, phonenumber, email,bloodType); 
+        this.medicalRecord = new MedicalRecord(0,patientID, name, dob, gender, phonenumber, email,bloodType); 
     }
 
     public MedicalRecord getMedicalRecord () {
