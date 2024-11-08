@@ -103,7 +103,7 @@ public class Database {
             System.out.println("The database already has patients. Reset database first to initialize patients");
             return false;
         }
-        GuestManager.initializeDummyPatients();
+        Manager.initializeDummyPatients();
         return true;
     }
 
@@ -112,7 +112,7 @@ public class Database {
             System.out.println("The database already has staff. Reset database first to initialize staff");
             return false;
         }
-        GuestManager.initializeDummyStaff();
+        Manager.initializeDummyStaff();
         return true;
     }
 
