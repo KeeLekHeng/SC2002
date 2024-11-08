@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class AppOutcomeRecord implements Serializable {
     private List<Appointment> pastAppointments;
 
+    private static final long serialVersionUID = 3L;
+
+
     public void addAppointment(Appointment appointment)
     {
         this.pastAppointments.add(appointment);

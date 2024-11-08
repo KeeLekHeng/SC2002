@@ -3,9 +3,8 @@ package src.model;
 import src.model.enums.Role;
 import src.model.enums.BloodType;
 import src.model.enums.Gender;
-import java.io.Serializable;
 
-public class Patient extends User implements Serializable {
+public class Patient extends User {
 
     MedicalRecord medicalRecord;
 
@@ -13,7 +12,11 @@ public class Patient extends User implements Serializable {
         super(patientID,role);
 
         //doctorID in medical record set to default 0
+<<<<<<< HEAD
         this.medicalRecord = new MedicalRecord(0, patientID, name, dob, gender, phonenumber, email,bloodType); 
+=======
+        this.medicalRecord = new MedicalRecord(0,patientID, name, dob, gender, phonenumber, email,bloodType); 
+>>>>>>> ce10c59bb85b442a364d733fff701c63cde9903d
     }
 
     public MedicalRecord getMedicalRecord () {

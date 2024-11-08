@@ -9,6 +9,9 @@ public class MedicalHistoryEntry implements Serializable {
     private String prescription;
     private String treatment;
 
+    private static final long serialVersionUID = 5L;
+
+
     public MedicalHistoryEntry (String diagnosis, String prescription, String treatment)
     {
         this.date = new Date();
