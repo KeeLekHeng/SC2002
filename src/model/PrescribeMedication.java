@@ -8,6 +8,9 @@ public class PrescribeMedication implements Serializable {
     private String name;
     private PrescribeStatus prescribeStatus;
 
+    private static final long serialVersionUID = 7L;
+
+
     public PrescribeMedication (String name){
         this.name = name;
         this.prescribeStatus = PrescribeStatus.PENDING;

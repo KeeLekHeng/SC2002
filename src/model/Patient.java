@@ -3,9 +3,8 @@ package src.model;
 import src.model.enums.Role;
 import src.model.enums.BloodType;
 import src.model.enums.Gender;
-import java.io.Serializable;
 
-public class Patient extends User implements Serializable {
+public class Patient extends User {
 
     MedicalRecord medicalRecord;
 

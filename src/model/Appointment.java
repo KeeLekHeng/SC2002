@@ -19,6 +19,11 @@ public class Appointment implements Serializable {
     private String consultationNotes;
 
 
+
+    private static final long serialVersionUID = 2L;
+
+
+
     public Appointment (int doctorID, String date, String time) {
         this.doctorID = doctorID;
         this.date = date;
@@ -59,6 +64,32 @@ public class Appointment implements Serializable {
     public void setAppointmentStatus (AppointmentStatus status) {
         this.appointmentStatus = status;
     }
+
+    public String getTypeOfService () {
+        return this.typeOfService;
+    }
+
+    public void setTypeOfService (String typeOfService) {
+        this.typeOfService = typeOfService;
+    }
+
+    public List<PrescribeMedication> getPrescribeMedications () {
+        return this.medications;
+    }
+
+    public void setPrescribeMedications (List<PrescribeMedication> medications) {
+        this.medications = medications;
+    }
+
+    public String getConsultationNotes () {
+        return this.consultationNotes;
+    }
+
+    public void setConsultationNotes (String consultationNotes) {
+        this.consultationNotes = consultationNotes;
+    }
+
+
 
     //add medication to list
     public void addMedication(PrescribeMedication prescribeMedication) {

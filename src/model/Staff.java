@@ -2,9 +2,8 @@ package src.model;
 
 import src.model.enums.Role;
 import src.model.enums.Gender;
-import java.io.Serializable;
 
-public class Staff extends User implements Serializable {
+public class Staff extends User {
     public String name;
     public int age;
     public final Gender gender;
