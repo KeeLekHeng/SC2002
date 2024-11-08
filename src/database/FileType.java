@@ -1,4 +1,5 @@
-package src.model.enums;
+package src.database;
+
 
 /**
  * An Enum that corresponds to the different file types that the Hospital Management System will read from and write to.
@@ -40,3 +41,4 @@ public enum FileType {
         this.fileName = fileName;
     }
 }
+
