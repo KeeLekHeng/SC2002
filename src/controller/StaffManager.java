@@ -67,6 +67,7 @@ public class StaffManager {
         System.out.println(String.format("%-20s: %s", "Guest ID", staff.getId()));
         System.out.println(String.format("%-20s: %s", "Name", staff.getName()));
         System.out.println(String.format("%-20s: %s", "Gender", staff.getGender().genderAsStr));
+        System.out.println(String.format("%-20: %s", "Password", staff.getPassword()));
         System.out.println(String.format("%-20s: %s", "Role", staff.getRole()));
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }

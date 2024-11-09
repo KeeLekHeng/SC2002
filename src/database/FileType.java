@@ -1,5 +1,6 @@
 package src.database;
 
+
 /**
  * An Enum that corresponds to the different file types that the Hospital Management System will read from and write to.
  * Author: Abarna
@@ -20,27 +21,12 @@ public enum FileType {
     /**
      * File type corresponding to the Medicine inventory file.
      */
-    MEDICATION("Medications"),
+    MEDICINES("Medicines"),
 
     /**
      * File type corresponding to the Appointment data file.
      */
-    APPOINTMENTS("Appointments"),
-
-    /**
-     * File type corresponding to the PrescribeMedication data file.
-     */
-    PRESCRIPTIONS("Prescriptions"),
-
-    /**
-     * File type corresponding to the Login Details data file.
-     */
-    LOGIN("Login"),
-
-    /**
-     * File type corresponding to the Request data file.
-     */
-    REQUESTS("Requests");
+    APPOINTMENTS("Appointments");
 
     /**
      * A String value for the FileType for retrieval purposes.
@@ -55,3 +41,4 @@ public enum FileType {
         this.fileName = fileName;
     }
 }
+
