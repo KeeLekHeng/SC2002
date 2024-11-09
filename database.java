@@ -6,7 +6,7 @@ import java.io.*;
 import src.controller.PatientManager;
 import src.controller.StaffManager;
 import src.controller.InventoryManager;
-import src.controller.PrescriptiontManager;
+import src.controller.PrescriptionManager;
 import src.controller.AppointmentManager;
 import src.controller.MedicalRecordManager;
 import src.controller.LoginManager;
@@ -40,22 +40,22 @@ public class Database {
             System.out.println("Read into Patients failed!");
         }
         if (!readSerializedObject(FileType.STAFF)) {
-            System.out.println("Read into Staff failed!")
+            System.out.println("Read into Staff failed!");
         }
         if (!readSerializedObject(FileType.MEDICATION)) {
-            System.out.println("Read into Medication failed!")
+            System.out.println("Read into Medication failed!");
         }
         if (!readSerializedObject(FileType.PRESCRIPTION)) {
-            System.out.println("Read into Prescription failed!")
+            System.out.println("Read into Prescription failed!");
         }
         if (!readSerializedObject(FileType.APPOINTMENT)) {
-            System.out.println("Read into Appointment failed!")
+            System.out.println("Read into Appointment failed!");
         }
         if (!readSerializedObject(FileType.MEDICALRECORD)) {
-            System.out.println("Read into MedicalRecord failed!")
+            System.out.println("Read into MedicalRecord failed!");
         }
         if (!readSerializedObject(FileType.LOGIN)) {
-            System.out.println("Read into login failed!")
+            System.out.println("Read into login failed!");
         }
     }
 
@@ -154,13 +154,13 @@ public class Database {
      * @return {@code true} if data is cleared successfully.
      */
      public static boolean clearDatabase() {
-         PATIENT = new HashMap<String, Patient>();
+         PATIENTS = new HashMap<String, Patient>();
          writeSerializedObject(FileType.PATIENTS);
 
          STAFF = new HashMap<String, Staff>();
          writeSerializedObject(FileType.STAFF);
 
-         MEDICATION = new HashMap<Integer, Medication>();
+         MEDICATION = new HashMap<String, Medication>();
          writeSerializedObject(FileType.MEDICATION);
 
          PRESCRIPTION = new HashMap<String, Prescription>();
