@@ -4,11 +4,13 @@ import src.view.*;
 
 public class HospitalApp {
     public static void main(String[] args) {
-        HospitalAppView hospitalAppView = new HospitalAppView();
         Helper.clearScreen();
         printHMSTitle();
         Helper.pressAnyKeyToContinue();
-        hospitalAppView.viewApp();
+        String hospitalID = "";
+        HospitalAppView hospitalAppView = new HospitalAppView();
+        hospitalID = hospitalAppView.userLogin();
+        hospitalAppView.viewApp(hospitalID);
     }
 
     private static void printHMSTitle() {
