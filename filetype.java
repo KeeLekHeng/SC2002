@@ -28,6 +28,11 @@ public enum FileType {
     APPOINTMENTS("Appointments");
 
     /**
+     * File type corresponding to the Login Details data file.
+     */
+    LOGIN("Login"),
+
+    /**
      * File type corresponding to the Request data file.
      */
     REQUESTS("Requests");
