@@ -28,6 +28,11 @@ public enum FileType {
     APPOINTMENTS("Appointments");
 
     /**
+     * File type corresponding to the Request data file.
+     */
+    REQUESTS("Requests");
+
+    /**
      * A String value for the FileType for retrieval purposes.
      */
     public final String fileName;
