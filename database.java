@@ -27,6 +27,14 @@ public class Database {
 
     public static HashMap<String, Medication> MEDICATION = new HashMap<>();
 
+    public static HashMap<String, Prescription> PRESCRIPTION = new HashMap<>();
+
+    public static HashMap<String, Appointment> APPOINTMENT = new HashMap<>();
+
+    public static HashMap<String, MedicalRecord> MEDICALRECORD = new HashMap<>();
+
+    public static HashMap<String, Login> LOGIN = new HashMap<>();
+
      public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
             System.out.println("Read into Patients failed!");
@@ -37,6 +45,18 @@ public class Database {
         if (!readSerializedObject(FileType.MEDICATION)) {
             System.out.println("Read into Medication failed!")
         }
+        if (!readSerializedObject(FileType.PRESCRIPTION)) {
+            System.out.println("Read into Prescription failed!")
+        }
+        if (!readSerializedObject(FileType.APPOINTMENT)) {
+            System.out.println("Read into Appointment failed!")
+        }
+        if (!readSerializedObject(FileType.MEDICALRECORD)) {
+            System.out.println("Read into MedicalRecord failed!")
+        }
+        if (!readSerializedObject(FileType.LOGIN)) {
+            System.out.println("Read into login failed!")
+        }
 
     public static void saveFileIntoDatabase(FileType fileType) {
         writeSerializedObject(fileType);
@@ -46,6 +66,10 @@ public class Database {
         saveFileIntoDatabase(FileType.PATIENTS);
         saveFileIntoDatabase(FileType.STAFF);
         saveFileIntoDatabase(FileType.MEDICATION);
+        saveFileIntoDatabase(FileType.PRESCRIPTION);
+        saveFileIntoDatabase(FileType.APPOINTMENT);
+        saveFileIntoDatabase(FileType.MEDICALRECORD);
+        saveFileIntoDatabase(FileType.LOGIN);
     }
 
    /**
@@ -53,19 +77,27 @@ public class Database {
      * @param fileType file type to be read.
      * @return {@code true} if read from file is successful. Otherwise, {@code false}.
      */
-    private static boolean readSerializedObject(FileType fileType) {
+     private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
-        String filePath = "./src/database/" + fileType.getFolder() + "/" + fileType.getFileName() + fileExtension;
+        String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
         
-        try (FileInputStream fileInputStream = new FileInputStream(filePath);
+         try(FileInputStream fileInputStream = new FileInputStream(filePath);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             if (fileType == FileType.PATIENTS) {
-                PATIENTS = (HashMap<Integer, Patient>) objectInputStream.readObject();
+                PATIENTS = (HashMap<String, Patient>) objectInputStream.readObject();
             } else if (fileType == FileType.STAFF) {
-                STAFF = (HashMap<Integer, Staff>) objectInputStream.readObject();
+                STAFF = (HashMap<String, Staff>) objectInputStream.readObject();
             } else if (fileType == FileType.MEDICATION) {
-                MEDICATION = (HashMap<Integer, Medication>) objectInputStream.readObject();
+                MEDICATION = (HashMap<String, Medication>) objectInputStream.readObject();
+            }else if (fileType == FileType.PRESCRIPTION) {
+                PRESCRIPTION = (HashMap<String, Prescription>) objectInputStream.readObject();
+            } else if (fileType == FileType.APPOINTMENT) {
+                APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
+            }else if (fileType == FileType.MEDICALRECORD) {
+                MEDICALRECORD = (HashMap<String, MedicalRecord>) objectInputStream.readObject();
+            }else if (fileType == FileType.LOGIN) {
+                LOGIN = (HashMap<String, Login>) objectInputStream.readObject();
             }
 
         } catch (EOFException err) {
