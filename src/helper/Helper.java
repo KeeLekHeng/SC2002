@@ -16,15 +16,9 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 /**
  * Helper class to provide support functions for other classes
-<<<<<<< HEAD
  * @author Kee
  * @version 1.0
  * @since 2024/10/22
-=======
- * @author Ivan, Max
- * @version 1.0
- * @since 2022-04-04
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
  */
 public class Helper {
     /**

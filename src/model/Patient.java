@@ -18,6 +18,4 @@ public class Patient extends User {
     public MedicalRecord getMedicalRecord () {
         return this.medicalRecord;
     }
-
-    public String getEmail ()
 }
