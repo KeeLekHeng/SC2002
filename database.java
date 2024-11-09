@@ -21,11 +21,11 @@ import src.model.*;
  */
 public class Database {
     
-    public static HashMap<String, Patient> patientMap = new HashMap<>();
+    public static HashMap<String, Patient> PATIENTS = new HashMap<>();
     
-    public static HashMap<String, Staff> staffMap = new HashMap<>();
+    public static HashMap<String, Staff> STAFF = new HashMap<>();
 
-    public static HashMap<String, Medication> medicationMap = new HashMap<>();
+    public static HashMap<String, Medication> MEDICATION = new HashMap<>();
 
      public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
@@ -61,11 +61,11 @@ public class Database {
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             if (fileType == FileType.PATIENTS) {
-                patientMap = (HashMap<Integer, Patient>) objectInputStream.readObject();
+                PATIENTS = (HashMap<Integer, Patient>) objectInputStream.readObject();
             } else if (fileType == FileType.STAFF) {
-                staffMap = (HashMap<Integer, Staff>) objectInputStream.readObject();
+                STAFF = (HashMap<Integer, Staff>) objectInputStream.readObject();
             } else if (fileType == FileType.MEDICATION) {
-                staffMap = (HashMap<Integer, Medication>) objectInputStream.readObject();
+                MEDICATION = (HashMap<Integer, Medication>) objectInputStream.readObject();
             }
 
         } catch (EOFException err) {
@@ -90,9 +90,11 @@ public class Database {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
 
             if (fileType == FileType.PATIENTS) {
-                objectOutputStream.writeObject(patientMap);
+                objectOutputStream.writeObject(PATIENTS);
             } else if (fileType == FileType.STAFF) {
-                objectOutputStream.writeObject(staffMap);
+                objectOutputStream.writeObject(STAFF);
+            }} else if (fileType == FileType.MEDICATION) {
+                objectOutputStream.writeObject(MEDICATION);
             }
 
         } catch (Exception err) {
