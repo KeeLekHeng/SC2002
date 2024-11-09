@@ -2,10 +2,10 @@ package src.controller;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Collections;
 import src.database.Database;
+import src.model.Patient;
+import src.model.Staff;
 import src.model.User;
-import src.model.enums.Role;
 
 // For javadocs
 
@@ -35,18 +35,20 @@ public class LoginManager {
         String pw;
 
         // checks whether hospitalID is in any one of the databases
-        if (Database.STAFF.containsKey(hospitalID) || Database.PATIENT.containsKey(hospitalID)) {
+        if (Database.STAFF.containsKey(hospitalID) || Database.PATIENTS.containsKey(hospitalID)) {
             System.out.println("The hospitalID can be found within the database");
             // checks if hospitalID is in STAFF database and continue
             if (Database.STAFF.containsKey(hospitalID)) {
-                pw = Database.STAFF.get(password);
+                Staff staff = Database.STAFF.get(hospitalID);
+                pw = staff.getPassword();
                 if (pw == password) { // when input password is correct
                     // check for role then return role
                     return checkRoleAndReturn(hospitalID);
                 }
                 // checks if hospitalID is in PATIENT database and continue
-            } else if (Database.PATIENT.containsKey(hospitalID)) {
-                pw = Database.PATIENT.get(password);
+            } else if (Database.PATIENTS.containsKey(hospitalID)) {
+                Patient patient = Database.PATIENTS.get(hospitalID);
+                pw = patient.getPassword();
                 if (pw == password) { // when input password is correct
                     // check for role then return role
                     return checkRoleAndReturn(hospitalID);
@@ -56,12 +58,13 @@ public class LoginManager {
             System.out.println("The hospitalID cannot be found within the database");
             return "unsuccessful";
         }
+        return "unsuccessful";
     }
 
     public static ArrayList<User> searchUserById(String hospitalID) {
         ArrayList<User> searchList = new ArrayList<User>();
-        if (Database.PATIENT.containsKey(hospitalID)) {
-            User searchedGuest = Database.PATIENT.get(hospitalID);
+        if (Database.PATIENTS.containsKey(hospitalID)) {
+            User searchedGuest = Database.PATIENTS.get(hospitalID);
             searchList.add(searchedGuest);
         }
 
@@ -108,59 +111,78 @@ public class LoginManager {
         String role = findRole(hospitalId);
 
         int tries = 0;
-        // breaks from function if hospitalId is invalid to prevent database error
-        if (role == "unsucessful") {
-            System.out.println("The hospitalId that you provided is invalid");
-            break;
-        }
-        // user must know current password to change the password
-        while (tries < 3) {
-            System.out.println("Enter your current password: ");
-            String attempt = scanner.nextLine();
-            if (attempt == Database.role.get(password)) {
-                break;
-            }
-            tries++;
-        }
-
-        while (item) {
-            System.out.println("Enter the new password: ");
-            pw = scanner.nextLine();
-            // checks for valid password length
-            if (pw.length() > 10) {
-                valid++;
-            }
-            for (char ch : pw.toCharArray()) {
-                // checks if there is a lowercase letter in the string, if there is at least
-                // one, then the if statement will be ignored
-                if (lowercase < 1 && Character.isLowerCase(ch)) {
-                    lowercase++;
-                    valid++;
-                    // same as above but for uppercase letter
-                } else if (uppercase < 1 && Character.isUpperCase(ch)) {
-                    uppercase++;
-                    valid++;
-                    // same as above but for digit
-                } else if (hasDigit < 1 && Character.isDigit(ch)) {
-                    hasDigit++;
-                    valid++;
-                    // counts the number of digits in the string
-                } else if (!Character.isLetterOrDigit(ch)) {
-                    symbolCount++;
+        // only continues if the role has no error
+        if (!(role == "unsucessful")) {
+            // user must know current password to change the password
+            while (tries < 3) {
+                System.out.println("Enter your current password: ");
+                String attempt = scanner.nextLine();
+                if ("PATIENTS".equals(role)) {
+                    Patient patient = Database.PATIENTS.get(hospitalId);
+                    if (attempt == patient.getPassword()) {
+                        break;
+                    }
                 }
-            }
-            // if > 2 digits in string, then valid bit increments
-            if (symbolCount >= 2) {
-                valid++;
+                if ("STAFF".equals(role)) {
+                    Staff staff = Database.STAFF.get(hospitalId);
+                    if (attempt == staff.getPassword()) {
+                        break;
+                    }
+                }
+                tries++;
             }
 
-            // uppercase + lowercase + hasDigit + hasSymbol = 4
-            if (valid == 4) {
-                Database.role.put(hospitalId, pw);
-                item = false;
+            while (item) {
+                System.out.println("Enter the new password: ");
+                pw = scanner.nextLine();
+                // checks for valid password length
+                if (pw.length() > 10) {
+                    valid++;
+                }
+                for (char ch : pw.toCharArray()) {
+                    // checks if there is a lowercase letter in the string, if there is at least
+                    // one, then the if statement will be ignored
+                    if (lowercase < 1 && Character.isLowerCase(ch)) {
+                        lowercase++;
+                        valid++;
+                        // same as above but for uppercase letter
+                    } else if (uppercase < 1 && Character.isUpperCase(ch)) {
+                        uppercase++;
+                        valid++;
+                        // same as above but for digit
+                    } else if (hasDigit < 1 && Character.isDigit(ch)) {
+                        hasDigit++;
+                        valid++;
+                        // counts the number of digits in the string
+                    } else if (!Character.isLetterOrDigit(ch)) {
+                        symbolCount++;
+                    }
+                }
+                // if > 2 digits in string, then valid bit increments
+                if (symbolCount >= 2) {
+                    valid++;
+                }
+
+                // uppercase + lowercase + hasDigit + hasSymbol = 4
+                if (valid == 4) {
+                    if ("STAFF".equals(role)) {
+                        Staff staff = Database.STAFF.get(hospitalId);
+                        if (staff != null) {
+                            staff.setPassword(pw);
+                        }
+                    } else if ("PATIENTS".equals(role)) {
+                        Patient patient = Database.PATIENTS.get(hospitalId);
+                        if (patient != null) {
+                            patient.setPassword(pw);
+                        }
+                    }
+                    item = false;
+                }
+                // resets valid to zero before reentering while loop
+                valid = 0;
             }
-            // resets valid to zero before reentering while loop
-            valid = 0;
+        } else {
+            System.out.println("The hospitalId that you provided is invalid");
         }
     }
 
@@ -171,7 +193,7 @@ public class LoginManager {
             return "STAFF";
         }
         if (length == 5) {
-            return "PATIENT";
+            return "PATIENTS";
         }
         return "unsuccessful"; // error handling if hospitalId is faulty
     }

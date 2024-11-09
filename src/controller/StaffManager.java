@@ -29,9 +29,9 @@ public class StaffManager {
     public StaffManager() {
     }
 
-    public static void createStaff(String name, Gender gender, int age, Role role) {
-        int gid = Helper.generateUniqueId(Database.STAFF);
-        String staffId;
+    public static void createStaff(String name, Gender gender, int age, Role role, String password) {
+        String gid = Helper.generateUniqueId(Database.STAFF);
+        String staffId = "";
         switch (role) {
             case DOCTOR: {
                 staffId = String.format("D%03d", gid);
@@ -46,10 +46,10 @@ public class StaffManager {
                 break;
             }
             default:
-                break;
+                throw new IllegalArgumentException("Invalid role specified: " + role);
         }
 
-        Staff newStaff = new Staff(gid, role, name, gender, age);
+        Staff newStaff = new Staff(gid, password, role, name, gender, age);
 
         Database.STAFF.put(staffId, newStaff);
         Database.saveFileIntoDatabase(FileType.STAFF);

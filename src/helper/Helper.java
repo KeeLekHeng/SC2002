@@ -12,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * Helper class to provide support functions for other classes
+ * 
  * @author Kee
  * @version 1.0
  * @since 2024/10/22
@@ -21,6 +22,7 @@ public class Helper {
      * Scanner object for taking user input
      */
     public static final Scanner sc = new Scanner(System.in);
+
     /**
      * Default constructor for initializing Scanner object
      */
@@ -29,9 +31,13 @@ public class Helper {
     }
 
     /**
-     * Function to read an integer value from terminal <p>
+     * Function to read an integer value from terminal
+     * <p>
      * 
-     * Repeatedly tries to read an integer until an integer is actually being read. Keeps catching the exception {@link InputMismatchException} when invalid characters are entered
+     * Repeatedly tries to read an integer until an integer is actually being read.
+     * Keeps catching the exception {@link InputMismatchException} when invalid
+     * characters are entered
+     * 
      * @return The read integer entered in the terminal.
      */
     public static int readInt() {
@@ -49,11 +55,18 @@ public class Helper {
     }
 
     /**
-     * Function to read an integer value from terminal that within the specified minimum and maximum arguments. <p>
+     * Function to read an integer value from terminal that within the specified
+     * minimum and maximum arguments.
+     * <p>
      * 
-     * Repeatedly tries to read an integer until an integer within the specified range is actually being read. <p>
-     * Keeps catching the exception {@link InputMismatchException} when invalid characters are entered. <p>
-     * Keeps catching the exception {@link OutOfRange} when an integer entered is lesser than the minimum or greater 
+     * Repeatedly tries to read an integer until an integer within the specified
+     * range is actually being read.
+     * <p>
+     * Keeps catching the exception {@link InputMismatchException} when invalid
+     * characters are entered.
+     * <p>
+     * Keeps catching the exception {@link OutOfRange} when an integer entered is
+     * lesser than the minimum or greater
      * than the maximum value specified as arguments.
      * 
      * @param min minimum valid value that will be read and returned.
@@ -61,19 +74,18 @@ public class Helper {
      * @return The read integer entered in the terminal.
      */
     public static int readInt(int min, int max) {
-       
-        while (true){
-            try{
+
+        while (true) {
+            try {
                 int userInput = -1;
                 userInput = sc.nextInt();
                 sc.nextLine(); // Consume newline left-over
                 if (userInput < min || userInput > max) {
                     throw new OutOfRange();
-                }
-                else {
+                } else {
                     return userInput;
                 }
-            } catch(InputMismatchException e){
+            } catch (InputMismatchException e) {
                 sc.nextLine();
                 System.out.println("Invalid Input, Enter an integer!");
             } catch (OutOfRange e) {
@@ -83,13 +95,17 @@ public class Helper {
     }
 
     /**
-     * Function to read a double value from terminal. <p>
+     * Function to read a double value from terminal.
+     * <p>
      * 
-     * Repeatedly tries to read a double until a double is actually being read. Keeps catching the exception {@link InputMismatchException} when invalid characters are entered
+     * Repeatedly tries to read a double until a double is actually being read.
+     * Keeps catching the exception {@link InputMismatchException} when invalid
+     * characters are entered
+     * 
      * @return returns the read double entered in the terminal.
      */
     public static double readDouble() {
-       
+
         while (true) {
             try {
                 double userInput = -1;
@@ -104,22 +120,25 @@ public class Helper {
     }
 
     /**
-     * Reads a new line of string 
+     * Reads a new line of string
+     * 
      * @return user input as string
      */
     public static String readString() {
-       
+
         String userInput = sc.nextLine();
         return userInput;
     }
-    
+
     /**
-     * Method to prompt confirmation from the user. Usually for confirmation of removing data
-     * @param message Message for confirmation prompt. 
+     * Method to prompt confirmation from the user. Usually for confirmation of
+     * removing data
+     * 
+     * @param message Message for confirmation prompt.
      * @return {@code true} if user input 'yes'. Otherwise, {@code false}.
      */
     public static boolean promptConfirmation(String message) {
-       
+
         System.out.println(String.format("Are you sure you want to %s? (yes/no)", message));
         String userInput = sc.nextLine();
         return userInput.equals("yes");
@@ -127,16 +146,20 @@ public class Helper {
 
     /**
      * Method to generate unique id for hashMap key
-     * @param <K> Generic type for the key of the HashMap
-     * @param <V> Generic type for the value of the HashMap
+     * 
+     * @param <K>      Generic type for the key of the HashMap
+     * @param <V>      Generic type for the value of the HashMap
      * @param database Hashmap object to reference
      * @return A unique id for the database
      */
-    public static <K, V> int generateUniqueId(HashMap<K, V> database) {
+    public static <K, V> String generateUniqueId(HashMap<K, V> database) {
         if (database.size() == 0) {
-            return 1;
+            return "001";
         }
         String currentMax = "";
+
+        // Find the maximum ID among all keys (assuming keys are String IDs with a
+        // prefix)
         for (K key : database.keySet()) {
             if (key instanceof String) {
                 String currentKey = (String) key;
@@ -145,17 +168,27 @@ public class Helper {
                 }
             }
         }
-        String maxId = currentMax.substring(1);
-        return Integer.parseInt(maxId) + 1;
+        // Extract numeric part after the prefix (e.g., "001" from "D001")
+        String prefix = currentMax.substring(0, 1); // Assuming 1-letter prefix
+        String maxId = currentMax.substring(1); // Extract the number part
+
+        // Increment the numeric part
+        int nextIdNum = Integer.parseInt(maxId) + 1;
+        String nextIdStr = String.format("%03d", nextIdNum); // Formats to 3 digits (e.g., 002, 012)
+
+        // Return the new unique ID with the same prefix
+        return prefix + nextIdStr;
     }
 
     /**
      * Method to set the date for either current date or user input date
-     * @param now {@code true} to return the current time. Otherwise, {@code false} to prompt user for new time.
+     * 
+     * @param now {@code true} to return the current time. Otherwise, {@code false}
+     *            to prompt user for new time.
      * @return String object for the date in the format "yyyy-MM-dd HH:mm"
      */
     public static String setDate(boolean now) {
-       
+
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         if (now) {
             return getTimeNow();
@@ -179,16 +212,19 @@ public class Helper {
 
     /**
      * Method to parse a string date in a format
-     * @param date Date in string
+     * 
+     * @param date   Date in string
      * @param format {@link DateTimeFormatter} object for formatting of dates
-     * @return {@link LocalDateTime} object after parsing the string date with the formatter
+     * @return {@link LocalDateTime} object after parsing the string date with the
+     *         formatter
      */
     public static LocalDateTime getDate(String date, DateTimeFormatter format) {
         return LocalDateTime.parse(date, format);
     }
-    
+
     /**
      * Method to get current date and time
+     * 
      * @return String object for the date in the format "yyyy-MM-dd HH:mm"
      */
     public static String getTimeNow() {
@@ -199,9 +235,11 @@ public class Helper {
 
     /**
      * Method to validate date
-     * @param date Date in string
+     * 
+     * @param date   Date in string
      * @param format {@link DateTimeFormatter} object for formatting of dates
-     * @return {@code true} if date is valid. Otherwise, {@code false} if the date is invalid (date is in the past)
+     * @return {@code true} if date is valid. Otherwise, {@code false} if the date
+     *         is invalid (date is in the past)
      */
     public static boolean validateDate(String date, DateTimeFormatter format) {
         LocalDateTime Date = getDate(date, format);
@@ -211,9 +249,12 @@ public class Helper {
     }
 
     /**
-     * Method to check if the time difference of the input date and current time exceeds 1 hour (Hotel check in / check out checking)
+     * Method to check if the time difference of the input date and current time
+     * exceeds 1 hour (Hotel check in / check out checking)
+     * 
      * @param date Date in string
-     * @return {@code true} if the date does not exceed 1 hour. Otherwise, {@code false}.
+     * @return {@code true} if the date does not exceed 1 hour. Otherwise,
+     *         {@code false}.
      */
     public static boolean LocalDateTimediff(String date) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -232,12 +273,13 @@ public class Helper {
         else
             return false;
     }
-    
+
     /**
      * Method to calculate the days elapsed between two dates.
+     * 
      * @param fromDate From date in string.
-     * @param toDate To date in string. 
-     * @return Days difference of the two dates. 
+     * @param toDate   To date in string.
+     * @return Days difference of the two dates.
      */
     public static long calculateDaysElapsed(String fromDate, String toDate) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -249,9 +291,11 @@ public class Helper {
 
     /**
      * Method to check if fromDate is earlier than toDate
+     * 
      * @param fromDate From date in string.
-     * @param toDate To date in string. 
-     * @return {@code true} if the fromDate is earlier than toDate. Otherwise, {@code false}
+     * @param toDate   To date in string.
+     * @return {@code true} if the fromDate is earlier than toDate. Otherwise,
+     *         {@code false}
      */
     public static boolean validateTwoDates(String fromDate, String toDate) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -262,8 +306,10 @@ public class Helper {
 
     /**
      * Method to check if the date is weekend
+     * 
      * @param dateToCheck Date to check in String
-     * @return {@code true} if the date to check is weekend. Otherwise, {@code false}.
+     * @return {@code true} if the date to check is weekend. Otherwise,
+     *         {@code false}.
      */
     public static boolean checkIsDateWeekend(String dateToCheck) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -276,7 +322,8 @@ public class Helper {
     }
 
     /**
-     * Method to pause the application and prompt user to press the ENTER key to continue using the app.
+     * Method to pause the application and prompt user to press the ENTER key to
+     * continue using the app.
      */
     public static void pressAnyKeyToContinue() {
         System.out.println("Press Enter key to continue...");
@@ -287,7 +334,8 @@ public class Helper {
     }
 
     /**
-     * Method to clear the screen of the terminal for user experience and neat interface.
+     * Method to clear the screen of the terminal for user experience and neat
+     * interface.
      */
     public static void clearScreen() {
         try {
