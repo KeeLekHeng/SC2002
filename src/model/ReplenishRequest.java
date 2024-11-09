@@ -6,7 +6,8 @@ import src.model.enums.RequestStatus;
 
 public class ReplenishRequest implements Serializable {
 
-    int pharmacistID;
+    String pharmacistID;
+    String requestID;
     String medicationName;
     int medicationAmount;
     RequestStatus requestStatus;
@@ -14,18 +15,23 @@ public class ReplenishRequest implements Serializable {
     private static final long serialVersionUID = 8L;
 
 
-    public ReplenishRequest (int pharmacistID, String medicationName, int medicationAmount) {
+    public ReplenishRequest (String pharmacistID, String requestID, String medicationName, int medicationAmount) {
         this.pharmacistID = pharmacistID;
         this.medicationName = medicationName;
+        this.requestID = requestID;
         this.medicationAmount = medicationAmount;
         this.requestStatus = RequestStatus.PENDING;
     }
 
-    public int getPharmacistID () {
+    public String getPharmacistID () {
         return this.pharmacistID;
     }
 
-    public void setPharmacistID (int id) {
+    public String getRequestID(){
+        return this.requestID;
+    }
+
+    public void setPharmacistID (String id) {
         this.pharmacistID = id;
     }
 

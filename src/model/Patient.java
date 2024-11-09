@@ -8,7 +8,7 @@ public class Patient extends User {
 
     MedicalRecord medicalRecord;
 
-    public Patient(int patientID, Role role, String name, String dob, Gender gender, String phonenumber, String email, BloodType bloodType) {
+    public Patient(String patientID, Role role, String name, String dob, Gender gender, String phonenumber, String email, BloodType bloodType) {
         super(patientID,role);
 
         //doctorID in medical record set to default 0
@@ -18,4 +18,6 @@ public class Patient extends User {
     public MedicalRecord getMedicalRecord () {
         return this.medicalRecord;
     }
+
+    public String getEmail ()
 }
