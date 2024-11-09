@@ -153,11 +153,29 @@ public class Database {
      * @return {@code true} if data is cleared successfully.
      */
      public static boolean clearDatabase() {
-         PATIENT = new HashMap<Integer, Patient>();
+         PATIENT = new HashMap<String, Patient>();
          writeSerializedObject(FileType.PATIENTS);
 
-         STAFF = new HashMap<Integer, Staff>();
-         writeSerializedObject(FileType.STAFFS);
+         STAFF = new HashMap<String, Staff>();
+         writeSerializedObject(FileType.STAFF);
+
+         MEDICATION = new HashMap<Integer, Medication>();
+         writeSerializedObject(FileType.MEDICATION);
+
+         PRESCRIPTION = new HashMap<String, Prescription>();
+         writeSerializedObject(FileType.PRESCRIPTION);
+
+         APPOINTMENT = new HashMap<String, Appointment>();
+         writeSerializedObject(FileType.APPOINTMENT);
+
+         MEDICALRECORD = new HashMap<String, MedicalRecord>();
+         writeSerializedObject(FileType.MEDICALRECORD);
+
+         LOGIN = new HashMap<String, Login>();
+         writeSerializedObject(FileType.LOGIN);
+
+         return true;
+         
      }
 
     
