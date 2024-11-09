@@ -4,20 +4,20 @@ import src.model.enums.Role;
 
 
 public class User implements Serializable {
-    public final int id;
+    public final String id;
     private String password;
     private final Role role;
 
     private static final long serialVersionUID = 1L;
 
-    public User (int id, Role role)
+    public User (String id, Role role)
     {
         this.id = id;
         password = "password";
         this.role = role;
     }
 
-    public int getId () {
+    public String getId () {
         return this.id;
     }
 

@@ -1,8 +1,11 @@
 package src.helper;
 
+<<<<<<< HEAD
 //REMOVE STUFF WE DONT NEED + ADD STUFF WE NEED
 
 
+=======
+>>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -13,6 +16,7 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 /**
  * Helper class to provide support functions for other classes
+ * @author Kee
  * @author Kee, Seann
  * @version 1.0
  * @since 2024/10/22
@@ -292,6 +296,11 @@ public class Helper {
      */
     public static void clearScreen() {
         try {
+<<<<<<<<< Temporary merge branch 1
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception err) {
+
+=========
             if (System.getProperty("os.name").contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
@@ -300,6 +309,7 @@ public class Helper {
             }
         } catch (Exception e) {
             e.printStackTrace();
+>>>>>>>>> Temporary merge branch 2
         }
     }
 }
