@@ -25,7 +25,7 @@ public enum FileType {
     /**
      * File type corresponding to the Appointment data file.
      */
-    APPOINTMENTS("Appointments");
+    APPOINTMENTS("Appointments"),
 
     /**
      * File type corresponding to the Login Details data file.
@@ -35,7 +35,7 @@ public enum FileType {
     /**
      * File type corresponding to the Request data file.
      */
-    REQUESTS("Requests");
+    REQUESTS("Requests"),
 
     /**
      * A String value for the FileType for retrieval purposes.
