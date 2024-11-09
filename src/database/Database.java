@@ -20,6 +20,9 @@ import src.model.*;
  * Since: 2024-10-17
  */
 public class Database {
+
+    //followed Ivan's code, but we dh data folder for .dat files yet
+    private static final String folder = "data";
     
     public static HashMap<String, Patient> PATIENTS = new HashMap<>();
     
@@ -29,13 +32,12 @@ public class Database {
 
     public static HashMap<String, PrescribeMedication> PRESCRIPTION = new HashMap<>();         //PRESCRIPTUON AND LOGIN NOT SURE
 
-    public static HashMap<String, ReplenishRequest> REQUESTS = new HashMap<>();
+    public static HashMap<String, ReplenishRequest> REQUEST = new HashMap<>();
 
     public static HashMap<String, Appointment> APPOINTMENT = new HashMap<>();
 
     public static HashMap<String, MedicalRecord> MEDICALRECORD = new HashMap<>();
 
-    public static HashMap<String, Login> LOGIN = new HashMap<>();                       //PRESCRIPTUON AND LOGIN NOT SURE
 
      public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
@@ -95,15 +97,12 @@ public class Database {
             } else if (fileType == FileType.MEDICATION) {
                 MEDICATION = (HashMap<String, Medication>) objectInputStream.readObject();
             }else if (fileType == FileType.REQUESTS) {
-                REQUESTS = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
+                REQUEST = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
             } else if (fileType == FileType.APPOINTMENTS) {
                 APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
             } else if (fileType == FileType.APPOINTMENTS) {
                 PRESCRIPTION = (HashMap<String, PrescribeMedication>) objectInputStream.readObject();
-            }else if (fileType == FileType.LOGIN) {
-                LOGIN = (HashMap<String, Login>) objectInputStream.readObject();
             }
-            //LOGIN IDK HOW IT WORKS YET
 
         } catch (EOFException err) {
             System.out.println("Warning: " + err.getMessage());
@@ -139,9 +138,7 @@ public class Database {
                 objectOutputStream.writeObject(APPOINTMENT);
             } else if (fileType == FileType.REQUESTS) {
                 objectOutputStream.writeObject(REQUEST);
-            } else if (fileType == FileType.LOGIN) {
-                objectOutputStream.writeObject(LOGIN);
-            }
+            } 
 
             objectOutputStream.close();
             fileOutputStream.close();
@@ -167,7 +164,7 @@ public class Database {
          MEDICATION = new HashMap<String, Medication>();
          writeSerializedObject(FileType.MEDICATION);
 
-         REQUESTS = new HashMap<String, ReplenishRequest>();
+         REQUEST = new HashMap<String, ReplenishRequest>();
          writeSerializedObject(FileType.REQUESTS);
 
          PRESCRIPTION = new HashMap<String, PrescribeMedication>();
@@ -175,9 +172,6 @@ public class Database {
 
          APPOINTMENT = new HashMap<String, Appointment>();
          writeSerializedObject(FileType.APPOINTMENTS);
-
-         LOGIN = new HashMap<String, Login>();
-         writeSerializedObject(FileType.LOGIN);
 
          return true;
          
