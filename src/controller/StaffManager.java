@@ -67,6 +67,22 @@ public class StaffManager {
         }
     }
 
+    public static ArrayList<Staff> searchStaffById(String staffId) {
+        ArrayList<Staff> searchList = new ArrayList<Staff>();
+        if (Database.STAFF.containsKey(staffId)) {
+            Staff searchedStaff = Database.STAFF.get(staffId);
+            searchList.add(searchedStaff);
+        }
+        return searchList;
+    }
+
+    public static ArrayList<Staff> searchStaffByKeyWord(String keyword) {
+        ArrayList<Staff> searchList = new ArrayList<Staff>();
+        for (Staff staff : Database.STAFF.values()) {
+            String currentStaffName = staff.get
+        }
+    }
+
     public static void printStaffDetails(Staff staff) {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
         System.out.println(String.format("%-20s: %s", "Guest ID", staff.getId()));

@@ -96,7 +96,7 @@ public class LoginManager {
     }
 
     // creates new password for the user
-    public static void createNewPassword(String hospitalId, String password) {
+    public static void createNewPassword(String hospitalId) {
         String pw;
         boolean item = true;
         // valid bit that keeps the while loop running
