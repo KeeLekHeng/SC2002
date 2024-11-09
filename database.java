@@ -3,10 +3,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
 
-import src.model.Patient;
-import src.model.Staff;
-import src.model.Medicine;
-import src.model.enums.FileType;
+import src.controller.PatientManager;
+import src.controller.StaffManager;
+import src.controller.InventoryManager;
+import src.controller.PrescriptiontManager;
+import src.controller.AppointmentManager;
+import src.controller.MedicalRecordManager;
+import src.controller.LoginManager;
+import src.model.*;
 
 /**
  * A class for managing the database operations for the Hospital Management System.
