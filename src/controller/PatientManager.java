@@ -22,7 +22,9 @@ public class PatientManager {
     }
 
     // Assuming data format: Patient ID, Role, Name, Date of Birth, Gender, Blood Type, Contact Information
-    public static void createPatient(String patientID, String name, String dob, Gender gender, String phoneNumber, String email, BloodType bloodType) {
+    public static void createPatient(String name, String dob, Gender gender, String phoneNumber, String email, BloodType bloodType) {
+        int gid = Helper.generateUniqueId(Database.PATIENTS);
+        String patientID = String.format("P%04d", gid);
         Role role = Role.PATIENT;
         Patient newPatient = new Patient(patientID, role, name, dob, gender, phoneNumber, email, bloodType);
         
@@ -35,32 +37,28 @@ public class PatientManager {
     }
 
     public static boolean updatePatientDetails(String patientID, int attributeCode, String newvalue) {
-        List<Patient> updateList = searchPatientByID(patientID);
-        if (updateList.size() == 0) {
+        Patient patientToUpdate = searchPatientByID(patientID);
+        if (patientToUpdate == null) {
             // Patient not found
             return false;
         }
+        MedicalRecord record;
 
-        // Update patient details
-        for (Patient patient : updateList) {
-            Patient patientToUpdate;
-            MedicalRecord record;
-
-            switch(attributeCode) {
-                case 1:
-                    patientToUpdate = Database.PATIENTS.get(patientID);
-                    record = patientToUpdate.getMedicalRecord();
-                    record.setPhonenumber(newvalue);
-                    break;
-                case 2:
-                    patientToUpdate = Database.PATIENTS.get(patientID);
-                    record = patientToUpdate.getMedicalRecord();
-                    record.setEmail(newvalue);
-                    break;
-                default:
-                    break;
+        switch(attributeCode) {
+            case 1:
+                patientToUpdate = Database.PATIENTS.get(patientID);
+                record = patientToUpdate.getMedicalRecord();
+                record.setPhonenumber(newvalue);
+                break;
+            case 2:
+                patientToUpdate = Database.PATIENTS.get(patientID);
+                record = patientToUpdate.getMedicalRecord();
+                record.setEmail(newvalue);
+                break;
+            default:
+                break;
             }
-        }
+        
 
         // Saving to database
         Database.saveFileIntoDatabase(FileType.PATIENTS);
@@ -85,7 +83,7 @@ public class PatientManager {
                 int position = index;
 
                 // Perform insertion sort to keep the list ordered by patientID
-                while (position > 0 && pid < Integer.parseInt(sortedList.get(position - 1).getMedicalRecord().getPatientID().substring(1))) {
+                while (position > 0 && pid < Integer.parseInt(sortedList.get(position - 1).getMedicalRecord().getPatientId().substring(1))) {
                     sortedList.set(position, sortedList.get(position - 1));
                     position--;
                 }
@@ -107,21 +105,22 @@ public class PatientManager {
         return Database.PATIENTS.containsKey(patientID);
     }
 
-    public static ArrayList<Patient> searchPatientByID(String patientID) {
-        ArrayList<Patient> searchList = new ArrayList<>();
+    public static Patient searchPatientByID(String patientID) {
+        // Check if the patientID exists in the database
         if (Database.PATIENTS.containsKey(patientID)) {
-            Patient searchedPatient = Database.PATIENTS.get(patientID);
-            searchList.add(searchedPatient);
+            return Database.PATIENTS.get(patientID);
+        } else {
+            // Return null if patient is not found
+            return null;
         }
-        return searchList;
     }
 
     /**
      * Initializer for dummy patients in the hospital. 
      */
     public static void initializeDummyPatients() {
-        PatientManager.createPatient("P001", "Kee Lek Heng", "2005-07-28", Gender.MALE, BloodType.A, "85445065", "keel0004@e.ntu.edu.sg");
-        PatientManager.createPatient("P002", "Doe John", "1995-12-12", Gender.MALE, BloodType.B, "8565065", "endy@e.ntu.edu.sg");
+        PatientManager.createPatient("Kee Lek Heng", "2005-07-28", Gender.MALE, "85445065", "keel0004@e.ntu.edu.sg", BloodType.A);
+        PatientManager.createPatient("Doe John", "1995-12-12", Gender.MALE, "8565065", "endy@e.ntu.edu.sg", BloodType.B);
     }
 
     /**
