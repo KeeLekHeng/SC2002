@@ -116,26 +116,52 @@ public class Database {
      */
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
-        String filePath = "./src/database/" + fileType.getFolder() + "/" + fileType.getFileName() + fileExtension;
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+        String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
+        
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
             if (fileType == FileType.PATIENTS) {
                 objectOutputStream.writeObject(PATIENTS);
             } else if (fileType == FileType.STAFF) {
                 objectOutputStream.writeObject(STAFF);
-            }} else if (fileType == FileType.MEDICATION) {
+            } else if (fileType == FileType.MEDICATION) {
                 objectOutputStream.writeObject(MEDICATION);
+            } else if (fileType == FileType.PRESCRIPTION) {
+                objectOutputStream.writeObject(PRESCRIPTION);
+            } else if (fileType == FileType.APPOINTMENT) {
+                objectOutputStream.writeObject(APPOINTMENT);
+            } else if (fileType == FileType.MEDICALRECORD) {
+                objectOutputStream.writeObject(MEDICALRECORD);
+            } else if (fileType == FileType.LOGIN) {
+                objectOutputStream.writeObject(LOGIN);
             }
 
+            objectOutputStream.close();
+            fileOutputStream.close();
+            return true;
         } catch (Exception err) {
             System.out.println("Error: " + err.getMessage());
             return false;
         }
-        return true;
     }
 
+
+        /**
+     * A method to clear out all the data in database.
+     * @return {@code true} if data is cleared successfully.
+     */
+     public static boolean clearDatabase() {
+         PATIENT = new HashMap<Integer, Patient>();
+         writeSerializedObject(FileType.PATIENTS);
+
+         STAFF = new HashMap<Integer, Staff>();
+         writeSerializedObject(FileType.STAFFS);
+     }
+
+    
+    
     public static boolean initializeDummyPatients() {
         if (PATIENTS.size() != 0) {
             System.out.println("The database already has patients. Reset database first to initialize patients");
@@ -154,16 +180,6 @@ public class Database {
         return true;
     }
 
-    /**
-     * A method to clear out all the data in database.
-     * @return {@code true} if data is cleared successfully.
-     */
-    // public static boolean clearDatabase() {
-    //     PATIENT = new HashMap<Integer, Patient>();
-    //     writeSerializedObject(FileType.PATIENTS);
 
-    //     STAFF = new HashMap<Integer, Staff>();
-    //     writeSerializedObject(FileType.STAFFS);
-    // }
 
 }
