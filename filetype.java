@@ -20,7 +20,7 @@ public enum FileType {
     /**
      * File type corresponding to the Medicine inventory file.
      */
-    MEDICINES("Medicines"),
+    MEDICATION("Medications"),
 
     /**
      * File type corresponding to the Appointment data file.
