@@ -10,10 +10,10 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public User (String id, Role role)
+    public User (String id, String password, Role role)
     {
         this.id = id;
-        password = "password";
+        this.password = password;
         this.role = role;
     }
 

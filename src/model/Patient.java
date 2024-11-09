@@ -8,8 +8,8 @@ public class Patient extends User {
 
     MedicalRecord medicalRecord;
 
-    public Patient(String patientID, Role role, String name, String dob, Gender gender, String phonenumber, String email, BloodType bloodType) {
-        super(patientID,role);
+    public Patient(String patientID, String password, Role role, String name, String dob, Gender gender, String phonenumber, String email, BloodType bloodType) {
+        super(patientID,password,role);
 
         //doctorID in medical record set to default 0
         this.medicalRecord = new MedicalRecord(0,patientID, name, dob, gender, phonenumber, email,bloodType); 
