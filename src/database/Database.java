@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
 
-<<<<<<< HEAD
 import src.controller.PatientManager;
 import src.controller.StaffManager;
 import src.controller.InventoryManager;
@@ -12,11 +11,6 @@ import src.controller.AppointmentManager;
 import src.controller.MedicalRecordManager;
 import src.controller.LoginManager;
 import src.model.*;
-=======
-import src.model.Patient;
-import src.model.Staff;
-import src.model.enums.FileType;
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
 
 /**
  * A class for managing the database operations for the Hospital Management System.
@@ -27,7 +21,6 @@ import src.model.enums.FileType;
  */
 public class Database {
     
-<<<<<<< HEAD
     public static HashMap<String, Patient> PATIENTS = new HashMap<>();
     
     public static HashMap<String, Staff> STAFF = new HashMap<>();
@@ -43,18 +36,12 @@ public class Database {
     public static HashMap<String, MedicalRecord> MEDICALRECORD = new HashMap<>();
 
     public static HashMap<String, Login> LOGIN = new HashMap<>();                       //PRESCRIPTUON AND LOGIN NOT SURE
-=======
-    public static HashMap<Integer, Patient> patientMap = new HashMap<>();
-    
-    public static HashMap<Integer, Staff> staffMap = new HashMap<>();
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
 
      public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
             System.out.println("Read into Patients failed!");
         }
         if (!readSerializedObject(FileType.STAFF)) {
-<<<<<<< HEAD
             System.out.println("Read into Staff failed!");
         }
         if (!readSerializedObject(FileType.MEDICATION)) {
@@ -72,9 +59,6 @@ public class Database {
         if (!readSerializedObject(FileType.LOGIN)) {
             System.out.println("Read into login failed!");
         }
-=======
-            System.out.println("Read into Staff failed!")
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
     }
 
     public static void saveFileIntoDatabase(FileType fileType) {
@@ -84,15 +68,12 @@ public class Database {
     public static void saveAllFiles() {
         saveFileIntoDatabase(FileType.PATIENTS);
         saveFileIntoDatabase(FileType.STAFF);
-<<<<<<< HEAD
         saveFileIntoDatabase(FileType.MEDICATION);
         saveFileIntoDatabase(FileType.REQUESTS);
         saveFileIntoDatabase(FileType.APPOINTMENTS);
         saveFileIntoDatabase(FileType.LOGIN);
         saveFileIntoDatabase(FileType.APPOINTMENTS);
 
-=======
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
     }
 
    /**
@@ -100,7 +81,6 @@ public class Database {
      * @param fileType file type to be read.
      * @return {@code true} if read from file is successful. Otherwise, {@code false}.
      */
-<<<<<<< HEAD
      private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
@@ -124,20 +104,6 @@ public class Database {
                 LOGIN = (HashMap<String, Login>) objectInputStream.readObject();
             }
             //LOGIN IDK HOW IT WORKS YET
-=======
-    private static boolean readSerializedObject(FileType fileType) {
-        String fileExtension = ".dat";
-        String filePath = "./src/database/" + fileType.getFolder() + "/" + fileType.getFileName() + fileExtension;
-        
-        try (FileInputStream fileInputStream = new FileInputStream(filePath);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-
-            if (fileType == FileType.PATIENTS) {
-                patientMap = (HashMap<Integer, Patient>) objectInputStream.readObject();
-            } else if (fileType == FileType.STAFF) {
-                staffMap = (HashMap<Integer, Staff>) objectInputStream.readObject();
-            }
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
 
         } catch (EOFException err) {
             System.out.println("Warning: " + err.getMessage());
@@ -155,7 +121,6 @@ public class Database {
      */
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
-<<<<<<< HEAD
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
         
         try {
@@ -181,24 +146,10 @@ public class Database {
             objectOutputStream.close();
             fileOutputStream.close();
             return true;
-=======
-        String filePath = "./src/database/" + fileType.getFolder() + "/" + fileType.getFileName() + fileExtension;
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-
-            if (fileType == FileType.PATIENTS) {
-                objectOutputStream.writeObject(patientMap);
-            } else if (fileType == FileType.STAFF) {
-                objectOutputStream.writeObject(staffMap);
-            }
-
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
         } catch (Exception err) {
             System.out.println("Error: " + err.getMessage());
             return false;
         }
-<<<<<<< HEAD
     }
 
 
@@ -254,21 +205,5 @@ public class Database {
     }
 
 
-=======
-        return true;
-    }
-
-    /**
-     * A method to clear out all the data in database.
-     * @return {@code true} if data is cleared successfully.
-     */
-    // public static boolean clearDatabase() {
-    //     PATIENT = new HashMap<Integer, Patient>();
-    //     writeSerializedObject(FileType.PATIENTS);
-
-    //     STAFF = new HashMap<Integer, Staff>();
-    //     writeSerializedObject(FileType.STAFFS);
-    // }
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
 
 }
