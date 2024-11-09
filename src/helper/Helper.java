@@ -1,5 +1,6 @@
 package src.helper;
 
+//REMOVE STUFF WE DONT NEED + ADD STUFF WE NEED
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -8,11 +9,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+
 /**
  * Helper class to provide support functions for other classes
- * @author Ivan, Max
+ * @author Kee
  * @version 1.0
- * @since 2022-04-04
+ * @since 2024/10/22
  */
 public class Helper {
     /**
