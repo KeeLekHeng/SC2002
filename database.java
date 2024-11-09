@@ -57,6 +57,7 @@ public class Database {
         if (!readSerializedObject(FileType.LOGIN)) {
             System.out.println("Read into login failed!")
         }
+    }
 
     public static void saveFileIntoDatabase(FileType fileType) {
         writeSerializedObject(fileType);
