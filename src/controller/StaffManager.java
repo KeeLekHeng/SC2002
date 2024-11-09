@@ -32,6 +32,7 @@ public class StaffManager {
     public static void createStaff(String name, Gender gender, int age, Role role, String password) {
         String gid = Helper.generateUniqueId(Database.STAFF);
         String staffId = "";
+        String pw = password;
         switch (role) {
             case DOCTOR: {
                 staffId = String.format("D%03d", gid);
@@ -49,7 +50,7 @@ public class StaffManager {
                 throw new IllegalArgumentException("Invalid role specified: " + role);
         }
 
-        Staff newStaff = new Staff(gid, password, role, name, gender, age);
+        Staff newStaff = new Staff(gid, pw, role, name, gender, age);
 
         Database.STAFF.put(staffId, newStaff);
         Database.saveFileIntoDatabase(FileType.STAFF);
@@ -58,8 +59,12 @@ public class StaffManager {
         printStaffDetails(newStaff);
     }
 
-    public static void updateStaff(String staffId, Gender gender, int age, Role role) {
-
+    public static void updateStaff(String staffId, int attributeCode) {
+        ArrayList<Staff> updateList = searchStaffById(staffId);
+        if (updateList.size() == 0) {
+            // guest not found
+            return false;
+        }
     }
 
     public static void printStaffDetails(Staff staff) {

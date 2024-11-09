@@ -36,7 +36,6 @@ public class LoginManager {
 
         // checks whether hospitalID is in any one of the databases
         if (Database.STAFF.containsKey(hospitalID) || Database.PATIENTS.containsKey(hospitalID)) {
-            System.out.println("The hospitalID can be found within the database");
             // checks if hospitalID is in STAFF database and continue
             if (Database.STAFF.containsKey(hospitalID)) {
                 Staff staff = Database.STAFF.get(hospitalID);
@@ -55,7 +54,7 @@ public class LoginManager {
                 }
             }
         } else {
-            System.out.println("The hospitalID cannot be found within the database");
+            // hospitalId cannot be found in database
             return "unsuccessful";
         }
         return "unsuccessful";
@@ -97,7 +96,7 @@ public class LoginManager {
     }
 
     // creates new password for the user
-    public static void createNewPassword(String hospitalId) {
+    public static void createNewPassword(String hospitalId, String password) {
         String pw;
         boolean item = true;
         // valid bit that keeps the while loop running
