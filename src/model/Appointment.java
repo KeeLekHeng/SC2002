@@ -3,7 +3,6 @@
 package src.model;
 import java.io.Serializable;
 import java.util.List;
-import java.util.ArrayList;
 import src.model.enums.AppointmentStatus;
 
 

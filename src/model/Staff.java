@@ -8,8 +8,8 @@ public class Staff extends User {
     public int age;
     public final Gender gender;
 
-    public Staff(int id, Role role,String name, Gender gender,int age) {
-        super(id,role);
+    public Staff(int id, String password, Role role,String name, Gender gender,int age) {
+        super(id, password, role);
         this.name = name;
         this.gender= gender;
         this.age= age;

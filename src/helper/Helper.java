@@ -1,30 +1,21 @@
 package src.helper;
 
-<<<<<<< HEAD
 //REMOVE STUFF WE DONT NEED + ADD STUFF WE NEED
 
 
-=======
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 /**
  * Helper class to provide support functions for other classes
-<<<<<<< HEAD
  * @author Kee
  * @version 1.0
  * @since 2024/10/22
-=======
- * @author Ivan, Max
- * @version 1.0
- * @since 2022-04-04
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
  */
 public class Helper {
     /**
@@ -301,20 +292,9 @@ public class Helper {
      */
     public static void clearScreen() {
         try {
-<<<<<<< HEAD
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception err) {
 
-=======
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
->>>>>>> 2a9b861d868347e01ac53686f12ea24ab1af36e3
         }
     }
 }
