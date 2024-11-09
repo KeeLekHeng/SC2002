@@ -13,6 +13,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Helper class to provide support functions for other classes
  * @author Kee
+ * @author Kee, Seann
  * @version 1.0
  * @since 2024/10/22
  */

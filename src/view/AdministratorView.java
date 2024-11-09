@@ -19,7 +19,7 @@ public class AdministratorView extends MainView {
     }
 
     @Override
-    public void viewApp() {
+    public void viewApp(String hospitalID) {
         int opt;
         do {
             printMenu();
