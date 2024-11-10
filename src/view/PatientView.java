@@ -1,5 +1,6 @@
 package src.view;
 import src.model.Patient;
+import src.controller.LoginManager;
 import src.controller.PatientManager;
 import src.helper.Helper;
 
@@ -68,6 +69,7 @@ public class PatientView extends MainView {
                     break;
                 case 9:
                     //Change password
+                    LoginManager.createNewPassword(hospitalID);
                     break;
                 case 10:
                     //Logout
