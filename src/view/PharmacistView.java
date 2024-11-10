@@ -1,5 +1,6 @@
 package src.view;
 import src.controller.LoginManager;
+import src.controller.PrescriptionManager;
 import src.helper.Helper;
 
 public class PharmacistView extends MainView {
@@ -27,18 +28,29 @@ public class PharmacistView extends MainView {
             switch (opt) {
                 case 1:
                     //View appointment outcome record
+                    PrescriptionManager.viewAppointmentOutcomeRecord()
                     ;
                     break;
                 case 2:
                     //Update prescription status
+                    updatePrescriptionStatus();
+
+
                     ;
                     break;
                 case 3:
                     //View medication inventory
+                    //Pharmacists can monitor the inventory of medications, including tracking stock levels.
+                    PrescriptionManager.viewMedicationInventory();
                     ;
                     break;
                 case 4:
                     //Submit replenishment request
+                    System.out.println("Enter the medication name: ");
+                    String medicationName = Helper.readString();
+                    System.out.println("Enter the quantity: ");
+                    int quantity = Helper.readInt(1, 100);
+                    PrescriptionManager.submitReplenishRequest(hospitalID, medicationName, quantity);
                     break;
                 case 5:
                     //Change password
@@ -49,5 +61,38 @@ public class PharmacistView extends MainView {
                     break;
             }
         } while (opt != 6);
+    }
+
+
+
+///////////Updte Prescription Status/////////////////////
+public void updatePrescriptionStatus() {
+    System.out.print("Enter the prescription ID: ");
+                    String prescriptionID = Helper.readString();
+                    
+                    System.out.println("Select an action:");
+                    System.out.println("1. Dispense");
+                    System.out.println("2. Back");
+                    int action = Helper.readInt();
+
+                    boolean success;
+                    if (action == 1) {
+                        // Attempt to dispense
+                        success = PrescriptionManager.updatePrescriptionStatus(prescriptionID, 1);
+                        if (success) {
+                            System.out.println("Prescription dispensed successfully.");
+                        } 
+                    } else if (action == 2) {
+                        // Skip the prescription
+                        success = PrescriptionManager.updatePrescriptionStatus(prescriptionID, 2);
+                        if (success) {
+                            System.out.println("Prescription skipped successfully.");
+                        } else {
+                            System.out.println("Error: Prescription could not be updated.");
+                        }
+                    } else {
+                        System.out.println("Invalid action selected.");
+                    }
+                    break;
     }
 }

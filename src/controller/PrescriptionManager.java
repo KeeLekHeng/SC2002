@@ -1,3 +1,4 @@
+
 package src.controller;
 
 import java.awt.HeadlessException;
@@ -98,6 +99,7 @@ public class PrescriptionManager {
         Database.saveFileIntoDatabase(FileType.MEDICATION);
         return true;
     }
+   
 
     public static boolean checkStockLevel(Medication medication){
         if (medication.getStock() <= medication.getLowStockAlert()){
@@ -150,5 +152,5 @@ public class PrescriptionManager {
         System.out.println(String.format("%-20s: %s", "Current Status", replenishRequest.getRequestStatus()));
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
-    
+
 }

@@ -1,5 +1,6 @@
 package src.view;
 import src.controller.LoginManager;
+import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
 import src.model.enums.*;
 import src.helper.*;
@@ -36,14 +37,17 @@ public class AdministratorView extends MainView {
                 case 2:
                     //View appointment details
 
+
                     ;
                     break;
                 case 3:
                     //View and manage medication inventory
+
                     ;
                     break;
                 case 4:
                     //Approve replenishment requests
+                    //approveReplenishmentRequest();
                     break;
                 case 5:
                     LoginManager.createNewPassword(hospitalID);
@@ -68,7 +72,7 @@ public class AdministratorView extends MainView {
             switch (opt) {
                 case 1:
                     //View Staff Details
-                    
+
                     break;
                 case 2:
                     //Create Staff
@@ -119,3 +123,7 @@ public class AdministratorView extends MainView {
     }
 }
 
+//////////////////////approveReplenishmentRequest()/////////////////////
+public void approveReplenishmentRequest() {
+   PrescriptionManager.printPrescriptionRequest(null);
+}
