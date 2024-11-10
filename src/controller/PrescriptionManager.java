@@ -42,58 +42,56 @@ public class PrescriptionManager {
         printReplenishRequest(replenishRequest);
     }
 
-    public boolean updatePrescriptionStatus(String prescriptionID, int attributeCode){
-        
-        if (updateList.size() == 0) {
-            // guest not found
-            return false;
-
+    public boolean updatePrescriptionStatus(String prescriptionID, int attributeCode) {
+     
         PrescribeMedication prescription = Database.PRESCRIPTION.get(prescriptionID);
-        String medicationName = prescription.getMedicationName();
-        int amount;
-
-        //find the medication in prescription
-        Medication medication = null;
-        for (Medication med : Database.MEDICATION.values()) {
-        if (med.getName().toLowerCase().equals(medicationName.toLowerCase())) {
-        medication = med;
-        break;
-    } else {
-        return false;
-    }
-
-    }
-        Medication medicationToUpdate = null;
-        switch(attributeCode){
-            //1 is accept, 2 is skip
-            //if stock too low then trigger alert
-            //if not enough stock, then dont approve prescription
-            case 1:
-                medicationToUpdate = Database.MEDICATION.get(medication.getMedicineID());
-                amount = prescription.getPrescriptionAmount();
-
-                if(amount > medicationToUpdate.getStock()){
-                    int stockLevel = medicationToUpdate.getStock(); 
-                    System.out.println("Insufficient stock to prescribe! Current Stock Level: " + stockLevel);
-                    return false;
-                }
-                
-
-                medicationToUpdate.removeStock(amount);
-                if (checkStockLevel(medicationToUpdate)){
-                    int stockLevel = medicationToUpdate.getStock(); 
-                    System.out.println("Low Stock Level Detected! Send Replenish Request Urgently! Current Stock Level: " + stockLevel);
-                }
-
-                prescription.setPrescribeStatus(PrescribeStatus.DISPENSED);
-                break;
-            case 2:
-                break;
-            default:
-                break;
+        if (prescription == null) {
+            // Prescription not found
+            return false;
         }
         
-        //save and put into database                                                                            //initialized medicationTOUPDATE to null
+        String medicationName = prescription.getMedicationName();
+        int amount;
+   
+        // Find the medication in the database
+        Medication medication = null;
+        for (Medication med : Database.MEDICATION.values()) {
+            if (med.getName().equalsIgnoreCase(medicationName)) {
+                medication = med;
+                break;
+            }
+        }
+        
+        if (medication == null) {
+            // Medication not found
+            return false;
+        }
+   
+        Medication medicationToUpdate = null;
+        switch (attributeCode) {
+            case 1: // Accept prescription
+                medicationToUpdate = Database.MEDICATION.get(medication.getMedicineID());
+                amount = prescription.getPrescriptionAmount();
+   
+                if (amount > medicationToUpdate.getStock()) {
+                    System.out.println("Insufficient stock to prescribe! Current Stock Level: " + medicationToUpdate.getStock());
+                    return false;
+                }
+   
+                medicationToUpdate.removeStock(amount);
+                if (checkStockLevel(medicationToUpdate)) {
+                    System.out.println("Low Stock Level Detected! Send Replenish Request Urgently! Current Stock Level: " + medicationToUpdate.getStock());
+                }
+   
+                prescription.setPrescribeStatus(PrescribeStatus.DISPENSED);
+                break;
+            case 2: // Skip prescription
+                break;
+            default:
+                return false;
+        }
+   
+        // Save changes to the database
         Database.PRESCRIPTION.put(prescriptionID, prescription);
         Database.MEDICATION.put(medication.getMedicineID(), medicationToUpdate);
         Database.saveFileIntoDatabase(FileType.PRESCRIPTIONS);
@@ -152,5 +150,5 @@ public class PrescriptionManager {
         System.out.println(String.format("%-20s: %s", "Current Status", replenishRequest.getRequestStatus()));
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
-
+    
 }

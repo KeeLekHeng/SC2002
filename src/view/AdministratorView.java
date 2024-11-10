@@ -30,10 +30,12 @@ public class AdministratorView extends MainView {
             switch (opt) {
                 case 1:
                     //View and manage hospital staff
+                    viewAndManageStaff();
                     ;
                     break;
                 case 2:
                     //View appointment details
+
                     ;
                     break;
                 case 3:
@@ -52,7 +54,7 @@ public class AdministratorView extends MainView {
             }
         } while (opt != 6);
     }
-
+////////////////////////////// View and Manage Staff //////////////////////////////
     public void viewAndManageStaff() {
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Staff Details");
@@ -66,7 +68,7 @@ public class AdministratorView extends MainView {
             switch (opt) {
                 case 1:
                     //View Staff Details
-
+                    
                     break;
                 case 2:
                     //Create Staff

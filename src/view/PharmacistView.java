@@ -1,4 +1,5 @@
 package src.view;
+import src.controller.LoginManager;
 import src.helper.Helper;
 
 public class PharmacistView extends MainView {
@@ -41,6 +42,7 @@ public class PharmacistView extends MainView {
                     break;
                 case 5:
                     //Change password
+                    LoginManager.createNewPassword(hospitalID);
                     break;
                 case 6:
                     //Logout
