@@ -1,4 +1,5 @@
 package src.view;
+import src.controller.InventoryManager;
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
@@ -16,7 +17,6 @@ public class AdministratorView extends MainView {
         System.out.println("(1) View and Manage Hospital Staff");
         System.out.println("(2) View Appointments details");
         System.out.println("(3) View and Manage Medication Inventory ");
-        //1 is update stock, 2 is update low stock limit
         System.out.println("(4) Approve Replenishment Requests ");
         System.out.println("(5) Change Password");
         System.out.println("(6) Logout ");
@@ -42,12 +42,16 @@ public class AdministratorView extends MainView {
                     break;
                 case 3:
                     //View and manage medication inventory
-
+                    //can view or manage or back
+                    viewAndManageMedicationInventory();
                     ;
                     break;
                 case 4:
                     //Approve replenishment requests
                     //approveReplenishmentRequest();
+                    PrescriptionManager.getPendingRequests(); //this is a loop
+                    PrescriptionManager.printReplenishRequest(null); //this is just one
+                    //PrescriptionManager.approveReplenishRequest();
                     break;
                 case 5:
                     LoginManager.createNewPassword(hospitalID);
@@ -72,6 +76,9 @@ public class AdministratorView extends MainView {
             switch (opt) {
                 case 1:
                     //View Staff Details
+                    //print all staff details
+                    //can select role and gender, then print all staff of that role and gender
+                    //can filter by age
 
                     break;
                 case 2:
@@ -110,10 +117,11 @@ public class AdministratorView extends MainView {
                     break;
                 case 3:
                     //Update Staff Details
-
+                    //enter staff id den will display staff details, can select which attribute to update
                     break;
                 case 4:
                     //Remove Staff
+                    //enter staff id to remove
                     break;
                 case 5:
                     //Back
@@ -121,9 +129,83 @@ public class AdministratorView extends MainView {
             }
         } while (opt != 5);
     }
+
+    //////////////////////approveReplenishmentRequest()/////////////////////
+    public void approveReplenishmentRequest() {
+        PrescriptionManager.printPrescriptionRequest(null);
+    }
+
+
+    //////////////////////View and Manage Medication Inventory/////////////////////
+
+    public void viewAndManageMedicationInventory() {
+        System.out.println("What would you like to do ?");
+        System.out.println("(1) View Medication Inventory");
+        System.out.println("(2) Update Medication Stock");
+        System.out.println("(3) Back");
+        int opt;
+        do {
+            opt = Helper.readInt(1,3);
+            switch (opt) {
+                case 1:
+                    //View Medication Inventory
+                    //print all medication inventory
+                    printBreadCrumbs("Main Menu > View and Manage Medication Inventory > View Medication Inventory");
+                    PrescriptionManager.viewMedicationInventory();
+                    break;
+                case 2:
+                    //Update Medication Stock
+                    //enter medication name and quantity to update
+                    printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
+                    System.out.println("Enter Medication ID: ");
+                    String medicationID = Helper.readString();
+                    boolean found = InventoryManager.updateMedication(medicationID, 0, 0);
+                    if(found) {
+                        do {
+                            System.out.println("What would you like to update: ");
+                            System.out.println("(1) Add Stock");
+                            System.out.println("(2) Remove Stock");
+                            System.out.println("(3) Set Stock");
+                            System.out.println("(4) Set Low Stock Limit");
+                            System.out.println("(5) Back");
+                            int choice = Helper.readInt(1, 4);
+                            switch(choice) {
+                                case 1:
+                                    System.out.println("Enter Quantity to Add: ");
+                                    int quantity = Helper.readInt(1, 100);
+                                    InventoryManager.updateMedication(medicationID, 1, quantity);
+                                    break;
+                                case 2:
+                                    System.out.println("Enter Quantity to Remove: ");
+                                    quantity = Helper.readInt(1, 100);
+                                    InventoryManager.updateMedication(medicationID, 2, quantity);
+                                    break;
+                                case 3:
+                                    System.out.println("Enter New Stock: ");
+                                    quantity = Helper.readInt(1, 100);
+                                    InventoryManager.updateMedication(medicationID, 3, quantity);
+                                    break;
+                                case 4:
+                                    System.out.println("Enter New Low Stock Limit: ");
+                                    quantity = Helper.readInt(1, 100);
+                                    InventoryManager.updateMedication(medicationID, 4, quantity);
+                                    break;
+                                case 5:
+                                    break;
+                            }
+                        } while (opt != 5);
+                    } else {
+                        System.out.println("Medication not found");
+                    }
+                    
+
+                    break;
+                case 3:
+                    //Back
+                    break;
+            }
+        } while (opt != 3);
+    }
 }
 
-//////////////////////approveReplenishmentRequest()/////////////////////
-public void approveReplenishmentRequest() {
-   PrescriptionManager.printPrescriptionRequest(null);
-}
+
