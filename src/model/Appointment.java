@@ -7,7 +7,8 @@ import src.model.enums.AppointmentStatus;
 
 
 public class Appointment implements Serializable {
-    private int doctorID;
+    private String doctorID;
+    private String patientID;
     private String date;
     private String time;
     private AppointmentStatus appointmentStatus;
@@ -23,8 +24,9 @@ public class Appointment implements Serializable {
 
 
 
-    public Appointment (int doctorID, String date, String time) {
+    public Appointment (String doctorID, String patientID, String date, String time) {
         this.doctorID = doctorID;
+        this.patientID = patientID;
         this.date = date;
         this.time = time;
         this.appointmentStatus = AppointmentStatus.PENDING;
@@ -32,11 +34,15 @@ public class Appointment implements Serializable {
         this.consultationNotes = "N/A";
     }
 
-    public int getDoctorID () {
+    public String getDoctorID () {
         return this.doctorID;
     }
 
-    public void setDoctorID (int id) {
+    public String getPatientID () {
+        return this.patientID;
+    }
+
+    public void setDoctorID (String id) {
         this.doctorID = id;
     }
 

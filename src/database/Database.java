@@ -31,7 +31,7 @@ public class Database {
 
     public static HashMap<String, ReplenishRequest> REQUESTS = new HashMap<>();
 
-    public static HashMap<String, Appointment> APPOINTMENT = new HashMap<>();
+    public static HashMap<String, HashMap<String, Appointment>> APPOINTMENT = new HashMap<>();
 
     public static HashMap<String, MedicalRecord> MEDICALRECORD = new HashMap<>();
 
@@ -95,7 +95,7 @@ public class Database {
             }else if (fileType == FileType.REQUESTS) {
                 REQUESTS = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
             } else if (fileType == FileType.APPOINTMENTS) {
-                APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
+                APPOINTMENT = (HashMap<String, HashMap<String, Appointment>>) objectInputStream.readObject();
             } else if (fileType == FileType.APPOINTMENTS) {
                 PRESCRIPTION = (HashMap<String, PrescribeMedication>) objectInputStream.readObject();
             }
@@ -167,7 +167,7 @@ public class Database {
          PRESCRIPTION = new HashMap<String, PrescribeMedication>();
          writeSerializedObject(FileType.APPOINTMENTS);
 
-         APPOINTMENT = new HashMap<String, Appointment>();
+         APPOINTMENT = new HashMap<String, HashMap<String, Appointment>>();
          writeSerializedObject(FileType.APPOINTMENTS);
 
          return true;
@@ -182,7 +182,7 @@ public class Database {
             System.out.println("The database already has patients. Reset database first to initialize patients");
             return false;
         }
-        Manager.initializeDummyPatients();
+        PatientManager.initializeDummyPatients();
         return true;
     }
 
@@ -191,7 +191,7 @@ public class Database {
             System.out.println("The database already has staff. Reset database first to initialize staff");
             return false;
         }
-        Manager.initializeDummyStaff();
+        StaffManager.initializeDummyStaff();
         return true;
     }
 

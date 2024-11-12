@@ -1,14 +1,14 @@
 package src.model;
 
-import src.model.enums.Role;
 import src.model.enums.Gender;
+import src.model.enums.Role;
 
 public class Staff extends User {
     public String name;
     public int age;
     public final Gender gender;
 
-    public Staff(int id, String password, Role role,String name, Gender gender,int age) {
+    public Staff(String id, String password, Role role,String name, Gender gender,int age) {
         super(id, password, role);
         this.name = name;
         this.gender= gender;
