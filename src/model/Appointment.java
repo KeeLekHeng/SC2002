@@ -46,8 +46,6 @@ public class Appointment implements Serializable {
      * set to default values ("N/A").
      * 
      * @param doctorID       Unique identifier of the doctor.
-     * @param date           Date of the appointment.
-     * @param time           Time of the appointment.
      * @param timeSlot       Time slot allocated for the appointment.
      */
     public Appointment(int doctorID, TimeSlot timeSlot) {
