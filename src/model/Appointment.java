@@ -12,6 +12,7 @@ public class Appointment implements Serializable {
     private String date;
     private String time;
     private AppointmentStatus appointmentStatus;
+    private TimeSlot timeSlot;
 
     //Outcome Record
     private String typeOfService;
@@ -24,11 +25,12 @@ public class Appointment implements Serializable {
 
 
 
-    public Appointment (int doctorID, String date, String time) {
+    public Appointment (int doctorID, String date, String time, TimeSlot timeSlot) {
         this.doctorID = doctorID;
         this.date = date;
         this.time = time;
         this.appointmentStatus = AppointmentStatus.PENDING;
+        this.timeSlot = timeSlot;
         this.typeOfService = "N/A";
         this.consultationNotes = "N/A";
     }
