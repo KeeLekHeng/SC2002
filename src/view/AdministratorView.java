@@ -49,6 +49,7 @@ public class AdministratorView extends MainView {
                 case 4:
                     //Approve replenishment requests
                     //approveReplenishmentRequest();
+                    //check with kee
                     PrescriptionManager.getPendingRequests(); //this is a loop
                     PrescriptionManager.printReplenishRequest(null); //this is just one
                     //PrescriptionManager.approveReplenishRequest();
@@ -64,6 +65,8 @@ public class AdministratorView extends MainView {
     }
 ////////////////////////////// View and Manage Staff //////////////////////////////
     public void viewAndManageStaff() {
+        Helper.clearScreen();
+        printBreadCrumbs("Main Menu > View and Manage Hospital Staff");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Staff Details");
         System.out.println("(2) Create Staff");
@@ -79,6 +82,8 @@ public class AdministratorView extends MainView {
                     //print all staff details
                     //can select role and gender, then print all staff of that role and gender
                     //can filter by age
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > View Staff Details");
 
                     break;
                 case 2:
@@ -86,6 +91,8 @@ public class AdministratorView extends MainView {
                     //createStaff(String name, Gender gender, int age, Role role, String password) 
                     Role role = null;
                     Gender gender = null;
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Create Staff");
                     System.out.println("Select New Staff Role: ");
                     System.out.println("(1) Doctor");
                     System.out.println("(2) Administrator");
@@ -118,10 +125,15 @@ public class AdministratorView extends MainView {
                 case 3:
                     //Update Staff Details
                     //enter staff id den will display staff details, can select which attribute to update
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Update Staff Details");
+
                     break;
                 case 4:
                     //Remove Staff
                     //enter staff id to remove
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Remove Staff");
                     break;
                 case 5:
                     //Back
@@ -139,6 +151,7 @@ public class AdministratorView extends MainView {
     //////////////////////View and Manage Medication Inventory/////////////////////
 
     public void viewAndManageMedicationInventory() {
+        Helper.clearScreen();
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Medication Inventory");
         System.out.println("(2) Update Medication Stock");
@@ -150,12 +163,14 @@ public class AdministratorView extends MainView {
                 case 1:
                     //View Medication Inventory
                     //print all medication inventory
+                    Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > View Medication Inventory");
                     PrescriptionManager.viewMedicationInventory();
                     break;
                 case 2:
                     //Update Medication Stock
                     //enter medication name and quantity to update
+                    Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
                     System.out.println("Enter Medication ID: ");
                     String medicationID = Helper.readString();
