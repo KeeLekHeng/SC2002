@@ -27,13 +27,13 @@ public class InventoryManager {
     }
 
     public static void addNewMedication(String name, int stock, int lowStockAlert){
-        int mid = Helper.generateUniqueId(Database.MEDICINES);
+        int mid = Helper.generateUniqueId(Database.MEDICATION);
         String medicineID = String.format("M%05d", mid);
         Medication newMedication = new Medication(name.toLowerCase(), medicineID, stock, lowStockAlert);
 
         //Do we need a unique medID? if need make a new medID generator then update all functions
-        Database.MEDICINES.put(medicineID, newMedication);
-        Database.saveFileIntoDatabase(FileType.MEDICINES);
+        Database.MEDICATION.put(medicineID, newMedication);
+        Database.saveFileIntoDatabase(FileType.MEDICATION);
         System.out.println("New Medication added into database! Medication Details:");
         printMedicationDetails(newMedication);
         
@@ -49,12 +49,12 @@ public class InventoryManager {
 
         printMedicationDetails(removeMedicine);
         if (Helper.promptConfirmation("remove this medicine")) {
-            Database.MEDICINES.remove(medicineID);
+            Database.MEDICATION.remove(medicineID);
         } else {
             return false;
         }
     
-    Database.saveFileIntoDatabase(FileType.MEDICINES);
+    Database.saveFileIntoDatabase(FileType.MEDICATION);
     return true;
 
     }
@@ -66,25 +66,25 @@ public class InventoryManager {
             return false;
         }
         
-        Medication medicationToUpdate;
+        Medication medicationToUpdate = null;
         switch (attributeCode) {
             case 1: 
-                medicationToUpdate = Database.MEDICINES.get(medicineID);
+                medicationToUpdate = Database.MEDICATION.get(medicineID);
                 medicationToUpdate.addStock(newvalue);
                 
                 break;
             case 2: 
-                medicationToUpdate = Database.MEDICINES.get(medicineID);
+                medicationToUpdate = Database.MEDICATION.get(medicineID);
                 medicationToUpdate.removeStock(newvalue);
                 
                 break;
             case 3: 
-                medicationToUpdate = Database.MEDICINES.get(medicineID);
+                medicationToUpdate = Database.MEDICATION.get(medicineID);
                 medicationToUpdate.setStock(newvalue);
                 
                 break;
             case 4:
-                medicationToUpdate = Database.MEDICINES.get(medicineID);
+                medicationToUpdate = Database.MEDICATION.get(medicineID);
                 medicationToUpdate.setLowStockAlert(newvalue);
                 
                 break;
@@ -93,8 +93,8 @@ public class InventoryManager {
         }
 
     //Save to database at the end (Try see if works)
-    Database.MEDICINES.put(medicineID, medicationToUpdate);
-    Database.saveFileIntoDatabase(FileType.MEDICINES);
+    Database.MEDICATION.put(medicineID, medicationToUpdate);
+    Database.saveFileIntoDatabase(FileType.MEDICATION);
     return true; 
     } 
 
@@ -115,14 +115,14 @@ public class InventoryManager {
 
         ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);  
         String medicationName = requestToUpdate.getMedicationName();     
-        Medication medicationToUpdate;
+        Medication medicationToUpdate = null;
         String medicineID = requestToUpdate.getMedicineID();
         int amount;
 
         switch (attributeCode) {
             case 1:     
                 //accept and add stock
-                medicationToUpdate = Database.MEDICINES.get(medicineID);
+                medicationToUpdate = Database.MEDICATION.get(medicineID);
                 amount = requestToUpdate.getMedicationAmount();
                 medicationToUpdate.addStock(amount);
                 requestToUpdate.setRequestStatus(RequestStatus.ACCEPTED);
@@ -138,10 +138,10 @@ public class InventoryManager {
         }
 
         //save to both REQUESTS and MEDICINES to Database
-        Database.PATIENTS.put(medicineID, medicationToUpdate);
-        Database.PATIENTS.put(requestID, requestToUpdate);
+        Database.MEDICATION.put(medicineID, medicationToUpdate);
+        Database.REQUESTS.put(requestID, requestToUpdate);
         Database.saveFileIntoDatabase(FileType.REQUESTS);
-        Database.saveFileIntoDatabase(FileType.MEDICINES);
+        Database.saveFileIntoDatabase(FileType.MEDICATION);
         return true;
         
     }
@@ -149,8 +149,8 @@ public class InventoryManager {
     
 
     public static Medication searchMedicineByID(String medicineID){
-        if (Database.MEDICINES.containsKey(medicineID)) {
-            Medication searchedMedication = Database.MEDICINES.get(medicineID);  
+        if (Database.MEDICATION.containsKey(medicineID)) {
+            Medication searchedMedication = Database.MEDICATION.get(medicineID);  
             return searchedMedication;     
         }
         return null;
@@ -162,7 +162,7 @@ public class InventoryManager {
         //copy
         ArrayList<Medication> medicationList = new ArrayList<Medication>();
         //  copy
-        for (Medication medication : Database.MEDICINES.values()) {
+        for (Medication medication : Database.MEDICATION.values()) {
             medicationList.add(medication);
         }
 

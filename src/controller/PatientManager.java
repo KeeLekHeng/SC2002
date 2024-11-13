@@ -1,20 +1,15 @@
 package src.controller;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Comparator;
-
+import src.database.Database;
+import src.database.FileType;
 import src.helper.Helper;
 import src.model.MedicalRecord;
 import src.model.Patient;
-
-import src.model.enums.Gender;
 import src.model.enums.BloodType;
+import src.model.enums.Gender;
 import src.model.enums.Role;
-
-import src.database.Database;
-import src.database.FileType;
 
 public class PatientManager {
     
@@ -25,8 +20,9 @@ public class PatientManager {
     public static void createPatient(String name, String dob, Gender gender, String phoneNumber, String email, BloodType bloodType) {
         int gid = Helper.generateUniqueId(Database.PATIENTS);
         String patientID = String.format("P%04d", gid);
+        String password = "password";
         Role role = Role.PATIENT;
-        Patient newPatient = new Patient(patientID, role, name, dob, gender, phoneNumber, email, bloodType);
+        Patient newPatient = new Patient(patientID, password, role, name, dob, gender, phoneNumber, email, bloodType);
         
 
         // Saving to database
@@ -141,5 +137,3 @@ public class PatientManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 }
-
-
