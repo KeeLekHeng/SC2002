@@ -1,6 +1,7 @@
 package src;
-import src.helper.*;
-import src.view.*;
+
+import src.helper.Helper;
+import src.view.HospitalAppView;
 
 public class HospitalApp {
     public static void main(String[] args) {
@@ -15,21 +16,34 @@ public class HospitalApp {
 
     private static void printHMSTitle() {
         System.out.println();
-        System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════════════════════╗");
-        System.out.println("║                          __    __    __   ______   ______    __       __                            ║");
-        System.out.println("║                         /  |  /  |  /  | /      \\ /      \\  /  \\     /  |                           ║");
-        System.out.println("║                         ▐▐ |  ▐▐ |  ▐▐ |▐▐  ▐▐▐▐▐▐▐  ▐▐▐▐▐▐  ▐▐  \\   /▐▐ |                           ║");
-        System.out.println("║                         ▐▐ |__▐▐ |  ▐▐▐|▐▐ |  ▐▐ |▐▐ |__▐▐ |▐▐▐▐▐▐\\ /▐▐ |                           ║");
-        System.out.println("║                         ▐▐    ▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐    ▐▐ |▐▐ |▐▐▐ |▐▐ |                           ║");
-        System.out.println("║                         ▐▐▐▐▐▐▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐▐▐▐▐▐▐ |▐▐ | ▐▐ |▐▐ |                           ║");
-        System.out.println("║                         ▐▐ |  ▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐ | ▐▐ |▐▐ |                           ║");
-        System.out.println("║                         ▐▐ |  ▐▐ |  ▐▐ |▐▐ |__▐▐ |▐▐ |__▐▐ |▐▐ | ▐▐ |▐▐ |                           ║");
-        System.out.println("║                         ▐▐/   ▐▐/   ▐▐/  ▐▐▐▐▐▐▐/ ▐▐▐▐▐▐▐/ ▐▐/  ▐▐/ ▐▐/                            ║");
-        System.out.println("║                                                                                                     ║");
-        System.out.println("║                            Welcome to Hospital Management System                                     ║");
-        System.out.println("║                                                                                                     ║");
-        System.out.println("╚═════════════════════════════════════════════════════════════════════════════════════════════════════╝");
+        System.out.println(
+                "╔═════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+        System.out.println(
+                "║                          __    __    __   ______   ______    __       __                            ║");
+        System.out.println(
+                "║                         /  |  /  |  /  | /      \\ /      \\  /  \\     /  |                           ║");
+        System.out.println(
+                "║                         ▐▐ |  ▐▐ |  ▐▐ |▐▐  ▐▐▐▐▐▐▐  ▐▐▐▐▐▐  ▐▐  \\   /▐▐ |                           ║");
+        System.out.println(
+                "║                         ▐▐ |__▐▐ |  ▐▐▐|▐▐ |  ▐▐ |▐▐ |__▐▐ |▐▐▐▐▐▐\\ /▐▐ |                           ║");
+        System.out.println(
+                "║                         ▐▐    ▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐    ▐▐ |▐▐ |▐▐▐ |▐▐ |                           ║");
+        System.out.println(
+                "║                         ▐▐▐▐▐▐▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐▐▐▐▐▐▐ |▐▐ | ▐▐ |▐▐ |                           ║");
+        System.out.println(
+                "║                         ▐▐ |  ▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐ |  ▐▐ |▐▐ | ▐▐ |▐▐ |                           ║");
+        System.out.println(
+                "║                         ▐▐ |  ▐▐ |  ▐▐ |▐▐ |__▐▐ |▐▐ |__▐▐ |▐▐ | ▐▐ |▐▐ |                           ║");
+        System.out.println(
+                "║                         ▐▐/   ▐▐/   ▐▐/  ▐▐▐▐▐▐▐/ ▐▐▐▐▐▐▐/ ▐▐/  ▐▐/ ▐▐/                            ║");
+        System.out.println(
+                "║                                                                                                     ║");
+        System.out.println(
+                "║                            Welcome to Hospital Management System                                     ║");
+        System.out.println(
+                "║                                                                                                     ║");
+        System.out.println(
+                "╚═════════════════════════════════════════════════════════════════════════════════════════════════════╝");
     }
-    
-}
 
+}

@@ -1,14 +1,15 @@
 package src.view;
 
 public abstract class MainView {
-    //abstract method to view menu
+    // abstract method to view menu
     protected abstract void printMenu();
-    //abstract method to view app
+
+    // abstract method to view app
     protected abstract void viewApp(String hospitalID);
-    
-    //constructor for MainView
+
+    // constructor for MainView
     public MainView() {
-        
+
     }
 
     protected void printBreadCrumbs(String breadcrumb) {

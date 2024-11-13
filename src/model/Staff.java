@@ -3,7 +3,6 @@ package src.model;
 import src.model.enums.Gender;
 import src.model.enums.Role;
 
-
 /**
  * Represents a staff member in the system, extending from User.
  * A staff member has additional attributes such as name, age, and gender.
