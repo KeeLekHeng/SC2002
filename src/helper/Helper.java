@@ -223,7 +223,7 @@ public class Helper {
         return date.format(format);
     }
 
-    /**
+    /**                                                                     MAYBE CAN THROW AWAY
      * Method to validate date
      * 
      * @param date   Date in string
@@ -238,7 +238,7 @@ public class Helper {
         return (Date.compareTo(now) >= 0 ? true : false);
     }
 
-    /**
+    /**                                                                    MAYBE CAN THROW AWAY
      * Method to check if the time difference of the input date and current time
      * exceeds 1 hour (Hotel check in / check out checking)
      * 

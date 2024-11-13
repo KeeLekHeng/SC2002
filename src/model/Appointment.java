@@ -1,7 +1,6 @@
 package src.model;
 
 import java.io.Serializable;
-import java.util.List;
 import src.model.enums.AppointmentStatus;
 
 /**
@@ -17,7 +16,13 @@ import src.model.enums.AppointmentStatus;
 public class Appointment implements Serializable {
 
     /** Unique identifier of the doctor associated with the appointment. */
-    private int doctorID;
+    private String doctorID;
+
+    /** Unique identifier of the patient associated with the appointment. */
+    private String patientID;
+
+    /** Unique identifier of the patient associated with the appointment. */
+    private final String appointmentID;
 
 
     /** Status of the appointment, such as pending, confirmed, or completed. */
@@ -26,15 +31,7 @@ public class Appointment implements Serializable {
     /** Time slot allocated for the appointment. */
     private TimeSlot timeSlot;
 
-    // Outcome Record
-    /** Type of service provided during the appointment. */
-    private String typeOfService;
-
-    /** List of medications prescribed during the appointment. Can initially be undefined. */
-    private List<PrescribeMedication> medications;
-
-    /** Notes taken during the consultation. */
-    private String consultationNotes;
+    private AppOutcomeRecord outcomeRecord;
 
     /** Serialization identifier for the Appointment class. */
     private static final long serialVersionUID = 2L;
@@ -47,28 +44,52 @@ public class Appointment implements Serializable {
      * @param doctorID       Unique identifier of the doctor.
      * @param timeSlot       Time slot allocated for the appointment.
      */
-    public Appointment(int doctorID, TimeSlot timeSlot) {
+    public Appointment(String appointmentID, String doctorID, String patientID, TimeSlot timeSlot) {
+        this.appointmentID = appointmentID;
         this.doctorID = doctorID;
+        this.patientID = patientID;
         this.appointmentStatus = AppointmentStatus.PENDING;
         this.timeSlot = timeSlot;
-        this.typeOfService = "N/A";
-        this.consultationNotes = "N/A";
-        this.medications = new ArrayList<>(); // Initialize medications list
+        this.outcomeRecord = null;
+    }
+
+    /**
+     * Gets the doctor's unique identifier.
+     * @return the appointment's ID.
+     */
+    public String getAppointmentID() {
+        return this.appointmentID;
     }
 
     /**
      * Gets the doctor's unique identifier.
      * @return the doctor's ID.
      */
-    public int getDoctorID() {
+    public String getDoctorID() {
         return this.doctorID;
+    }
+
+    /**
+     * Gets the doctor's unique identifier.
+     * @return the patient's ID.
+     */
+    public String getPatientID() {
+        return this.patientID;
+    }
+
+    /**
+     * Sets the doctor's unique identifier.
+     * @param id New patient ID.
+     */
+    public void setPatientID(String id) {
+        this.patientID = id;
     }
 
     /**
      * Sets the doctor's unique identifier.
      * @param id New doctor ID.
      */
-    public void setDoctorID(int id) {
+    public void setDoctorID(String id) {
         this.doctorID = id;
     }
 
@@ -88,59 +109,19 @@ public class Appointment implements Serializable {
         this.appointmentStatus = status;
     }
 
-    /**
-     * Gets the type of service provided during the appointment.
-     * @return the type of service.
-     */
-    public String getTypeOfService() {
-        return this.typeOfService;
+    public TimeSlot getTimeSlot () {
+        return this.timeSlot;
     }
 
-    /**
-     * Sets the type of service for the appointment.
-     * @param typeOfService New type of service.
-     */
-    public void setTypeOfService(String typeOfService) {
-        this.typeOfService = typeOfService;
+    public void setTimeSlot(TimeSlot timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
-    /**
-     * Gets the list of medications prescribed during the appointment.
-     * @return a list of prescribed medications.
-     */
-    public List<PrescribeMedication> getPrescribeMedications() {
-        return this.medications;
+    public AppOutcomeRecord getAppOutcomeRecord () {
+        return this.outcomeRecord;
     }
 
-    /**
-     * Sets the list of medications prescribed during the appointment.
-     * @param medications New list of prescribed medications.
-     */
-    public void setPrescribeMedications(List<PrescribeMedication> medications) {
-        this.medications = medications;
-    }
-
-    /**
-     * Gets the notes taken during the consultation.
-     * @return the consultation notes.
-     */
-    public String getConsultationNotes() {
-        return this.consultationNotes;
-    }
-
-    /**
-     * Sets the consultation notes.
-     * @param consultationNotes New consultation notes.
-     */
-    public void setConsultationNotes(String consultationNotes) {
-        this.consultationNotes = consultationNotes;
-    }
-
-    /**
-     * Adds a medication to the list of prescribed medications.
-     * @param prescribeMedication Medication to add to the list.
-     */
-    public void addMedication(PrescribeMedication prescribeMedication) {
-        this.medications.add(prescribeMedication);
+    public void setAppOutcomeRecord (AppOutcomeRecord outcomeRecord) {
+        this.outcomeRecord = outcomeRecord;
     }
 }

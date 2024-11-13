@@ -1,33 +1,104 @@
 package src.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Represents an outcome record, containing a list of past appointments.
- * 
- * @author JiaWei
- * @version 1.0
- * @since 2024-11-13
- */
+
 public class AppOutcomeRecord implements Serializable {
 
-    /** List of past appointments. */
-    private List<Appointment> pastAppointments;
+    private String typeOfService;
+    private String prescriptionID;
+    private String consultationNotes;
+    private LocalDateTime endDateTime;
+    private List<PrescribeMedication> medications;
 
-    /** Serialization identifier for the AppOutcomeRecord class. */
     private static final long serialVersionUID = 3L;
 
-    /**
-     * Adds an appointment to the list of past appointments.
-     * @param appointment Appointment to add to the list.
-     */
-    public void addAppointment(Appointment appointment) {
-        if (this.pastAppointments == null) {
-            this.pastAppointments = new ArrayList<>(); // Initialize if not already initialized
-        }
-        this.pastAppointments.add(appointment);
+    public AppOutcomeRecord() {
+        this.endDateTime = LocalDateTime.now();
+        this.typeOfService = "N/A";
+        this.consultationNotes = "N/A";
+        this.prescriptionID = "";
+        this.medications = new ArrayList<>(); // Initialize medications list
     }
-}
 
+    /**
+     * Gets the prescriptionID provided during the appointment.
+     * @return prescriptionID.
+     */
+    public String getPrescriptionID() {
+        return prescriptionID;
+    }
+
+    public void setPrescriptionID(String prescriptionID) {
+        this.prescriptionID = prescriptionID;
+    }
+
+    /**
+     * Sets the prescriptionID for the appointment.
+     * @param prescriptionID PrescriptionID.
+     */
+    public String getTypeOfService() {
+        return this.typeOfService;
+    }
+
+
+    /**
+     * Sets the type of service for the appointment.
+     * @param typeOfService New type of service.
+     */
+    public void setTypeOfService(String typeOfService) {
+        this.typeOfService = typeOfService;
+    }
+
+    /**
+     * Gets the type of service provided during the appointment.
+     * @return the type of service.
+     */
+    public LocalDateTime getEndDateTime() {
+        return this.endDateTime;
+    }
+
+        /**
+     * Gets the notes taken during the consultation.
+     * @return the consultation notes.
+     */
+    public String getConsultationNotes() {
+        return this.consultationNotes;
+    }
+
+    /**
+     * Sets the consultation notes.
+     * @param consultationNotes New consultation notes.
+     */
+    public void setConsultationNotes(String consultationNotes) {
+        this.consultationNotes = consultationNotes;
+    }
+
+        /**
+     * Gets the list of medications prescribed during the appointment.
+     * @return a list of prescribed medications.
+     */
+    public List<PrescribeMedication> getPrescribeMedications() {
+        return this.medications;
+    }
+
+    /**
+     * Sets the list of medications prescribed during the appointment.
+     * @param medications New list of prescribed medications.
+     */
+    public void setPrescribeMedications(List<PrescribeMedication> medications) {
+        this.medications = medications;
+    }
+
+    /**
+     * Adds a medication to the list of prescribed medications.
+     * @param prescribeMedication Medication to add to the list.
+     */
+    public void addMedication(PrescribeMedication prescribeMedication) {
+        this.medications.add(prescribeMedication);
+    }
+
+}
