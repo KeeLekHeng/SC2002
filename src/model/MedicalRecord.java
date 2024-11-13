@@ -8,7 +8,7 @@ import src.model.enums.Gender;
 
 public class MedicalRecord implements Serializable {
 
-    public final int doctorID;
+    public final String doctorID;
     public final String patientID;
     public String name;
     public final String dob;
@@ -23,7 +23,7 @@ public class MedicalRecord implements Serializable {
     private static final long serialVersionUID = 4L;
 
 
-    public MedicalRecord(int doctorID, String patientID, String name, String dob, Gender gender, 
+    public MedicalRecord(String doctorID, String patientID, String name, String dob, Gender gender, 
             String phonenumber, String email, BloodType bloodType) {
 
             this.doctorID = doctorID;
@@ -37,7 +37,7 @@ public class MedicalRecord implements Serializable {
             this.history = new ArrayList<>();
             }
 
-    public int getDoctorId () {
+    public String getDoctorId () {
         return this.doctorID;
     }
 
