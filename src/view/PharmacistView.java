@@ -11,6 +11,8 @@ public class PharmacistView extends MainView {
 
     @Override
     public void printMenu() {
+        Helper.clearScreen();
+        printBreadCrumbs("Main Menu");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Appointment Outcome Record ");
         System.out.println("(2) Update Prescription Status ");
@@ -35,7 +37,7 @@ public class PharmacistView extends MainView {
                 case 2:
                     //Update prescription status
                     updatePrescriptionStatus();
-
+                    
 
                     ;
                     break;
@@ -70,6 +72,7 @@ public class PharmacistView extends MainView {
 ///////////Updte Prescription Status/////////////////////
 public void updatePrescriptionStatus() {
     Helper.clearScreen();
+    printBreadCrumbs("Main Menu > Update Prescription Status");
     System.out.print("Enter the prescription ID: ");
                     String prescriptionID = Helper.readString();
                     
@@ -84,18 +87,15 @@ public void updatePrescriptionStatus() {
                         success = prescriptionManager.updatePrescriptionStatus(prescriptionID, 1);
                         if (success) {
                             System.out.println("Prescription dispensed successfully.");
-                        } 
+                        }else{
+                            System.out.println("Error: Prescription could not be updated.");
+                            Helper.pressAnyKeyToContinue();
+                        }
                     } else if (action == 2) {
                         // Skip the prescription
-                        success = prescriptionManager.updatePrescriptionStatus(prescriptionID, 2);
-                        if (success) {
-                            System.out.println("Prescription skipped successfully.");
-                        } else {
-                            System.out.println("Error: Prescription could not be updated.");
-                        }
+                        prescriptionManager.updatePrescriptionStatus(prescriptionID, 2);
                     } else {
-                        System.out.println("Invalid action selected.");
+                        System.out.println("Invalid action.");
                     }
-           
     }
 }
