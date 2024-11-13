@@ -1,20 +1,34 @@
-//used for Pharmacists to Approve Medicaitons to Patients
 package src.model.enums;
 
+/**
+ * Enum representing the status of medication prescription approval by pharmacists.
+ * 
+ * @author JiaWei
+ * @version 1.0
+ * @since 2024-11-13
+ */
 public enum PrescribeStatus {
 
+    /**
+     * The medication prescription is pending approval.
+     */
     PENDING("Pending"),
 
+    /**
+     * The medication has been dispensed.
+     */
     DISPENSED("Dispensed");
 
-
+    /**
+     * The string representation of the prescribed status.
+     */
     public final String prescribedStatusAsStr;
 
-        /**
-     * Constructor for the OrderStatus Enum.
-     * @param prescribedStatusAsStr Order Status as a string
+    /**
+     * Constructor for the PrescribeStatus Enum.
+     * 
+     * @param prescribedStatusAsStr Prescribed status as a string
      */
-
     private PrescribeStatus(String prescribedStatusAsStr) {
         this.prescribedStatusAsStr = prescribedStatusAsStr;
     }

@@ -6,15 +6,34 @@ import src.model.enums.PrescribeStatus;;
 
 public class PrescribeMedication implements Serializable {
     private String name;
+    private final String prescriptionID;
+    private int amount;
     private PrescribeStatus prescribeStatus;
 
-    public PrescribeMedication (String name){
+    private static final long serialVersionUID = 7L;
+
+
+    public PrescribeMedication (String name, int amount, String prescriptionID){
+        this.prescriptionID = prescriptionID;
         this.name = name;
+        this.amount = amount;
         this.prescribeStatus = PrescribeStatus.PENDING;
     }
 
-    public String getName () {
+    public String getMedicationName() {
         return this.name;
+    }
+
+    public String getPrescriptionID() {
+        return this.prescriptionID;
+    }
+
+    public int getPrescriptionAmount(){
+        return this.amount;
+    }
+
+    public void setPrescriptionAmount(int amount){
+        this.amount = amount;
     }
 
     public void setName (String name) {

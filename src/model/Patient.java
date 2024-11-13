@@ -1,22 +1,21 @@
 package src.model;
 
-import src.model.enums.Role;
 import src.model.enums.BloodType;
 import src.model.enums.Gender;
-import java.io.Serializable;
+import src.model.enums.Role;
 
-public class Patient extends User implements Serializable {
+public class Patient extends User {
 
     MedicalRecord medicalRecord;
 
-    public Patient(int patientID, Role role, String name, String dob, Gender gender, String phonenumber, String email, BloodType bloodType) {
-        super(patientID,role);
+    public Patient(String patientID, String password, Role role, String name, String dob, Gender gender,
+            String phonenumber, String email, BloodType bloodType) {
+        super(patientID, password, role);
 
-        //doctorID in medical record set to default 0
-        this.medicalRecord = new MedicalRecord(0, name, dob, gender, phonenumber, email,bloodType); 
+        this.medicalRecord = new MedicalRecord("Default", patientID, name, dob, gender, phonenumber, email, bloodType);
     }
 
-    public MedicalRecord getMedicalRecord () {
+    public MedicalRecord getMedicalRecord() {
         return this.medicalRecord;
     }
 }
