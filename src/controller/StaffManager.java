@@ -1,8 +1,6 @@
 package src.controller;
 
-import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import src.database.Database;
@@ -10,7 +8,6 @@ import src.database.FileType;
 
 // For javadocs
 import src.helper.*;
-import src.view.*;
 import src.model.Staff;
 import src.model.enums.Gender;
 import src.model.enums.Role;
