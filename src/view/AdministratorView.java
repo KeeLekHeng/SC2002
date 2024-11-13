@@ -1,8 +1,13 @@
 package src.view;
+import java.util.ArrayList;
+
+import src.controller.AppointmentManager;
 import src.controller.InventoryManager;
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
+import src.model.Appointment;
+import src.model.Staff;
 import src.model.enums.*;
 import src.helper.*;
 
@@ -14,8 +19,8 @@ public class AdministratorView extends MainView {
     @Override
     public void printMenu() {
         System.out.println("What would you like to do ?");
-        System.out.println("(1) View and Manage Hospital Staff");
-        System.out.println("(2) View Appointments details");
+        System.out.println("(1) View and Manage Hospital Staff"); //done
+        System.out.println("(2) View Appointments details"); 
         System.out.println("(3) View and Manage Medication Inventory ");
         System.out.println("(4) Approve Replenishment Requests ");
         System.out.println("(5) Change Password");
@@ -31,11 +36,12 @@ public class AdministratorView extends MainView {
             switch (opt) {
                 case 1:
                     //View and manage hospital staff
-                    viewAndManageStaff();
+                    viewAndManageStaff(hospitalID);
                     ;
                     break;
                 case 2:
                     //View appointment details
+                    //AppointmentManager.viewScheduledAppointments();
 
 
                     ;
@@ -64,18 +70,19 @@ public class AdministratorView extends MainView {
         } while (opt != 6);
     }
 ////////////////////////////// View and Manage Staff //////////////////////////////
-    public void viewAndManageStaff() {
+    public void viewAndManageStaff(String hospitalID) {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > View and Manage Hospital Staff");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Staff Details");
         System.out.println("(2) Create Staff");
-        System.out.println("(3) Update Staff Details");
+        System.out.println("(3) Update Staff Details"); //update staff parameter is staff instead of hospitalID
         System.out.println("(4) Remove Staff");
-        System.out.println("(5) Back");
+        System.out.println("(5) Initialize Dummy Staff");
+        System.out.println("(6) Back");
         int opt;
         do {
-            opt = Helper.readInt(1, 5);
+            opt = Helper.readInt(1, 6);
             switch (opt) {
                 case 1:
                     //View Staff Details
@@ -84,8 +91,34 @@ public class AdministratorView extends MainView {
                     //can filter by age
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > View Staff Details");
-
-                    break;
+                    System.out.println("What would you like to do ?");
+                    System.out.println("(1) View Staff by ID");
+                    System.out.println("(2) View Staff by Name");
+                    System.out.println("(3) View Staff by Age");
+                    System.out.println("(4) View Staff by Gender");
+                    System.out.println("(5) View Staff by Role");
+                    System.out.println("(6) Back");
+                    int choice = Helper.readInt(1, 5);
+                    switch(choice) {
+                        case 1:
+                            StaffManager.printAllStaff(true);
+                            break;
+                        case 2:
+                            StaffManager.printAllStaff(false);
+                            break;
+                        case 3:
+                            StaffManager.viewStaff(choice-2);
+                            break;
+                        case 4:
+                            StaffManager.viewStaff(choice-2);
+                            break;
+                        case 5:
+                            StaffManager.viewStaff(choice-2);
+                            break;
+                        case 6:
+                            break;
+                        default: System.out.println("Invalid Choice");
+                    }
                 case 2:
                     //Create Staff
                     //createStaff(String name, Gender gender, int age, Role role, String password) 
@@ -120,22 +153,27 @@ public class AdministratorView extends MainView {
                     
                     System.out.println("Enter Staff Age: ");
                     int age = Helper.readInt(1, 100);
-                    StaffManager.createStaff(name, gender, age, role, "password");
+                    StaffManager.createStaff(name, gender, age, role);
                     break;
                 case 3:
                     //Update Staff Details
                     //enter staff id den will display staff details, can select which attribute to update
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Update Staff Details");
-
+                    ArrayList<Staff> staff = StaffManager.searchStaffById(hospitalID);       
+                    StaffManager.printStaffDetails(hospitalID);
                     break;
                 case 4:
                     //Remove Staff
                     //enter staff id to remove
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Remove Staff");
+                    StaffManager.removeStaff(hospitalID);
                     break;
-                case 5:
+                case 5: 
+                    StaffManager.createDummyStaff();
+                    break;
+                case 6:
                     //Back
                     break;
             }
