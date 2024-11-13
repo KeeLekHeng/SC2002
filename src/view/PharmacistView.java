@@ -4,6 +4,7 @@ import src.controller.PrescriptionManager;
 import src.helper.Helper;
 
 public class PharmacistView extends MainView {
+    PrescriptionManager prescriptionManager = new PrescriptionManager();
     public PharmacistView () {
         super();
     }
@@ -28,7 +29,7 @@ public class PharmacistView extends MainView {
             switch (opt) {
                 case 1:
                     //View appointment outcome record
-                    PrescriptionManager.viewAppointmentOutcomeRecord()
+                    //prescriptionManager.viewAppointmentOutcomeRecord()
                     ;
                     break;
                 case 2:
@@ -46,6 +47,7 @@ public class PharmacistView extends MainView {
                     break;
                 case 4:
                     //Submit replenishment request
+                    Helper.clearScreen();
                     System.out.println("Enter the medication name: ");
                     String medicationName = Helper.readString();
                     System.out.println("Enter the quantity: ");
@@ -67,6 +69,7 @@ public class PharmacistView extends MainView {
 
 ///////////Updte Prescription Status/////////////////////
 public void updatePrescriptionStatus() {
+    Helper.clearScreen();
     System.out.print("Enter the prescription ID: ");
                     String prescriptionID = Helper.readString();
                     
@@ -78,13 +81,13 @@ public void updatePrescriptionStatus() {
                     boolean success;
                     if (action == 1) {
                         // Attempt to dispense
-                        success = PrescriptionManager.updatePrescriptionStatus(prescriptionID, 1);
+                        success = prescriptionManager.updatePrescriptionStatus(prescriptionID, 1);
                         if (success) {
                             System.out.println("Prescription dispensed successfully.");
                         } 
                     } else if (action == 2) {
                         // Skip the prescription
-                        success = PrescriptionManager.updatePrescriptionStatus(prescriptionID, 2);
+                        success = prescriptionManager.updatePrescriptionStatus(prescriptionID, 2);
                         if (success) {
                             System.out.println("Prescription skipped successfully.");
                         } else {
@@ -93,6 +96,6 @@ public void updatePrescriptionStatus() {
                     } else {
                         System.out.println("Invalid action selected.");
                     }
-                    break;
+           
     }
 }
