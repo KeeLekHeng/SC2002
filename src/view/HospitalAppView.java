@@ -1,4 +1,5 @@
 package src.view;
+
 import src.helper.*;
 
 public class HospitalAppView extends MainView {
@@ -17,6 +18,7 @@ public class HospitalAppView extends MainView {
         String password = "";
 
         while (!isLoginSuccessful) {
+            Helper.readString(); // used to flush out empty input
             System.out.println("Hospital ID: ");
             hospitalID = Helper.readString();
             System.out.println("Password: ");
@@ -25,9 +27,9 @@ public class HospitalAppView extends MainView {
             // Validate login credentials
             currentUserRole = authenticateRole(hospitalID, password);
             if (currentUserRole.equals("admin") ||
-                currentUserRole.equals("patient") ||
-                currentUserRole.equals("doctor") ||
-                currentUserRole.equals("pharmacist")) {
+                    currentUserRole.equals("patient") ||
+                    currentUserRole.equals("doctor") ||
+                    currentUserRole.equals("pharmacist")) {
                 isLoginSuccessful = true;
             }
 
@@ -82,6 +84,6 @@ public class HospitalAppView extends MainView {
         } else if (hospitalID.equals("pharmacist")) {
             return "pharmacist";
         }
-        return ""; 
+        return "";
     }
 }
