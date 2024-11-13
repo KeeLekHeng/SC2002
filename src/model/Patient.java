@@ -8,17 +8,14 @@ public class Patient extends User {
 
     MedicalRecord medicalRecord;
 
-    public Patient(String patientID, String password, Role role, String name, String dob, Gender gender, String phonenumber, String email, BloodType bloodType) {
-
+    public Patient(String patientID, String password, Role role, String name, String dob, Gender gender,
+            String phonenumber, String email, BloodType bloodType) {
         super(patientID, password, role);
 
-        //doctorID in medical record set to default 0
-        this.medicalRecord = new MedicalRecord(0,patientID, name, dob, gender, phonenumber, email,bloodType); 
+        this.medicalRecord = new MedicalRecord("Default", patientID, name, dob, gender, phonenumber, email, bloodType);
     }
 
-    public MedicalRecord getMedicalRecord () {
+    public MedicalRecord getMedicalRecord() {
         return this.medicalRecord;
     }
-
-    
 }

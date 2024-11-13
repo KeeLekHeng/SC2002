@@ -1,3 +1,4 @@
+
 package src.controller;
 
 import java.awt.HeadlessException;
@@ -42,6 +43,7 @@ public class PrescriptionManager {
         printReplenishRequest(replenishRequest);
     }
 
+<<<<<<< HEAD
     public boolean updatePrescriptionStatus(String prescriptionID, int attributeCode){
         
         if (updateList.size() == 0) {
@@ -109,6 +111,74 @@ public class PrescriptionManager {
         }
     }
 
+=======
+    public boolean updatePrescriptionStatus(String prescriptionID, int attributeCode) {
+     
+        PrescribeMedication prescription = Database.PRESCRIPTION.get(prescriptionID);
+        if (prescription == null) {
+            // Prescription not found
+            return false;
+        }
+        
+        String medicationName = prescription.getMedicationName();
+        int amount;
+   
+        // Find the medication in the database
+        Medication medication = null;
+        for (Medication med : Database.MEDICATION.values()) {
+            if (med.getName().equalsIgnoreCase(medicationName)) {
+                medication = med;
+                break;
+            }
+        }
+        
+        if (medication == null) {
+            // Medication not found
+            return false;
+        }
+   
+        Medication medicationToUpdate = null;
+        switch (attributeCode) {
+            case 1: // Accept prescription
+                medicationToUpdate = Database.MEDICATION.get(medication.getMedicineID());
+                amount = prescription.getPrescriptionAmount();
+   
+                if (amount > medicationToUpdate.getStock()) {
+                    System.out.println("Insufficient stock to prescribe! Current Stock Level: " + medicationToUpdate.getStock());
+                    return false;
+                }
+   
+                medicationToUpdate.removeStock(amount);
+                if (checkStockLevel(medicationToUpdate)) {
+                    System.out.println("Low Stock Level Detected! Send Replenish Request Urgently! Current Stock Level: " + medicationToUpdate.getStock());
+                }
+   
+                prescription.setPrescribeStatus(PrescribeStatus.DISPENSED);
+                break;
+            case 2: // Skip prescription
+                break;
+            default:
+                return false;
+        }
+   
+        // Save changes to the database
+        Database.PRESCRIPTION.put(prescriptionID, prescription);
+        Database.MEDICATION.put(medication.getMedicineID(), medicationToUpdate);
+        Database.saveFileIntoDatabase(FileType.PRESCRIPTIONS);
+        Database.saveFileIntoDatabase(FileType.MEDICATION);
+        return true;
+    }
+   
+
+    public static boolean checkStockLevel(Medication medication){
+        if (medication.getStock() <= medication.getLowStockAlert()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+>>>>>>> 2723f30fc1e9f4f1dcaded2b0394c2efea61312a
     public static ArrayList<PrescribeMedication> getPendingRequests(){
         ArrayList<PrescribeMedication> prescribeRequestList = new ArrayList<PrescribeMedication>();
 

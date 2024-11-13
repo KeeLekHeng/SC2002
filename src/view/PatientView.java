@@ -1,5 +1,7 @@
 package src.view;
-
+import src.model.Patient;
+import src.controller.LoginManager;
+import src.controller.PatientManager;
 import src.helper.Helper;
 
 public class PatientView extends MainView {
@@ -23,7 +25,7 @@ public class PatientView extends MainView {
     }
 
     @Override
-    public void viewApp() {
+    public void viewApp(String hospitalID) {
         int opt;
         do {
             printMenu();
@@ -31,10 +33,19 @@ public class PatientView extends MainView {
             switch (opt) {
                 case 1:
                     //View medical record
+                    Patient patient = PatientManager.searchPatientByID(hospitalID);
+                    PatientManager.printPatientDetails(patient);
                     ;
                     break;
                 case 2:
                     //Update personal information
+                    //    public static boolean updatePatientDetails(String patientID, int attributeCode, String newvalue) {
+                    System.out.println("What would you like to update ?");
+                    System.out.println("(1) Phone Number");
+                    System.out.println("(2) Email");
+                    int choice = Helper.readInt(1, 2);
+                    String newvalue = chooseUpdateAttribute(choice);
+                    PatientManager.updatePatientDetails(hospitalID, choice, newvalue);
                     ;
                     break;
                 case 3:
@@ -58,6 +69,7 @@ public class PatientView extends MainView {
                     break;
                 case 9:
                     //Change password
+                    LoginManager.createNewPassword(hospitalID);
                     break;
                 case 10:
                     //Logout
@@ -67,4 +79,18 @@ public class PatientView extends MainView {
             }
         } while (opt != 10);
     }
+    public String chooseUpdateAttribute(int attributeCode) {
+        switch(attributeCode){
+            case 1:
+                System.out.println("Enter new phone number: ");
+                return Helper.readString();
+            case 2:
+                System.out.println("Enter new email: ");
+                return Helper.readString();
+            default:
+                return "Invalid Choice";
+        }
+
+    }
 }
+

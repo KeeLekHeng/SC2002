@@ -1,103 +1,146 @@
-//before appointment is completed, the "Outcome Record" values are just left default
-
 package src.model;
+
 import java.io.Serializable;
 import java.util.List;
 import src.model.enums.AppointmentStatus;
 
-
+/**
+ * Represents an appointment with a doctor, containing details about the appointment date, time, 
+ * status, and outcome record.
+ *
+ * The "Outcome Record" values remain at default values until the appointment is completed.
+ * 
+ * @author JiaWei
+ * @version 1.0
+ * @since 2024-11-13
+ */
 public class Appointment implements Serializable {
-    private String doctorID;
-    private String patientID;
-    private String date;
-    private String time;
+
+    /** Unique identifier of the doctor associated with the appointment. */
+    private int doctorID;
+
+
+    /** Status of the appointment, such as pending, confirmed, or completed. */
     private AppointmentStatus appointmentStatus;
 
-    //Outcome Record
+    /** Time slot allocated for the appointment. */
+    private TimeSlot timeSlot;
+
+    // Outcome Record
+    /** Type of service provided during the appointment. */
     private String typeOfService;
-    private List<PrescribeMedication> medications;   //can leave undefined first?
+
+    /** List of medications prescribed during the appointment. Can initially be undefined. */
+    private List<PrescribeMedication> medications;
+
+    /** Notes taken during the consultation. */
     private String consultationNotes;
 
-
-
+    /** Serialization identifier for the Appointment class. */
     private static final long serialVersionUID = 2L;
 
-
-
-    public Appointment (String doctorID, String patientID, String date, String time) {
+    /**
+     * Constructs a new Appointment with the specified doctor ID, date, time, and time slot.
+     * The initial status of the appointment is set to PENDING, and the outcome record is
+     * set to default values ("N/A").
+     * 
+     * @param doctorID       Unique identifier of the doctor.
+     * @param timeSlot       Time slot allocated for the appointment.
+     */
+    public Appointment(int doctorID, TimeSlot timeSlot) {
         this.doctorID = doctorID;
-        this.patientID = patientID;
-        this.date = date;
-        this.time = time;
         this.appointmentStatus = AppointmentStatus.PENDING;
+        this.timeSlot = timeSlot;
         this.typeOfService = "N/A";
         this.consultationNotes = "N/A";
+        this.medications = new ArrayList<>(); // Initialize medications list
     }
 
-    public String getDoctorID () {
+    /**
+     * Gets the doctor's unique identifier.
+     * @return the doctor's ID.
+     */
+    public int getDoctorID() {
         return this.doctorID;
     }
 
-    public String getPatientID () {
-        return this.patientID;
-    }
-
-    public void setDoctorID (String id) {
+    /**
+     * Sets the doctor's unique identifier.
+     * @param id New doctor ID.
+     */
+    public void setDoctorID(int id) {
         this.doctorID = id;
     }
 
-    public String getDate () {
-        return this.date;
-    }
-
-    public void setDate (String time) {
-        this.time = time;
-    }
-
-    public String getTime () {
-        return this.time;
-    }
-
-    public void setTime (String time) {
-        this.time = time;
-    }
-
-    public AppointmentStatus getAppointmentStatus () {
+    /**
+     * Gets the status of the appointment.
+     * @return the current appointment status.
+     */
+    public AppointmentStatus getAppointmentStatus() {
         return this.appointmentStatus;
     }
 
-    public void setAppointmentStatus (AppointmentStatus status) {
+    /**
+     * Sets the status of the appointment.
+     * @param status New status for the appointment.
+     */
+    public void setAppointmentStatus(AppointmentStatus status) {
         this.appointmentStatus = status;
     }
 
-    public String getTypeOfService () {
+    /**
+     * Gets the type of service provided during the appointment.
+     * @return the type of service.
+     */
+    public String getTypeOfService() {
         return this.typeOfService;
     }
 
-    public void setTypeOfService (String typeOfService) {
+    /**
+     * Sets the type of service for the appointment.
+     * @param typeOfService New type of service.
+     */
+    public void setTypeOfService(String typeOfService) {
         this.typeOfService = typeOfService;
     }
 
-    public List<PrescribeMedication> getPrescribeMedications () {
+    /**
+     * Gets the list of medications prescribed during the appointment.
+     * @return a list of prescribed medications.
+     */
+    public List<PrescribeMedication> getPrescribeMedications() {
         return this.medications;
     }
 
-    public void setPrescribeMedications (List<PrescribeMedication> medications) {
+    /**
+     * Sets the list of medications prescribed during the appointment.
+     * @param medications New list of prescribed medications.
+     */
+    public void setPrescribeMedications(List<PrescribeMedication> medications) {
         this.medications = medications;
     }
 
-    public String getConsultationNotes () {
+    /**
+     * Gets the notes taken during the consultation.
+     * @return the consultation notes.
+     */
+    public String getConsultationNotes() {
         return this.consultationNotes;
     }
 
-    public void setConsultationNotes (String consultationNotes) {
+    /**
+     * Sets the consultation notes.
+     * @param consultationNotes New consultation notes.
+     */
+    public void setConsultationNotes(String consultationNotes) {
         this.consultationNotes = consultationNotes;
     }
 
-
-
-    //add medication to list
+    /**
+     * Adds a medication to the list of prescribed medications.
+     * @param prescribeMedication Medication to add to the list.
+     */
     public void addMedication(PrescribeMedication prescribeMedication) {
-        this.medications.add(prescribeMedication);   
+        this.medications.add(prescribeMedication);
     }
 }
