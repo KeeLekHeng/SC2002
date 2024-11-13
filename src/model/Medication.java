@@ -14,6 +14,9 @@ public class Medication implements Serializable {
     public int lowStockAlert;
     public RequestStatus replenishRequestStatus;
 
+    private static final long serialVersionUID = 6L;
+
+
     public Medication (String name, int stock, int lowStockAlert) {
         this.name = name;
         this.stock = stock;
