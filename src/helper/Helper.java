@@ -153,14 +153,11 @@ public class Helper {
      * @param database Hashmap object to reference
      * @return A unique id for the database
      */
-    public static <K, V> String generateUniqueId(HashMap<K, V> database) {
+    public static <K, V> int generateUniqueId(HashMap<K, V> database) {
         if (database.size() == 0) {
-            return "001";
+            return 1;
         }
         String currentMax = "";
-
-        // Find the maximum ID among all keys (assuming keys are String IDs with a
-        // prefix)
         for (K key : database.keySet()) {
             if (key instanceof String) {
                 String currentKey = (String) key;
@@ -169,16 +166,8 @@ public class Helper {
                 }
             }
         }
-        // Extract numeric part after the prefix (e.g., "001" from "D001")
-        String prefix = currentMax.substring(0, 1); // Assuming 1-letter prefix
-        String maxId = currentMax.substring(1); // Extract the number part
-
-        // Increment the numeric part
-        int nextIdNum = Integer.parseInt(maxId) + 1;
-        String nextIdStr = String.format("%03d", nextIdNum); // Formats to 3 digits (e.g., 002, 012)
-
-        // Return the new unique ID with the same prefix
-        return prefix + nextIdStr;
+        String maxId = currentMax.substring(1);
+        return Integer.parseInt(maxId) + 1;
     }
 
     /**
