@@ -59,11 +59,23 @@ public class StaffManager {
         printStaffDetails(newStaff);
     }
 
-    public static void updateStaff(String staffId, int attributeCode) {
+    public static boolean updateStaff(String staffId, int attributeCode) {
         ArrayList<Staff> updateList = searchStaffById(staffId);
         if (updateList.size() == 0) {
             // guest not found
             return false;
+        }
+
+        for (Staff staff : updateList) {
+            Staff staffToUpdate = Database.STAFF.get(staffId);
+            switch (attributeCode) {
+                case 2:
+                    staffToUpdate.setName(staffId);
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
@@ -79,8 +91,12 @@ public class StaffManager {
     public static ArrayList<Staff> searchStaffByKeyWord(String keyword) {
         ArrayList<Staff> searchList = new ArrayList<Staff>();
         for (Staff staff : Database.STAFF.values()) {
-            String currentStaffName = staff.get
+            String currentStaffName = staff.getName().toLowerCase();
+            if (currentStaffName.contains(keyword.toLowerCase())) {
+                searchList.add(staff);
+            }
         }
+        return searchList;
     }
 
     public static void printStaffDetails(Staff staff) {
