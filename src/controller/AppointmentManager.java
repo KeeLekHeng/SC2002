@@ -19,6 +19,7 @@ import src.model.AppointmentSlot;
 import src.model.PrescribeMedication;
 import src.model.TimeSlot;
 import src.model.enums.AppointmentStatus;
+import src.model.enums.PrescribeStatus;
 
 public class AppointmentManager {
     
@@ -320,25 +321,34 @@ public class AppointmentManager {
 
         Appointment appointment = Database.APPOINTMENT.get(appointmentID);
 
-        //Making prescription ID
-        int pid = Helper.generateUniqueId(Database.APPOINTMENT);
-        String prescriptionID = String.format("P%05d", pid);
-
         AppOutcomeRecord outcomeRecord = new AppOutcomeRecord();
         outcomeRecord.setConsultationNotes(consultationNotes);
         outcomeRecord.setTypeOfService(typeOfService);
-        outcomeRecord.setPrescriptionID(prescriptionID);
-        outcomeRecord.setPrescribeMedications(medications);
+
+        if (!medications.isEmpty()){
+
+            //Making prescription ID
+            int pid = Helper.generateUniqueId(Database.APPOINTMENT);
+            String prescriptionID = String.format("P%05d", pid);
+
+            outcomeRecord.setPrescriptionID(prescriptionID);
+            outcomeRecord.setPrescribeMedications(medications);
+            Database.PRESCRIPTION.put(prescriptionID, medications);
+            Database.saveFileIntoDatabase(FileType.PRESCRIPTIONS);
+        } else {
+            outcomeRecord.setPrescribeMedications(null);
+            outcomeRecord.setPrescribeStatus(PrescribeStatus.NA);
+        }
+        
+
         appointment.setAppOutcomeRecord(outcomeRecord);
         appointment.setAppointmentStatus(AppointmentStatus.COMPLETED);
 
         System.out.println("Appointment Outcome Record Set!");                        //See want print with Appointment Details or not
         printAppointmentOutcomeRecord(appointment);
-
         Database.APPOINTMENT.put(appointmentID, appointment);
-        Database.PRESCRIPTION.put(prescriptionID, medications);
         Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
-        Database.saveFileIntoDatabase(FileType.PRESCRIPTIONS);
+        
         return true;
     }
 
@@ -354,7 +364,7 @@ public class AppointmentManager {
         // If appointment has an outcome record, call the printAppointmentOutcomeRecord method
         if (appointment.getAppOutcomeRecord() != null) {
             System.out.println(String.format("%-20s: %s", "Outcome Record", "Present"));
-            printAppointmentOutcomeRecord(appointment);  // Directly passing appointment as parameter
+            printAppointmentOutcomeRecord(appointment);  
         } else {
             System.out.println(String.format("%-20s: %s", "Outcome Record", "None"));
         }
@@ -370,21 +380,21 @@ public class AppointmentManager {
         }
     
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
-        System.out.println(String.format("%-20s: %s", "Prescription ID", outcomeRecord.getPrescriptionID()));
         System.out.println(String.format("%-20s: %s", "Record Uploaded Time", outcomeRecord.getEndDateTime()));
         System.out.println(String.format("%-20s: %s", "Type of Service", outcomeRecord.getTypeOfService()));
         System.out.println(String.format("%-20s: %s", "Consultation Notes", outcomeRecord.getConsultationNotes()));
     
         // Print Prescribed Medications
-        System.out.println(String.format("%-20s:", "Prescribed Medications"));
         List<PrescribeMedication> medications = outcomeRecord.getPrescribeMedications();
         if (medications.isEmpty()) {
             System.out.println("  No medications prescribed.");
         } else {
+            System.out.println(String.format("%-20s: %s", "Prescription ID", outcomeRecord.getPrescriptionID()));
+            System.out.println(String.format("%-20s: %s", "Prescription Status", outcomeRecord.getPrescribeStatus()));
+            System.out.println(String.format("%-20s:", "Prescribed Medications:"));
             for (PrescribeMedication med : medications) {
                 System.out.println(String.format("  %-20s: %s", "Medication Name", med.getMedicationName()));
                 System.out.println(String.format("  %-20s: %d", "Amount", med.getPrescriptionAmount()));
-                System.out.println(String.format("  %-20s: %s", "Status", med.getPrescribeStatus()));
                 System.out.println(String.format("%-40s", "").replace(" ", "-"));
             }
         }
