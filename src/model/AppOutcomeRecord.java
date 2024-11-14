@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import src.model.enums.PrescribeStatus;
 
 
 public class AppOutcomeRecord implements Serializable {
@@ -11,8 +12,9 @@ public class AppOutcomeRecord implements Serializable {
     private String typeOfService;
     private String prescriptionID;
     private String consultationNotes;
-    private LocalDateTime endDateTime;
+    private final LocalDateTime endDateTime;
     private List<PrescribeMedication> medications;
+    private PrescribeStatus prescribeStatus; 
 
     private static final long serialVersionUID = 3L;
 
@@ -21,7 +23,8 @@ public class AppOutcomeRecord implements Serializable {
         this.typeOfService = "N/A";
         this.consultationNotes = "N/A";
         this.prescriptionID = "";
-        this.medications = new ArrayList<>(); // Initialize medications list
+        this.medications = new ArrayList<>(); 
+        this.prescribeStatus = PrescribeStatus.PENDING;
     }
 
     /**
@@ -32,13 +35,33 @@ public class AppOutcomeRecord implements Serializable {
         return prescriptionID;
     }
 
+    /**
+     * Sets the prescriptionID for the appointment.
+     * @param prescriptionID PrescriptionID.
+     */
     public void setPrescriptionID(String prescriptionID) {
         this.prescriptionID = prescriptionID;
     }
 
     /**
-     * Sets the prescriptionID for the appointment.
-     * @param prescriptionID PrescriptionID.
+     * Gets the prescribe status for the prescription.
+     * @return prescribeStatus Status of prescription.
+     */
+    public PrescribeStatus getPrescribeStatus() {
+        return this.prescribeStatus;
+    }
+
+    /**
+     * Sets the prescribe status for the prescription.
+     * @return prescribeStatus Status of prescription.
+     */
+    public void setPrescribeStatus(PrescribeStatus prescribeStatus) {
+        this.prescribeStatus = prescribeStatus;
+    }
+
+    /**
+     * Gets the type of service provided for the appointment.
+     * @return typeOfService New type of service.
      */
     public String getTypeOfService() {
         return this.typeOfService;

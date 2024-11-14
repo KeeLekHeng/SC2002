@@ -2,6 +2,7 @@ package src.controller;
 
 import java.awt.HeadlessException;
 import java.util.ArrayList;
+import java.util.List;
 import src.controller.InventoryManager;
 import src.controller.AppointmentManager;
 
@@ -16,6 +17,8 @@ import src.model.enums.RequestStatus;
 
 import src.database.Database;
 import src.database.FileType;
+import src.model.AppOutcomeRecord;
+import src.model.Appointment;
 import src.model.enums.PrescribeStatus;
 
 public class PrescriptionManager {
@@ -113,20 +116,24 @@ public class PrescriptionManager {
         }
     }
 
-    public static ArrayList<PrescribeMedication> getPendingRequests(){
-        ArrayList<PrescribeMedication> prescribeRequestList = new ArrayList<PrescribeMedication>();
+    public static ArrayList<List<PrescribeMedication>> getPendingRequests(){
+        ArrayList<List<PrescribeMedication>> prescribeRequestList = new ArrayList<>();
 
         //copy
-        for (PrescribeMedication prescribeMedication : Database.PRESCRIPTION.values()){
-            if (prescribeMedication.getPrescribeStatus() == PrescribeStatus.PENDING){
-                prescribeRequestList.add(prescribeMedication);
+        for (Appointment appointment : Database.APPOINTMENT.values()){
+            if(appointment.getAppOutcomeRecord() != null){
+                AppOutcomeRecord outcomeRecord = appointment.getAppOutcomeRecord();
+                if(outcomeRecord.getPrescribeStatus() == PrescribeStatus.PENDING){
+                    prescribeRequestList.add(outcomeRecord.getPrescribeMedications());
+                }
             }
         }
+
         return prescribeRequestList;
     }
 
-    public static PrescribeMedication searchPrescriptionById(String prescriptionID) {
-        PrescribeMedication prescription = null;
+    public static List<PrescribeMedication> searchPrescriptionById(String prescriptionID) {
+        List<PrescribeMedication> prescription = null;
         if (Database.PRESCRIPTION.containsKey(prescriptionID)) {
             prescription = Database.PRESCRIPTION.get(prescriptionID);
         }
@@ -138,13 +145,17 @@ public class PrescriptionManager {
         InventoryManager.printAllMedication();
     }
 
-    //send an alert when logged in and stock levels are low? or when prescribe and stock levels hit below
-    public static void printPrescriptionRequest(PrescribeMedication prescribeMedication){
+  
+    public static void printPrescriptionRequest(AppOutcomeRecord outcomeRecord){
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
-        System.out.println(String.format("%-20s: %s", "PrescriptionID", prescribeMedication.getPrescriptionID()));
-        System.out.println(String.format("%-20s: %s", "Medication Name", prescribeMedication.getMedicationName()));
-        System.out.println(String.format("%-20s: %s", "Current Status", prescribeMedication.getPrescribeStatus()));
-        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        System.out.println(String.format("%-20s: %s", "PrescriptionID", outcomeRecord.getPrescriptionID()));
+        System.out.println(String.format("%-20s: %s", "Prescription Status", outcomeRecord.getPrescribeStatus()));
+       
+        for (PrescribeMedication prescribeMedication : outcomeRecord.getPrescribeMedications()) {
+            System.out.println(String.format("%-20s: %s", "Medication Name", prescribeMedication.getMedicationName()));
+            System.out.println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
+            System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        }
     }
     
     public static void printReplenishRequest(ReplenishRequest replenishRequest){
