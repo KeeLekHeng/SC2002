@@ -1,24 +1,17 @@
 package src.controller;
 
-import java.awt.HeadlessException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import src.controller.InventoryManager;
-import src.controller.AppointmentManager;
-
+import java.util.Map;
 import src.database.Database;
 import src.database.FileType;
 import src.helper.Helper;
-
-import src.model.ReplenishRequest;
-import src.model.Medication;
-import src.model.PrescribeMedication;
-import src.model.enums.RequestStatus;
-
-import src.database.Database;
-import src.database.FileType;
 import src.model.AppOutcomeRecord;
 import src.model.Appointment;
+import src.model.Medication;
+import src.model.PrescribeMedication;
+import src.model.ReplenishRequest;
 import src.model.enums.PrescribeStatus;
 
 public class PrescriptionManager {
@@ -56,68 +49,101 @@ public class PrescriptionManager {
         }
 
         List<PrescribeMedication> prescriptionList = Database.PRESCRIPTION.get(prescriptionID);
-        
+        boolean errorOccurred = false;  
+
+        // Map to store original medication states for rollback if necessary
+        Map<String, Medication> originalMedicationsState = new HashMap<>();
+        AppOutcomeRecord appOutcomeRecord = null;
+        Appointment currentAppointment = null;
+
+        // Iterate through all AppOutcomeRecords to find the one matching the prescriptionID -> To update prescription status with appointmentID and appoutcomerecords
+        for (Appointment appointment : Database.APPOINTMENT.values()) {
+            if (appointment.getAppOutcomeRecord() != null){
+                AppOutcomeRecord outcomeRecord = appointment.getAppOutcomeRecord();
+                if (outcomeRecord.getPrescriptionID().equals(prescriptionID)) {
+                    currentAppointment = appointment;
+                    appOutcomeRecord = outcomeRecord;
+                    break;
+                }
+            }
+        }
+    
         for (PrescribeMedication prescribeMedication : prescriptionList) {
             String medicationName = prescribeMedication.getMedicationName();
             int amount = prescribeMedication.getPrescriptionAmount();
     
-            // Find the corresponding medication in the database
             Medication medication = null;
             for (Medication med : Database.MEDICATION.values()) {
                 if (med.getName().equalsIgnoreCase(medicationName)) {
                     medication = med;
                     break;
-                } else {
-                    //one med cant find then ELSE return false;
-                    System.out.println("Unable to find medication with the name:" + medicationName);
-                    return false;
-                }          
+                }
             }
     
+            // If the medication is not found, return false and neglect all previous updates
+            if (medication == null) {
+                System.out.println("Unable to find medication with the name: " + medicationName);
+                errorOccurred = true;
+                break;  
+            }
     
-            // Check if stock is sufficient before proceeding to the switch
+            // Save the original state of the medication to restore later if needed
+            originalMedicationsState.put(medication.getMedicineID(), new Medication(medication.getName(), medication.getMedicineID(), medication.getStock(), medication.getLowStockAlert())); 
+    
             Medication medicationToUpdate = Database.MEDICATION.get(medication.getMedicineID());
+
+            // Check if stock is sufficient before proceeding to the switch
             if (medicationToUpdate.getStock() < amount) {
                 System.out.println("Insufficient stock to prescribe! Current Stock Level: " + medicationToUpdate.getStock());
-                return false;  
+                errorOccurred = true; 
+                break;  
             }
     
             // Switch based on the attribute code (1 for accept, 2 for skip)
             switch (attributeCode) {
                 case 1:  
-                    // Remove the stock from the inventory
                     medicationToUpdate.removeStock(amount);
     
                     // Check if stock is low and send replenish request
                     if (checkStockLevel(medicationToUpdate)) {
                         System.out.println("Low Stock Level Detected for " + medicationToUpdate.getName() + "! Send Replenish Request Urgently! Current Stock Level: " + medicationToUpdate.getStock());
                     }
-    
-                    // Update the prescription status to DISPENSED
-                    prescribeMedication.setPrescribeStatus(PrescribeStatus.DISPENSED);
                     break;
-    
                 case 2:  
                     break;
     
                 default:
                     break;
             }
+    
+            Database.MEDICATION.put(medication.getMedicineID(), medicationToUpdate);
         }
     
-        // Save the updated data back into the database
-        Database.PRESCRIPTION.put(prescriptionID, prescriptionList);
-        Database.saveFileIntoDatabase(FileType.PRESCRIPTIONS);
-        return true;
+        // If there was an error, rollback changes made so far
+        if (errorOccurred) {
+            System.out.println("Error occurred during prescription update. Rolling back changes...");
+            for (Map.Entry<String, Medication> entry : originalMedicationsState.entrySet()) {
+                String medicationID = entry.getKey();
+                Medication originalMedication = entry.getValue();
+                Database.MEDICATION.put(medicationID, originalMedication);  
+            }
+             return false;  
+        }
+    
+        // Save the updated prescriptions back into the database
+        // Update the prescription status to DISPENSED
+        appOutcomeRecord.setPrescribeStatus(PrescribeStatus.DISPENSED);
+        currentAppointment.setAppOutcomeRecord(appOutcomeRecord);
+
+        Database.APPOINTMENT.put(currentAppointment.getAppointmentID(), currentAppointment);
+        Database.saveFileIntoDatabase(FileType.MEDICATION);
+        Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
+        return true;  
     }
 
 
     public static boolean checkStockLevel(Medication medication){
-        if (medication.getStock() <= medication.getLowStockAlert()){
-            return true;
-        } else {
-            return false;
-        }
+        return medication.getStock() <= medication.getLowStockAlert();
     }
 
     public static ArrayList<List<PrescribeMedication>> getPendingRequests(){
