@@ -1,6 +1,4 @@
 package src.view;
-import java.util.ArrayList;
-
 import src.controller.AppointmentManager;
 import src.controller.InventoryManager;
 import src.controller.LoginManager;
@@ -160,7 +158,6 @@ public class AdministratorView extends MainView {
                     //enter staff id den will display staff details, can select which attribute to update
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Update Staff Details");
-                    ArrayList<Staff> staff = StaffManager.searchStaffById(hospitalID);       
                     StaffManager.printStaffDetails(hospitalID);
                     break;
                 case 4:
