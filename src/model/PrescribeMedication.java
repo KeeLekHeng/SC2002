@@ -6,7 +6,7 @@ import src.model.enums.PrescribeStatus;;
 
 public class PrescribeMedication implements Serializable {
     private String name;
-    private final String prescriptionID;
+    //private final String prescriptionID;
     private int amount;
     private PrescribeStatus prescribeStatus;
 
@@ -14,7 +14,7 @@ public class PrescribeMedication implements Serializable {
 
 
     public PrescribeMedication (String name, int amount, String prescriptionID){
-        this.prescriptionID = prescriptionID;
+        //this.prescriptionID = prescriptionID;
         this.name = name;
         this.amount = amount;
         this.prescribeStatus = PrescribeStatus.PENDING;
@@ -24,9 +24,10 @@ public class PrescribeMedication implements Serializable {
         return this.name;
     }
 
-    public String getPrescriptionID() {
+    /*public String getPrescriptionID() {
         return this.prescriptionID;
     }
+        */
 
     public int getPrescriptionAmount(){
         return this.amount;

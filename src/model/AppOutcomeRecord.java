@@ -1,27 +1,44 @@
 package src.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class AppOutcomeRecord implements Serializable {
 
     private String typeOfService;
+    private String prescriptionID;
     private String consultationNotes;
+    private LocalDateTime endDateTime;
     private List<PrescribeMedication> medications;
 
     private static final long serialVersionUID = 3L;
 
     public AppOutcomeRecord() {
+        this.endDateTime = LocalDateTime.now();
         this.typeOfService = "N/A";
         this.consultationNotes = "N/A";
+        this.prescriptionID = "";
         this.medications = new ArrayList<>(); // Initialize medications list
     }
 
     /**
-     * Gets the type of service provided during the appointment.
-     * @return the type of service.
+     * Gets the prescriptionID provided during the appointment.
+     * @return prescriptionID.
+     */
+    public String getPrescriptionID() {
+        return prescriptionID;
+    }
+
+    public void setPrescriptionID(String prescriptionID) {
+        this.prescriptionID = prescriptionID;
+    }
+
+    /**
+     * Sets the prescriptionID for the appointment.
+     * @param prescriptionID PrescriptionID.
      */
     public String getTypeOfService() {
         return this.typeOfService;
@@ -35,7 +52,15 @@ public class AppOutcomeRecord implements Serializable {
         this.typeOfService = typeOfService;
     }
 
-        /**
+    /**
+     * Gets the type of service provided during the appointment.
+     * @return the type of service.
+     */
+    public LocalDateTime getEndDateTime() {
+        return this.endDateTime;
+    }
+
+     /**
      * Gets the notes taken during the consultation.
      * @return the consultation notes.
      */
@@ -74,6 +99,4 @@ public class AppOutcomeRecord implements Serializable {
     public void addMedication(PrescribeMedication prescribeMedication) {
         this.medications.add(prescribeMedication);
     }
-
 }
-
