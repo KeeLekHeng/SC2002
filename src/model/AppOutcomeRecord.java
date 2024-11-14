@@ -44,7 +44,6 @@ public class AppOutcomeRecord implements Serializable {
         return this.typeOfService;
     }
 
-
     /**
      * Sets the type of service for the appointment.
      * @param typeOfService New type of service.
@@ -61,7 +60,7 @@ public class AppOutcomeRecord implements Serializable {
         return this.endDateTime;
     }
 
-        /**
+     /**
      * Gets the notes taken during the consultation.
      * @return the consultation notes.
      */
@@ -100,5 +99,4 @@ public class AppOutcomeRecord implements Serializable {
     public void addMedication(PrescribeMedication prescribeMedication) {
         this.medications.add(prescribeMedication);
     }
-
 }
