@@ -47,6 +47,7 @@ public class PrescriptionManager {
         printReplenishRequest(replenishRequest);
     }
 
+    //Must fulfill all medicine in a prescription or else not allowed
     public boolean updatePrescriptionStatus(String prescriptionID, int attributeCode){
         
         if (searchPrescriptionById(prescriptionID) == null) {
@@ -54,56 +55,59 @@ public class PrescriptionManager {
             return false;
         }
 
-        PrescribeMedication prescription = Database.PRESCRIPTION.get(prescriptionID);
-        String medicationName = prescription.getMedicationName();
-        int amount;
-
-        //find the medication in prescription
-        Medication medication = null;
-        for (Medication med : Database.MEDICATION.values()) {
-        if (med.getName().toLowerCase().equals(medicationName.toLowerCase())) {
-        medication = med;
-        break;
-    } else {
-        return false;
-    }
-
-    }
-        Medication medicationToUpdate = null;
-        switch(attributeCode){
-            //1 is accept, 2 is skip
-            //if stock too low then trigger alert
-            //if not enough stock, then dont approve prescription
-            case 1:
-                medicationToUpdate = Database.MEDICATION.get(medication.getMedicineID());
-                amount = prescription.getPrescriptionAmount();
-
-                if(amount > medicationToUpdate.getStock()){
-                    int stockLevel = medicationToUpdate.getStock(); 
-                    System.out.println("Insufficient stock to prescribe! Current Stock Level: " + stockLevel);
-                    return false;
-                }
-                
-
-                medicationToUpdate.removeStock(amount);
-                if (checkStockLevel(medicationToUpdate)){
-                    int stockLevel = medicationToUpdate.getStock(); 
-                    System.out.println("Low Stock Level Detected! Send Replenish Request Urgently! Current Stock Level: " + stockLevel);
-                }
-
-                prescription.setPrescribeStatus(PrescribeStatus.DISPENSED);
-                break;
-            case 2:
-                break;
-            default:
-                break;
-        }
+        List<PrescribeMedication> prescriptionList = Database.PRESCRIPTION.get(prescriptionID);
         
-        //save and put into database                                                                            //initialized medicationTOUPDATE to null
-        Database.PRESCRIPTION.put(prescriptionID, prescription);
-        Database.MEDICATION.put(medication.getMedicineID(), medicationToUpdate);
+        for (PrescribeMedication prescribeMedication : prescriptionList) {
+            String medicationName = prescribeMedication.getMedicationName();
+            int amount = prescribeMedication.getPrescriptionAmount();
+    
+            // Find the corresponding medication in the database
+            Medication medication = null;
+            for (Medication med : Database.MEDICATION.values()) {
+                if (med.getName().equalsIgnoreCase(medicationName)) {
+                    medication = med;
+                    break;
+                } else {
+                    //one med cant find then ELSE return false;
+                    System.out.println("Unable to find medication with the name:" + medicationName);
+                    return false;
+                }          
+            }
+    
+    
+            // Check if stock is sufficient before proceeding to the switch
+            Medication medicationToUpdate = Database.MEDICATION.get(medication.getMedicineID());
+            if (medicationToUpdate.getStock() < amount) {
+                System.out.println("Insufficient stock to prescribe! Current Stock Level: " + medicationToUpdate.getStock());
+                return false;  
+            }
+    
+            // Switch based on the attribute code (1 for accept, 2 for skip)
+            switch (attributeCode) {
+                case 1:  
+                    // Remove the stock from the inventory
+                    medicationToUpdate.removeStock(amount);
+    
+                    // Check if stock is low and send replenish request
+                    if (checkStockLevel(medicationToUpdate)) {
+                        System.out.println("Low Stock Level Detected for " + medicationToUpdate.getName() + "! Send Replenish Request Urgently! Current Stock Level: " + medicationToUpdate.getStock());
+                    }
+    
+                    // Update the prescription status to DISPENSED
+                    prescribeMedication.setPrescribeStatus(PrescribeStatus.DISPENSED);
+                    break;
+    
+                case 2:  
+                    break;
+    
+                default:
+                    break;
+            }
+        }
+    
+        // Save the updated data back into the database
+        Database.PRESCRIPTION.put(prescriptionID, prescriptionList);
         Database.saveFileIntoDatabase(FileType.PRESCRIPTIONS);
-        Database.saveFileIntoDatabase(FileType.MEDICATION);
         return true;
     }
 

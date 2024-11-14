@@ -30,28 +30,28 @@ public class StaffManager {
 
     public static void createStaff(String name, Gender gender, int age, Role role) {
         int gid = Helper.generateUniqueId(Database.STAFF);
-        String hospitalId = "";
+        String staffId = "";
         String pw = "password";
         switch (role) {
             case DOCTOR: {
-                hospitalId = String.format("D%03d", gid);
+                staffId = String.format("D%03d", gid);
                 break;
             }
             case ADMINISTRATOR: {
-                hospitalId = String.format("A%03d", gid);
+                staffId = String.format("A%03d", gid);
                 break;
             }
             case PHARMACIST: {
-                hospitalId = String.format("P%03d", gid);
+                staffId = String.format("P%03d", gid);
                 break;
             }
             default:
                 throw new IllegalArgumentException("Invalid role specified: " + role);
         }
 
-        Staff newStaff = new Staff(hospitalId, pw, role, name, gender, age);
+        Staff newStaff = new Staff(staffId, pw, role, name, gender, age);
 
-        Database.STAFF.put(hospitalId, newStaff);
+        Database.STAFF.put(staffId, newStaff);
         Database.saveFileIntoDatabase(FileType.STAFF);
 
         System.out.println("Staff Created! Staff Details: ");
@@ -59,14 +59,14 @@ public class StaffManager {
     }
 
     // updates the staff name
-    public static boolean updateStaff(String hospitalId, int attributeCode, String newValue) {
-        ArrayList<Staff> updateList = searchStaffById(hospitalId);
+    public static boolean updateStaff(String staffId, int attributeCode, String newValue) {
+        ArrayList<Staff> updateList = searchStaffById(staffId);
         if (updateList.isEmpty()) {
             // guest not found
             return false;
         }
         for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(hospitalId);
+            Staff staffToUpdate = Database.STAFF.get(staffId);
             switch (attributeCode) {
                 case 1:
                     staffToUpdate.setName(newValue);
@@ -81,14 +81,14 @@ public class StaffManager {
     }
 
     // updates the staff age
-    public static boolean updateStaff(String hospitalId, int attributeCode, int newValue) {
-        ArrayList<Staff> updateList = searchStaffById(hospitalId);
+    public static boolean updateStaff(String staffId, int attributeCode, int newValue) {
+        ArrayList<Staff> updateList = searchStaffById(staffId);
         if (updateList.size() == 0) {
             // guest not found
             return false;
         }
         for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(hospitalId);
+            Staff staffToUpdate = Database.STAFF.get(staffId);
             switch (attributeCode) {
                 case 2:
                     staffToUpdate.setAge(newValue);
@@ -103,14 +103,14 @@ public class StaffManager {
     }
 
     // updates the staff gender
-    public static boolean updateStaff(String hospitalId, int attributeCode, Gender gender) {
-        ArrayList<Staff> updateList = searchStaffById(hospitalId);
+    public static boolean updateStaff(String staffId, int attributeCode, Gender gender) {
+        ArrayList<Staff> updateList = searchStaffById(staffId);
         if (updateList.size() == 0) {
             // guest not found
             return false;
         }
         for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(hospitalId);
+            Staff staffToUpdate = Database.STAFF.get(staffId);
             switch (attributeCode) {
                 case 3:
                     staffToUpdate.setGender(gender);
@@ -125,14 +125,14 @@ public class StaffManager {
     }
 
     // updates the staff role
-    public static boolean updateStaff(String hospitalId, int attributeCode, Role role) {
-        ArrayList<Staff> updateList = searchStaffById(hospitalId);
+    public static boolean updateStaff(String staffId, int attributeCode, Role role) {
+        ArrayList<Staff> updateList = searchStaffById(staffId);
         if (updateList.size() == 0) {
             // guest not found
             return false;
         }
         for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(hospitalId);
+            Staff staffToUpdate = Database.STAFF.get(staffId);
             switch (attributeCode) {
                 case 4:
                     staffToUpdate.setRole(role);
@@ -147,8 +147,8 @@ public class StaffManager {
     }
 
     // remove staff from the database
-    public static boolean removeStaff(String hospitalId) {
-        ArrayList<Staff> removeList = searchStaffById(hospitalId);
+    public static boolean removeStaff(String staffId) {
+        ArrayList<Staff> removeList = searchStaffById(staffId);
         if (removeList.isEmpty()) {
             // guest not found
             return false;
@@ -156,7 +156,7 @@ public class StaffManager {
         for (Staff staff : removeList) {
             printStaffDetails(staff);
             if (Helper.promptConfirmation("remove this staff")) {
-                Database.STAFF.remove(hospitalId);
+                Database.STAFF.remove(staffId);
             } else {
                 return false;
             }
@@ -241,10 +241,10 @@ public class StaffManager {
         }
     }
 
-    public static ArrayList<Staff> searchStaffById(String hospitalId) {
+    public static ArrayList<Staff> searchStaffById(String staffId) {
         ArrayList<Staff> searchList = new ArrayList<Staff>();
-        if (Database.STAFF.containsKey(hospitalId)) {
-            Staff searchedStaff = Database.STAFF.get(hospitalId);
+        if (Database.STAFF.containsKey(staffId)) {
+            Staff searchedStaff = Database.STAFF.get(staffId);
             searchList.add(searchedStaff);
         }
         return searchList;
@@ -270,12 +270,12 @@ public class StaffManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
-    public static void printStaffDetails(String hospitalId) {
-        Staff staff = Database.STAFF.get(hospitalId);
+    public static void printStaffDetails(String staffId) {
+        Staff staff = Database.STAFF.get(staffId);
         if (staff != null) {
             printStaffDetails(staff); // Call the original method with the Staff object
         } else {
-            System.out.println("Staff with ID " + hospitalId + " not found.");
+            System.out.println("Staff with ID " + staffId + " not found.");
         }
     }
 
