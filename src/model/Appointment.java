@@ -20,7 +20,6 @@ public class Appointment implements Serializable {
     /** Unique identifier of the doctor associated with the appointment. */
     private int doctorID;
 
-
     /** Status of the appointment, such as pending, confirmed, or completed. */
     private AppointmentStatus appointmentStatus;
 
