@@ -1,21 +1,26 @@
 package src.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class AppOutcomeRecord implements Serializable {
 
     private String typeOfService;
+    private String prescriptionID;
     private String consultationNotes;
+    private LocalDateTime endDateTime;
     private List<PrescribeMedication> medications;
 
     private static final long serialVersionUID = 3L;
 
     public AppOutcomeRecord() {
+        this.endDateTime = LocalDateTime.now();
         this.typeOfService = "N/A";
         this.consultationNotes = "N/A";
+        this.prescriptionID = "";
         this.medications = new ArrayList<>(); // Initialize medications list
     }
 

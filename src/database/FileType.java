@@ -35,7 +35,7 @@ public enum FileType {
     /**
      * File type corresponding to the Request data file.
      */
-    REQUESTS("Requests"), MEDICATION, MEDICATION;
+    REQUESTS("Requests");
 
     /**
      * A String value for the FileType for retrieval purposes.
