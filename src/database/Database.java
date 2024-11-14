@@ -188,7 +188,7 @@ public class Database {
             System.out.println("The database already has staff. Reset database first to initialize staff");
             return false;
         }
-        StaffManager.initializeDummyStaff();
+        StaffManager.createDummyStaff();
         return true;
     }
 
