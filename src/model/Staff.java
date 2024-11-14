@@ -1,7 +1,7 @@
 package src.model;
+
 import src.model.enums.Role;
 import src.model.enums.Gender;
-import src.model.enums.Role;
 
 
 /**

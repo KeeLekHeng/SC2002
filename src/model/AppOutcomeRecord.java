@@ -25,8 +25,20 @@ public class AppOutcomeRecord implements Serializable {
     }
 
     /**
-     * Gets the type of service provided during the appointment.
-     * @return the type of service.
+     * Gets the prescriptionID provided during the appointment.
+     * @return prescriptionID.
+     */
+    public String getPrescriptionID() {
+        return prescriptionID;
+    }
+
+    public void setPrescriptionID(String prescriptionID) {
+        this.prescriptionID = prescriptionID;
+    }
+
+    /**
+     * Sets the prescriptionID for the appointment.
+     * @param prescriptionID PrescriptionID.
      */
     public String getTypeOfService() {
         return this.typeOfService;
@@ -40,7 +52,15 @@ public class AppOutcomeRecord implements Serializable {
         this.typeOfService = typeOfService;
     }
 
-        /**
+    /**
+     * Gets the type of service provided during the appointment.
+     * @return the type of service.
+     */
+    public LocalDateTime getEndDateTime() {
+        return this.endDateTime;
+    }
+
+     /**
      * Gets the notes taken during the consultation.
      * @return the consultation notes.
      */
@@ -79,6 +99,4 @@ public class AppOutcomeRecord implements Serializable {
     public void addMedication(PrescribeMedication prescribeMedication) {
         this.medications.add(prescribeMedication);
     }
-
 }
-

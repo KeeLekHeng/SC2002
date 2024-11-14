@@ -12,6 +12,7 @@ import src.controller.MedicalRecordManager;
 import src.controller.LoginManager;
 import src.model.*;
 
+
 /**
  * A class for managing the database operations for the Hospital Management System.
  * This class handles reading from and writing to files.

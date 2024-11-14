@@ -1,8 +1,6 @@
 package src.model;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.ArrayList;
 import src.model.enums.AppointmentStatus;
 
 /**
@@ -18,7 +16,13 @@ import src.model.enums.AppointmentStatus;
 public class Appointment implements Serializable {
 
     /** Unique identifier of the doctor associated with the appointment. */
-    private int doctorID;
+    private String doctorID;
+
+    /** Unique identifier of the patient associated with the appointment. */
+    private String patientID;
+
+    /** Unique identifier of the patient associated with the appointment. */
+    private final String appointmentID;
 
     /** Status of the appointment, such as pending, confirmed, or completed. */
     private AppointmentStatus appointmentStatus;
@@ -39,26 +43,52 @@ public class Appointment implements Serializable {
      * @param doctorID       Unique identifier of the doctor.
      * @param timeSlot       Time slot allocated for the appointment.
      */
-    public Appointment(int doctorID, TimeSlot timeSlot,AppOutcomeRecord outcomeRecord ) {
+    public Appointment(String appointmentID, String doctorID, String patientID, TimeSlot timeSlot) {
+        this.appointmentID = appointmentID;
         this.doctorID = doctorID;
+        this.patientID = patientID;
         this.appointmentStatus = AppointmentStatus.PENDING;
         this.timeSlot = timeSlot;
-        this.outcomeRecord = outcomeRecord;
+        this.outcomeRecord = null;
+    }
+
+    /**
+     * Gets the doctor's unique identifier.
+     * @return the appointment's ID.
+     */
+    public String getAppointmentID() {
+        return this.appointmentID;
     }
 
     /**
      * Gets the doctor's unique identifier.
      * @return the doctor's ID.
      */
-    public int getDoctorID() {
+    public String getDoctorID() {
         return this.doctorID;
+    }
+
+    /**
+     * Gets the doctor's unique identifier.
+     * @return the patient's ID.
+     */
+    public String getPatientID() {
+        return this.patientID;
+    }
+
+    /**
+     * Sets the doctor's unique identifier.
+     * @param id New patient ID.
+     */
+    public void setPatientID(String id) {
+        this.patientID = id;
     }
 
     /**
      * Sets the doctor's unique identifier.
      * @param id New doctor ID.
      */
-    public void setDoctorID(int id) {
+    public void setDoctorID(String id) {
         this.doctorID = id;
     }
 

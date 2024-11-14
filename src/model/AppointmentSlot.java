@@ -1,10 +1,8 @@
 package src.model;
-import java.io.Serializable;
 
 
-public class AppointmentSlot implements Serializable {
+public class AppointmentSlot {
 
-    private static final long serialVersionUID = 10L;
 
     public final String doctorID;
     public TimeSlot timeSlot;
@@ -26,6 +24,3 @@ public class AppointmentSlot implements Serializable {
         this.timeSlot = timeSlot;
     }
 }
-
-
-

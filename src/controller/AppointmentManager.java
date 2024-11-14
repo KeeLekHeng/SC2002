@@ -8,21 +8,24 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import src.database.Database;
 import src.database.FileType;
 import src.helper.Helper;
+import src.model.AppOutcomeRecord;
 import src.model.Appointment;
+import src.model.AppointmentSlot;
+import src.model.PrescribeMedication;
 import src.model.TimeSlot;
+import src.model.enums.AppointmentStatus;
 
 public class AppointmentManager {
     
-    //Date String format:        2024-11-12
-    private static HashMap<String, HashMap<String, Appointment>> appointmentSchedule;
 
     public AppointmentManager() 
     {
-        appointmentSchedule = Database.APPOINTMENT.isEmpty() ? new HashMap<>() : Database.APPOINTMENT;
+
     }
 
 
@@ -33,7 +36,7 @@ public class AppointmentManager {
         final int slotDuration = 30;
 
         List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
-        for (int hour = startHour; hour <= endHour; hour ++){
+        for (int hour = startHour; hour <= endHour; hour++){
             for (int minute = 0; minute < 60; minute += slotDuration){
                 timeSlots.add(new TimeSlot(date.atTime(hour,minute)));
             }
@@ -41,161 +44,355 @@ public class AppointmentManager {
         return timeSlots;
     }
 
-    public List<Appointment> getAvailableSlotsByDoctor(LocalDate date, Doctor doctor){
-        
+    public List<AppointmentSlot> getAvailableSlotsByDoctor(LocalDate date, String doctorID){
+        List<AppointmentSlot> availableSlots = new ArrayList<AppointmentSlot>();
+
+        for (TimeSlot slot: generateTimeSlots(date)){
+            if (isAppointmentSlotAvailable(slot, doctorID)){
+                availableSlots.add(new AppointmentSlot(doctorID, slot));
+            }
+        }
+        return availableSlots;
     }
 
-    public static void initalizeSlotsForDate(String date){
-        HashMap<String, Appointment> slots = new HashMap<>();
-        slots.put("12pm", null);
-        slots.put("1pm", null);
-        slots.put("2pm", null);
-        slots.put("3pm", null);
-        slots.put("4pm", null);
-        appointmentSchedule.put(date, slots);
-        Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
+    public static boolean isAppointmentSlotAvailable(TimeSlot timeSlot, String doctorID){
+        List<Appointment> slots = new ArrayList<Appointment>();
+
+        //all scheduled appointments of doctor
+        for (Appointment appointment : Database.APPOINTMENT.values()){
+            if (appointment.getDoctorID().equals(doctorID)){
+                    slots.add(appointment);
+            }
+        }
+
+        for (Appointment appointment : slots){
+            if (appointment.getTimeSlot().equals(timeSlot) && appointment.getAppointmentStatus() != AppointmentStatus.CANCELED) {
+                return false; 
+            }
+        }
+        return true;
     }
+
+    public static boolean validateAppointmentOwnership(String appointmentID, String hospitalID){
+        //check if got appointment then 
+
+        if (Database.APPOINTMENT.containsKey(appointmentID)){
+            Appointment appointment = Database.APPOINTMENT.get(appointmentID);
+            TimeSlot timeSlot = appointment.getTimeSlot();
+            
+            //Validate Patient or Doctor
+            if (hospitalID.startsWith("P") && hospitalID.substring(1).matches("\\d{4}")) {
+                if(!appointment.getPatientID().equals(hospitalID)){
+                    System.out.println("You have no appointment scheduled for" + timeSlot.getFormattedDate() + "at" + timeSlot.getFormattedTime());
+                    return false;
+                }
+            } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
+                if(!appointment.getDoctorID().equals(hospitalID)){
+                    System.out.println("You have no patient appointment scheduled for" + timeSlot.getFormattedDate() + "at" + timeSlot.getFormattedTime());
+                    return false;
+            }
+        } else {
+            System.out.println("Appointment Not Found!");
+            return false;
+            }
+        }
+        //all goes well
+        return true;
+    }
+
 
     //FOR PATIENTS
 
     //what if type wrongly not in that form (NEED TO ENSURE DATE ENTERED IS CORRECT, IF NOT USE HELPER FUNCTION TO HELP U VALIDATE)
-    public static void viewAvailableAppointmentSlots(String patientID, String date){
-        if(!appointmentSchedule.containsKey(date)){
-            initalizeSlotsForDate(date);
-        }
+    public static void viewAvailableAppointmentSlots(String patientID, String doctorID, LocalDate date){
+        
+        List<TimeSlot> timeSlots = AppointmentManager.generateTimeSlots(date);
 
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
         System.out.println("Available Appointment Slots for" + date + ":");
         
-        List<String> timeSlotsOrder = Arrays.asList("1pm", "2pm", "3pm", "4pm", "5pm");
-
-        for (String time : timeSlotsOrder) {
-            Appointment appointment = appointmentSchedule.get(date).get(time);
-
-            //Print out only if it is free
-            if (appointment == null) {
-                System.out.println(time); 
+        //print out all available slots for that doctor
+        for (TimeSlot slot : timeSlots) {
+            if(isAppointmentSlotAvailable(slot, doctorID)){
+                System.out.println(slot.getFormattedTime());
             }
         }
-        
-
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
-    public static void viewScheduledAppointments(String patientID){
+    //TimeSlot is both date and time (refer to timeslot to see how to get formatted time)           I used doctorID and timeslot seperately ###   I returning appointmentID    
+    public static boolean scheduleAppointment(String patientID, String doctorID, TimeSlot timeSlot){
 
-    }
-
-    //See if date and time is needed or not
-    public static boolean scheduleAppointment(String patientID, String doctorID, String date, String time){
-
-        if(!Database.APPOINTMENT.containsKey(date)){
-            initalizeSlotsForDate(date);
-        }
-
-        //double check to see if appointment slot already booked
-        if (appointmentSchedule.get(date).get(time) != null){
-            System.out.println("Time slot " + time + " on " + date + " is not available.");
+        //check if available for that doctor 
+        if(!isAppointmentSlotAvailable(timeSlot, doctorID)){
+            System.out.println("Time slot " + timeSlot.getFormattedTime() + " on " + timeSlot.getFormattedDate() + " is not available.");
             return false;
         }
+
 
         Appointment appointment;
-        appointment = new Appointment(doctorID, patientID, date, time);
-        appointmentSchedule.get(date).put(time, appointment);
-        System.out.println("Appointment scheduled for" + date + "at" + time);
-
-        Database.APPOINTMENT = appointmentSchedule;
+        int aid = Helper.generateUniqueId(Database.APPOINTMENT);
+        String appointmentID = String.format("M%05d", aid);
+        appointment = new Appointment(appointmentID, doctorID, patientID, timeSlot);
+        System.out.println("Appointment scheduled for" + timeSlot.getFormattedDate() + "at" + timeSlot.getFormattedTime() + ". Appointment Details:");
+        printAppointmentDetails(appointment);
+        Database.APPOINTMENT.put(appointmentID, appointment);
         Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
         return true;
-
     }
+    
+    //jsut need appointment and patient id
+    public static boolean cancelAppointment(String appointmentID, String patientID){
 
-    public static boolean cancelAppointment(String patientID,String date, String time){
-        if (appointmentSchedule.get(date).get(time) != null){
-            Appointment appointment = appointmentSchedule.get(date).get(time);
-
-            if (appointment.getPatientID().equals(patientID)){
-                if (Helper.promptConfirmation("cancel this appointment")){
-                    HashMap<String, Appointment> timeSlots = appointmentSchedule.get(date);
-
-                    timeSlots.remove(time);
-                    timeSlots.put(time, null);
-                    Database.APPOINTMENT = appointmentSchedule;
-                    Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
-                    return true;
-                }
-            } else {
-            System.out.println("You have no appointment scheduled for" + date + "at" + time);
+        //check if got appointment then or not and u are the patient
+        if(!validateAppointmentOwnership(appointmentID, patientID)){
             return false;
-            }
-        } else {
-        System.out.println("You have no appointment scheduled for" + date + "at" + time);
-        return false;
         }
+        
+
+        Appointment appointment = Database.APPOINTMENT.get(appointmentID);
+        TimeSlot timeSlot = appointment.getTimeSlot();
+            
+        if (Helper.promptConfirmation("cancel this appointment")){
+            appointment.setAppointmentStatus(AppointmentStatus.CANCELED);
+            System.out.println("You have cancelled the appointment on" + timeSlot.getFormattedDate() + "at" + timeSlot.getFormattedTime());
+
+            Database.APPOINTMENT.put(appointmentID, appointment);
+            Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
+            return true;
+        } else {
+            return false;
+        } 
     }
+
+    //do a if for 3 roles. attribute code   [1. for upcoming, 2. for all]
+    public static void viewScheduledAppointments(String hospitalID, int attributeCode){
+        List<Appointment> appointmentList = new ArrayList<Appointment>();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+            //patient or Doctor or Admin
+        switch(attributeCode){
+            case 1:
+                for (Appointment appointment : Database.APPOINTMENT.values()){
+                if (hospitalID.startsWith("P") && hospitalID.substring(1).matches("\\d{4}")){
+                    if (appointment.getPatientID().equals(hospitalID) &&  
+                        appointment.getTimeSlot().getDateTime().isAfter(currentDateTime)){
+                        appointmentList.add(appointment);
+                    }
+                } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
+                    if (appointment.getPatientID().equals(hospitalID) &&  
+                    appointment.getTimeSlot().getDateTime().isAfter(currentDateTime) &&
+                    appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
+                        appointmentList.add(appointment);
+                    }
+                } else {
+                    if (appointment.getTimeSlot().getDateTime().isAfter(currentDateTime) &&
+                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
+                        appointmentList.add(appointment);
+                        }
+                    }
+                }
+                break;
+            case 2:
+            for (Appointment appointment : Database.APPOINTMENT.values()){
+                if (hospitalID.startsWith("P") && hospitalID.substring(1).matches("\\d{4}")){
+                    if (appointment.getPatientID().equals(hospitalID)){
+                        appointmentList.add(appointment);
+                    }
+                } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
+                    if (appointment.getPatientID().equals(hospitalID)){
+                        appointmentList.add(appointment);
+                    }
+                } else {             
+                    appointmentList.add(appointment);
+                    }
+                }
+                break;
+            default:
+                return;
+        }
+        System.out.println("Upcoming appointments:");
+        for (Appointment appointment : appointmentList){
+            printAppointmentDetails(appointment);
+            }
+    }
+
 
 
     
     //want implement like cant reschedule a day before appointment??
-    public static boolean rescheduleAppointment(String patientID, String oldDate, String newDate, String oldTime, String newTime){
+    public static boolean rescheduleAppointment(String appointmentID, String patientID, TimeSlot newTimeSlot){
         
-        Appointment oldAppointment = appointmentSchedule.get(oldDate).get(oldTime);
-
-        //check see if got patient appointment
-        if (oldAppointment == null){
-            System.out.println("You have no appointment scheduled for" + oldDate + "at" + oldTime);
-            return false;
-        }
-        if (!oldAppointment.getPatientID().equals(patientID)){
-            System.out.println("You have no appointment scheduled for" + oldDate + "at" + oldTime);
+        //check whether old appointment valid and is yours
+        if(!validateAppointmentOwnership(appointmentID, patientID)){
             return false;
         }
 
-        if(appointmentSchedule.get(newDate).get(newTime) == null){
-            Appointment newAppointment = oldAppointment;
-            AppointmentManager.scheduleAppointment(patientID, newAppointment.getDoctorID(), newDate, newTime);
-            AppointmentManager.cancelAppointment(patientID, oldDate, oldTime);
-            Database.APPOINTMENT = appointmentSchedule;
+        //check whether new appointment is free
+        Appointment appointment = Database.APPOINTMENT.get(appointmentID);
+        if(isAppointmentSlotAvailable(newTimeSlot, appointment.getDoctorID())){
+            cancelAppointment(appointmentID, patientID);
+            
+            int aid = Helper.generateUniqueId(Database.APPOINTMENT);
+            String newAppointmentID = String.format("M%05d", aid);
+            Appointment newAppointment = new Appointment(appointmentID, appointment.getDoctorID(), patientID, newTimeSlot);
+            System.out.println("Appointment rescheduled for" + newTimeSlot.getFormattedDate() + "at" + newTimeSlot.getFormattedTime());
+
+            Database.APPOINTMENT.put(newAppointmentID, newAppointment);
             Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
             return true;
         } else {
-            System.out.println("Time slot " + newTime + " on " + newDate + " is not available.");
+            System.out.println("Time slot " + newTimeSlot.getFormattedDateTime() +  " is not available.");
             return false;
-        }
-
-
+        }   
     }
 
     
-    public static void viewPastAppointmentOutcomeRecords(String patientID){
-
+    public static void viewPastAppointmentOutcomeRecords(String patientID) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+    
+        // Iterate through all the appointments in the database
+        for (Appointment appointment : Database.APPOINTMENT.values()) {
+            if (appointment.getPatientID().equals(patientID)) {
+    
+                if (appointment.getAppOutcomeRecord() != null && 
+                    appointment.getTimeSlot().getDateTime().isBefore(currentDateTime)) {
+                    
+                    // Print the appointment details including the outcome record
+                    System.out.println("Past Appointment ID: " + appointment.getAppointmentID());
+                    printAppointmentOutcomeRecord(appointment); 
+                }
+            }
+        }
     }
 
     //FOR DOCTOR
 
 
-    public static void viewScheduledAppointments(String StaffID){
 
+    public static boolean updateAppointmentRequest(String appointmentID, String staffID, int attributeCode){
+        if(validateAppointmentOwnership(appointmentID, staffID)){
+            Appointment appointment = Database.APPOINTMENT.get(appointmentID);
+
+            //1 for approve, 2 for reject
+            switch(attributeCode){
+                case 1:
+                    appointment.setAppointmentStatus(AppointmentStatus.CONFIRMED);
+                    break;
+                case 2:
+                    appointment.setAppointmentStatus(AppointmentStatus.CANCELED);
+                    break;
+                default:
+                    break;
+            }
+            Database.APPOINTMENT.put(appointmentID, appointment);
+            Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static boolean updateAppointmentRequest(String StaffID, String AppointmentID){
+    public static boolean setAvailability(String doctorID, TimeSlot timeSlot){
 
-    }
-
-    public static boolean setAvailability(String StaffID){
-
-    }
-
-    public static boolean recordAppointmentOutcome(){
-
-    }
-
-    public static void printAllAppointments(String StaffID, boolean bytime){
+        if (!isAppointmentSlotAvailable(timeSlot, doctorID)){
+            System.out.println("There is a Pending or Confirmed Appointment at" + timeSlot.getFormattedDateTime());
+            return false;
+        }
+        String appointmentID = "UNAVAILABLE-" + doctorID + "-" + timeSlot.getFormattedDateTime();
+        Appointment unavailableAppointment = new Appointment(appointmentID, doctorID, null, timeSlot);
+        unavailableAppointment.setAppointmentStatus(AppointmentStatus.UNAVAILABLE);
         
+        System.out.println("Doctor " + doctorID + " has marked " + timeSlot.getFormattedDateTime() + " as unavailable.");
+        Database.APPOINTMENT.put(appointmentID, unavailableAppointment);
+        Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
+        return true;
     }
-    public static void printAppointmentOutcomeRecord(Appointment appointment){
+    
 
+    //need to make a list of Prescribed Medication before passing it into this function
+    public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
+        
+        //check if is doctor's appointment
+        if(!validateAppointmentOwnership(appointmentID, doctorID)){
+            return false;
+        }
+
+        Appointment appointment = Database.APPOINTMENT.get(appointmentID);
+
+        //Making prescription ID
+        int pid = Helper.generateUniqueId(Database.APPOINTMENT);
+        String prescriptionID = String.format("P%05d", pid);
+
+        AppOutcomeRecord outcomeRecord = new AppOutcomeRecord();
+        outcomeRecord.setConsultationNotes(consultationNotes);
+        outcomeRecord.setTypeOfService(typeOfService);
+        outcomeRecord.setPrescriptionID(prescriptionID);
+        outcomeRecord.setPrescribeMedications(medications);
+        appointment.setAppOutcomeRecord(outcomeRecord);
+        appointment.setAppointmentStatus(AppointmentStatus.COMPLETED);
+
+        System.out.println("Appointment Outcome Record Set!");                        //See want print with Appointment Details or not
+        printAppointmentOutcomeRecord(appointment);
+
+        Database.APPOINTMENT.put(appointmentID, appointment);
+        Database.PRESCRIPTION.put(prescriptionID, medications);
+        Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
+        Database.saveFileIntoDatabase(FileType.PRESCRIPTIONS);
+        return true;
     }
+
+
+    public static void printAppointmentDetails(Appointment appointment) {
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        System.out.println(String.format("%-20s: %s", "Appointment ID", appointment.getAppointmentID()));
+        System.out.println(String.format("%-20s: %s", "Patient ID", appointment.getPatientID()));
+        System.out.println(String.format("%-20s: %s", "Doctor ID", appointment.getDoctorID()));
+        System.out.println(String.format("%-20s: %s", "Appointment Status", appointment.getAppointmentStatus()));
+        System.out.println(String.format("%-20s: %s", "Time Slot", appointment.getTimeSlot()));
+    
+        // If appointment has an outcome record, call the printAppointmentOutcomeRecord method
+        if (appointment.getAppOutcomeRecord() != null) {
+            System.out.println(String.format("%-20s: %s", "Outcome Record", "Present"));
+            printAppointmentOutcomeRecord(appointment);  // Directly passing appointment as parameter
+        } else {
+            System.out.println(String.format("%-20s: %s", "Outcome Record", "None"));
+        }
+    
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+    }
+
+    public static void printAppointmentOutcomeRecord(Appointment appointment) {
+        // Check if appointment has an outcome record
+        AppOutcomeRecord outcomeRecord = appointment.getAppOutcomeRecord();
+        if (outcomeRecord == null) {
+            return;
+        }
+    
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        System.out.println(String.format("%-20s: %s", "Prescription ID", outcomeRecord.getPrescriptionID()));
+        System.out.println(String.format("%-20s: %s", "Record Uploaded Time", outcomeRecord.getEndDateTime()));
+        System.out.println(String.format("%-20s: %s", "Type of Service", outcomeRecord.getTypeOfService()));
+        System.out.println(String.format("%-20s: %s", "Consultation Notes", outcomeRecord.getConsultationNotes()));
+    
+        // Print Prescribed Medications
+        System.out.println(String.format("%-20s:", "Prescribed Medications"));
+        List<PrescribeMedication> medications = outcomeRecord.getPrescribeMedications();
+        if (medications.isEmpty()) {
+            System.out.println("  No medications prescribed.");
+        } else {
+            for (PrescribeMedication med : medications) {
+                System.out.println(String.format("  %-20s: %s", "Medication Name", med.getMedicationName()));
+                System.out.println(String.format("  %-20s: %d", "Amount", med.getPrescriptionAmount()));
+                System.out.println(String.format("  %-20s: %s", "Status", med.getPrescribeStatus()));
+                System.out.println(String.format("%-40s", "").replace(" ", "-"));
+            }
+        }
+    
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+    }
+    
+    
 
     
 

@@ -25,6 +25,11 @@ public enum AppointmentStatus {
     COMPLETED("Completed"),
 
     /**
+     * The appointment is unavailable to be booked.
+     */
+    UNAVAILABLE("Unavailable"),
+    
+    /**
      * The appointment is pending.
      */
     PENDING("Pending");

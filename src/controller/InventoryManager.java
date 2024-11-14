@@ -192,6 +192,7 @@ public class InventoryManager {
 
     public static void printMedicationDetails(Medication medication){
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        System.out.println(String.format("%-20s: %s", "MedicationID", medication.getMedicineID()));
         System.out.println(String.format("%-20s: %s", "Medication Name", medication.getName()));
         System.out.println(String.format("%-20s: %s", "Current Stock", medication.getStock()));
         System.out.println(String.format("%-20s: %s", "Low Stock Alert", medication.getLowStockAlert()));
