@@ -2,6 +2,7 @@ package src.database;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
+import java.util.List;
 
 import src.controller.PatientManager;
 import src.controller.StaffManager;
@@ -28,7 +29,7 @@ public class Database {
 
     public static HashMap<String, Medication> MEDICATION = new HashMap<>();
 
-    public static HashMap<String, PrescribeMedication> PRESCRIPTION = new HashMap<>();         
+    public static HashMap<String, List<PrescribeMedication>> PRESCRIPTION = new HashMap<>();         
 
     public static HashMap<String, ReplenishRequest> REQUESTS = new HashMap<>();
 
@@ -94,7 +95,7 @@ public class Database {
             } else if (fileType == FileType.APPOINTMENTS) {
                 APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
             } else if (fileType == FileType.PRESCRIPTIONS) {
-                PRESCRIPTION = (HashMap<String, PrescribeMedication>) objectInputStream.readObject();
+                PRESCRIPTION = (HashMap<String, List<PrescribeMedication>>) objectInputStream.readObject();
             }
             
 
@@ -161,7 +162,7 @@ public class Database {
          REQUESTS = new HashMap<String, ReplenishRequest>();
          writeSerializedObject(FileType.REQUESTS);
 
-         PRESCRIPTION = new HashMap<String, PrescribeMedication>();
+         PRESCRIPTION = new HashMap<String, List<PrescribeMedication>>();
          writeSerializedObject(FileType.APPOINTMENTS);
 
          APPOINTMENT = new HashMap<String, Appointment>();
@@ -188,7 +189,7 @@ public class Database {
             System.out.println("The database already has staff. Reset database first to initialize staff");
             return false;
         }
-        StaffManager.initializeDummyStaff();
+        StaffManager.createDummyStaff();
         return true;
     }
 

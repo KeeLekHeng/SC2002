@@ -15,6 +15,11 @@ public enum PrescribeStatus {
     PENDING("Pending"),
 
     /**
+     * The medication prescription is not applicable.
+     */
+    NA("Not Applicable"),
+
+    /**
      * The medication has been dispensed.
      */
     DISPENSED("Dispensed");
