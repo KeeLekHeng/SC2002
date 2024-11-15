@@ -17,6 +17,7 @@ import src.model.AppOutcomeRecord;
 import src.model.Appointment;
 import src.model.AppointmentSlot;
 import src.model.PrescribeMedication;
+import src.model.Staff;
 import src.model.TimeSlot;
 import src.model.enums.AppointmentStatus;
 import src.model.enums.PrescribeStatus;
@@ -29,7 +30,24 @@ public class AppointmentManager {
 
     }
 
+    public static void getDoctorList(){
+        List<Staff> doctorList = new ArrayList<Staff>();
+        for(Staff staff : Database.STAFF.values()){
+            String staffID = staff.getId();
+            if (staffID.startsWith("D") && staffID.substring(1).matches("\\d{3}")){
+                doctorList.add(staff);
+            }
+        }
+        int numberOfDoctors = doctorList.size();
 
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        System.out.println("Our hospital has " + numberOfDoctors + " doctors. Doctors List:");
+        for (Staff staff : doctorList){
+            System.out.println("Name: " + staff.getName() + " , DoctorID: " + staff.getId());
+        }
+        System.out.println(String.format("%-40s", "").replace(" ", "-")); 
+    }
+    
     //timeSlots in a day
     public static List<TimeSlot> generateTimeSlots(LocalDate date){
         final int startHour = 12;
