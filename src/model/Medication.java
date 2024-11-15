@@ -10,6 +10,7 @@ import src.model.enums.RequestStatus;;
 public class Medication implements Serializable {
 
     public String name;
+    public String medicineID;
     public int stock;
     public int lowStockAlert;
     public RequestStatus replenishRequestStatus;
@@ -17,8 +18,9 @@ public class Medication implements Serializable {
     private static final long serialVersionUID = 6L;
 
 
-    public Medication (String name, int stock, int lowStockAlert) {
+    public Medication (String name, String medicineID, int stock, int lowStockAlert) {
         this.name = name;
+        this.medicineID = medicineID;
         this.stock = stock;
         this.lowStockAlert = lowStockAlert;
         this.replenishRequestStatus = RequestStatus.NA;
@@ -26,6 +28,10 @@ public class Medication implements Serializable {
 
     public String getName () {
         return this.name;
+    }
+
+    public String getMedicineID(){
+        return this.medicineID;
     }
 
     public void setName (String name) {

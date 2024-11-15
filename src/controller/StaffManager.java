@@ -51,9 +51,9 @@ public class StaffManager {
 
         Staff newStaff = new Staff(hospitalID, pw, role, name, gender, age);
 
+
         Database.STAFF.put(hospitalID, newStaff);
         Database.saveFileIntoDatabase(FileType.STAFF);
-
         System.out.println("Staff Created! Staff Details: ");
         printStaffDetails(newStaff);
     }
@@ -247,7 +247,6 @@ public class StaffManager {
             Staff searchedStaff = Database.STAFF.get(hospitalID);
             searchList.add(searchedStaff);
         }
-        return searchList;
     }
 
     public static ArrayList<Staff> searchStaffByKeyWord(String keyword) {

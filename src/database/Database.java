@@ -3,6 +3,7 @@ package src.database;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
+import java.util.List;
 
 import src.controller.PatientManager;
 import src.controller.StaffManager;
@@ -12,6 +13,7 @@ import src.controller.AppointmentManager;
 import src.controller.MedicalRecordManager;
 import src.controller.LoginManager;
 import src.model.*;
+
 
 /**
  * A class for managing the database operations for the Hospital Management
@@ -33,9 +35,8 @@ public class Database {
     public static HashMap<String, Medication> MEDICATION = new HashMap<>();
 
     public static HashMap<String, PrescribeMedication> PRESCRIPTION = new HashMap<>(); // PRESCRIPTUON AND LOGIN NOT
-                                                                                       // SURE
 
-    public static HashMap<String, ReplenishRequest> REQUEST = new HashMap<>();
+    public static HashMap<String, ReplenishRequest> REQUESTS = new HashMap<>();
 
     public static HashMap<String, Appointment> APPOINTMENT = new HashMap<>();
 
@@ -60,9 +61,6 @@ public class Database {
         if (!readSerializedObject(FileType.APPOINTMENTS)) {
             System.out.println("Read into Appointment failed!");
         }
-        if (!readSerializedObject(FileType.LOGIN)) {
-            System.out.println("Read into login failed!");
-        }
     }
 
     public static void saveFileIntoDatabase(FileType fileType) {
@@ -75,8 +73,7 @@ public class Database {
         saveFileIntoDatabase(FileType.MEDICATION);
         saveFileIntoDatabase(FileType.REQUESTS);
         saveFileIntoDatabase(FileType.APPOINTMENTS);
-        saveFileIntoDatabase(FileType.LOGIN);
-        saveFileIntoDatabase(FileType.APPOINTMENTS);
+        saveFileIntoDatabase(FileType.PRESCRIPTIONS);
 
     }
 
@@ -104,9 +101,10 @@ public class Database {
                 REQUEST = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
             } else if (fileType == FileType.APPOINTMENTS) {
                 APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
-            } else if (fileType == FileType.APPOINTMENTS) {
-                PRESCRIPTION = (HashMap<String, PrescribeMedication>) objectInputStream.readObject();
+            } else if (fileType == FileType.PRESCRIPTIONS) {
+                PRESCRIPTION = (HashMap<String, List<PrescribeMedication>>) objectInputStream.readObject();
             }
+            
 
         } catch (EOFException err) {
             System.out.println("Warning: " + err.getMessage());
@@ -139,7 +137,7 @@ public class Database {
                 objectOutputStream.writeObject(STAFF);
             } else if (fileType == FileType.MEDICATION) {
                 objectOutputStream.writeObject(MEDICATION);
-            } else if (fileType == FileType.APPOINTMENTS) {
+            } else if (fileType == FileType.PRESCRIPTIONS) {
                 objectOutputStream.writeObject(PRESCRIPTION);
             } else if (fileType == FileType.APPOINTMENTS) {
                 objectOutputStream.writeObject(APPOINTMENT);

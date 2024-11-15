@@ -35,6 +35,7 @@ public class PatientView extends MainView {
                     //View medical record
                     Patient patient = PatientManager.searchPatientByID(hospitalID);
                     PatientManager.printPatientDetails(patient);
+                    //dont have valid user yet so cant test
                     ;
                     break;
                 case 2:

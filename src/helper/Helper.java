@@ -1,14 +1,14 @@
 package src.helper;
 
 //REMOVE STUFF WE DONT NEED + ADD STUFF WE NEED
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 /**
  * Helper class to provide support functions for other classes
@@ -223,7 +223,7 @@ public class Helper {
         return date.format(format);
     }
 
-    /**
+    /**                                                                     MAYBE CAN THROW AWAY
      * Method to validate date
      * 
      * @param date   Date in string
@@ -238,7 +238,7 @@ public class Helper {
         return (Date.compareTo(now) >= 0 ? true : false);
     }
 
-    /**
+    /**                                                                    MAYBE CAN THROW AWAY
      * Method to check if the time difference of the input date and current time
      * exceeds 1 hour (Hotel check in / check out checking)
      * 
