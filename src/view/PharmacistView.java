@@ -31,25 +31,26 @@ public class PharmacistView extends MainView {
             switch (opt) {
                 case 1:
                     //View appointment outcome record
-                    //prescriptionManager.viewAppointmentOutcomeRecord()
+                    PrescriptionManager.viewRecentAppointmentOutcomeRecord();
+
                     ;
                     break;
                 case 2:
                     //Update prescription status
                     updatePrescriptionStatus();
-                    
+
 
                     ;
                     break;
                 case 3:
                     //View medication inventory
-                    //Pharmacists can monitor the inventory of medications, including tracking stock levels.
                     PrescriptionManager.viewMedicationInventory();
                     ;
                     break;
                 case 4:
                     //Submit replenishment request
                     Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > Submit Replenishment Request");
                     System.out.println("Enter the medication name: ");
                     String medicationName = Helper.readString();
                     System.out.println("Enter the quantity: ");

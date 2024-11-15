@@ -51,7 +51,7 @@ public class AdministratorView extends MainView {
                     //approveReplenishmentRequest();
                     //check with kee
                     PrescriptionManager.getPendingRequests(); 
-                    //loop body
+                    //loop below
                     PrescriptionManager.printReplenishRequest(null); 
                     
                     //PrescriptionManager.approveReplenishRequest();
