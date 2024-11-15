@@ -51,30 +51,27 @@ public class StaffManager {
 
         Staff newStaff = new Staff(staffId, pw, role, name, gender, age);
 
+        // Saving to database
         Database.STAFF.put(staffId, newStaff);
         Database.saveFileIntoDatabase(FileType.STAFF);
-
         System.out.println("Staff Created! Staff Details: ");
         printStaffDetails(newStaff);
     }
 
     // updates the staff name
     public static boolean updateStaff(String staffId, int attributeCode, String newValue) {
-        ArrayList<Staff> updateList = searchStaffById(staffId);
-        if (updateList.isEmpty()) {
+        Staff staffToUpdate = searchStaffById(staffId);
+        if (staffToUpdate == null) {
             // guest not found
             return false;
         }
-        for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(staffId);
-            switch (attributeCode) {
-                case 1:
-                    staffToUpdate.setName(newValue);
-                    Database.STAFF.put(staff.getId(), staffToUpdate);
-                    break;
-                default:
-                    break;
-            }
+        switch (attributeCode) {
+            case 1:
+                staffToUpdate = Database.STAFF.get(staffId);
+                staffToUpdate.setName(newValue);
+                break;
+            default:
+                break;
         }
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
@@ -82,21 +79,18 @@ public class StaffManager {
 
     // updates the staff age
     public static boolean updateStaff(String staffId, int attributeCode, int newValue) {
-        ArrayList<Staff> updateList = searchStaffById(staffId);
-        if (updateList.size() == 0) {
+        Staff staffToUpdate = searchStaffById(staffId);
+        if (staffToUpdate == null) {
             // guest not found
             return false;
         }
-        for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(staffId);
-            switch (attributeCode) {
-                case 2:
-                    staffToUpdate.setAge(newValue);
-                    Database.STAFF.put(staff.getId(), staffToUpdate);
-                    break;
-                default:
-                    break;
-            }
+        switch (attributeCode) {
+            case 2:
+                staffToUpdate = Database.STAFF.get(staffId);
+                staffToUpdate.setAge(newValue);
+                break;
+            default:
+                break;
         }
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
@@ -104,21 +98,18 @@ public class StaffManager {
 
     // updates the staff gender
     public static boolean updateStaff(String staffId, int attributeCode, Gender gender) {
-        ArrayList<Staff> updateList = searchStaffById(staffId);
-        if (updateList.size() == 0) {
+        Staff staffToUpdate = searchStaffById(staffId);
+        if (staffToUpdate == null) {
             // guest not found
             return false;
         }
-        for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(staffId);
-            switch (attributeCode) {
-                case 3:
-                    staffToUpdate.setGender(gender);
-                    Database.STAFF.put(staff.getId(), staffToUpdate);
-                    break;
-                default:
-                    break;
-            }
+        switch (attributeCode) {
+            case 3:
+                staffToUpdate = Database.STAFF.get(staffId);
+                staffToUpdate.setGender(gender);
+                break;
+            default:
+                break;
         }
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
@@ -126,21 +117,18 @@ public class StaffManager {
 
     // updates the staff role
     public static boolean updateStaff(String staffId, int attributeCode, Role role) {
-        ArrayList<Staff> updateList = searchStaffById(staffId);
-        if (updateList.size() == 0) {
+        Staff staffToUpdate = searchStaffById(staffId);
+        if (staffToUpdate == null) {
             // guest not found
             return false;
         }
-        for (Staff staff : updateList) {
-            Staff staffToUpdate = Database.STAFF.get(staffId);
-            switch (attributeCode) {
-                case 4:
-                    staffToUpdate.setRole(role);
-                    Database.STAFF.put(staff.getId(), staffToUpdate);
-                    break;
-                default:
-                    break;
-            }
+        switch (attributeCode) {
+            case 4:
+                staffToUpdate = Database.STAFF.get(staffId);
+                staffToUpdate.setRole(role);
+                break;
+            default:
+                break;
         }
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
@@ -148,18 +136,16 @@ public class StaffManager {
 
     // remove staff from the database
     public static boolean removeStaff(String staffId) {
-        ArrayList<Staff> removeList = searchStaffById(staffId);
-        if (removeList.isEmpty()) {
+        Staff staffToRemove = searchStaffById(staffId);
+        if (staffToRemove == null) {
             // guest not found
             return false;
         }
-        for (Staff staff : removeList) {
-            printStaffDetails(staff);
-            if (Helper.promptConfirmation("remove this staff")) {
-                Database.STAFF.remove(staffId);
-            } else {
-                return false;
-            }
+        printStaffDetails(staffToRemove);
+        if (Helper.promptConfirmation("remove this staff")) {
+            Database.STAFF.remove(staffId);
+        } else {
+            return false;
         }
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
@@ -241,13 +227,14 @@ public class StaffManager {
         }
     }
 
-    public static ArrayList<Staff> searchStaffById(String staffId) {
-        ArrayList<Staff> searchList = new ArrayList<Staff>();
+    public static Staff searchStaffById(String staffId) {
+        // Search if the staffId exists in the database
         if (Database.STAFF.containsKey(staffId)) {
-            Staff searchedStaff = Database.STAFF.get(staffId);
-            searchList.add(searchedStaff);
+            return Database.STAFF.get(staffId);
+        } else {
+            // Return null if the patient is not found
+            return null;
         }
-        return searchList;
     }
 
     public static ArrayList<Staff> searchStaffByKeyWord(String keyword) {
