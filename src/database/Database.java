@@ -1,4 +1,5 @@
 package src.database;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
@@ -15,21 +16,25 @@ import src.model.*;
 
 
 /**
- * A class for managing the database operations for the Hospital Management System.
+ * A class for managing the database operations for the Hospital Management
+ * System.
  * This class handles reading from and writing to files.
  * Author: Abarna
  * Version: 1.0
  * Since: 2024-10-17
  */
 public class Database {
-    
+
+    // followed Ivan's code, but we dh data folder for .dat files yet
+    private static final String folder = "data";
+
     public static HashMap<String, Patient> PATIENTS = new HashMap<>();
-    
+
     public static HashMap<String, Staff> STAFF = new HashMap<>();
 
     public static HashMap<String, Medication> MEDICATION = new HashMap<>();
 
-    public static HashMap<String, List<PrescribeMedication>> PRESCRIPTION = new HashMap<>();         
+    public static HashMap<String, PrescribeMedication> PRESCRIPTION = new HashMap<>(); // PRESCRIPTUON AND LOGIN NOT
 
     public static HashMap<String, ReplenishRequest> REQUESTS = new HashMap<>();
 
@@ -37,7 +42,7 @@ public class Database {
 
     public static HashMap<String, MedicalRecord> MEDICALRECORD = new HashMap<>();
 
-     public Database() {
+    public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
             System.out.println("Read into Patients failed!");
         }
@@ -72,17 +77,19 @@ public class Database {
 
     }
 
-   /**
+    /**
      * A method to read serialized object from a particular {@link FileType}.
+     * 
      * @param fileType file type to be read.
-     * @return {@code true} if read from file is successful. Otherwise, {@code false}.
+     * @return {@code true} if read from file is successful. Otherwise,
+     *         {@code false}.
      */
-     private static boolean readSerializedObject(FileType fileType) {
+    private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
-        
-         try(FileInputStream fileInputStream = new FileInputStream(filePath);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+
+        try (FileInputStream fileInputStream = new FileInputStream(filePath);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             if (fileType == FileType.PATIENTS) {
                 PATIENTS = (HashMap<String, Patient>) objectInputStream.readObject();
@@ -90,8 +97,8 @@ public class Database {
                 STAFF = (HashMap<String, Staff>) objectInputStream.readObject();
             } else if (fileType == FileType.MEDICATION) {
                 MEDICATION = (HashMap<String, Medication>) objectInputStream.readObject();
-            }else if (fileType == FileType.REQUESTS) {
-                REQUESTS = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
+            } else if (fileType == FileType.REQUESTS) {
+                REQUEST = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
             } else if (fileType == FileType.APPOINTMENTS) {
                 APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
             } else if (fileType == FileType.PRESCRIPTIONS) {
@@ -108,15 +115,18 @@ public class Database {
         }
         return true;
     }
+
     /**
      * A method to write serialized object to file.
+     * 
      * @param fileType file type to write into.
-     * @return {@code true} if write to file is successful. Otherwise, {@code false}.
+     * @return {@code true} if write to file is successful. Otherwise,
+     *         {@code false}.
      */
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
-        
+
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
@@ -132,7 +142,7 @@ public class Database {
             } else if (fileType == FileType.APPOINTMENTS) {
                 objectOutputStream.writeObject(APPOINTMENT);
             } else if (fileType == FileType.REQUESTS) {
-                objectOutputStream.writeObject(REQUESTS);
+                objectOutputStream.writeObject(REQUEST);
             }
 
             objectOutputStream.close();
@@ -144,37 +154,36 @@ public class Database {
         }
     }
 
-
-        /**
+    /**
      * A method to clear out all the data in database.
+     * 
      * @return {@code true} if data is cleared successfully.
      */
-     public static boolean clearDatabase() {
-         PATIENTS = new HashMap<String, Patient>();
-         writeSerializedObject(FileType.PATIENTS);
+    public static boolean clearDatabase() {
+        PATIENTS = new HashMap<String, Patient>();
+        writeSerializedObject(FileType.PATIENTS);
 
-         STAFF = new HashMap<String, Staff>();
-         writeSerializedObject(FileType.STAFF);
+        STAFF = new HashMap<String, Staff>();
+        writeSerializedObject(FileType.STAFF);
 
-         MEDICATION = new HashMap<String, Medication>();
-         writeSerializedObject(FileType.MEDICATION);
+        MEDICATION = new HashMap<String, Medication>();
+        writeSerializedObject(FileType.MEDICATION);
 
-         REQUESTS = new HashMap<String, ReplenishRequest>();
-         writeSerializedObject(FileType.REQUESTS);
+        REQUEST = new HashMap<String, ReplenishRequest>();
+        writeSerializedObject(FileType.REQUESTS);
 
-         PRESCRIPTION = new HashMap<String, List<PrescribeMedication>>();
-         writeSerializedObject(FileType.APPOINTMENTS);
+        PRESCRIPTION = new HashMap<String, PrescribeMedication>();
+        writeSerializedObject(FileType.APPOINTMENTS);
 
-         APPOINTMENT = new HashMap<String, Appointment>();
-         writeSerializedObject(FileType.APPOINTMENTS);
+        APPOINTMENT = new HashMap<String, Appointment>();
+        writeSerializedObject(FileType.APPOINTMENTS);
 
-         return true;
-         
-     }
+        return true;
 
-    
-     //Update the initialize everything here (Managers appropriately yea)
-    
+    }
+
+    // Update the initialize everything here (Managers appropriately yea)
+
     public static boolean initializeDummyPatients() {
         if (PATIENTS.size() != 0) {
             System.out.println("The database already has patients. Reset database first to initialize patients");
@@ -189,10 +198,8 @@ public class Database {
             System.out.println("The database already has staff. Reset database first to initialize staff");
             return false;
         }
-        StaffManager.createDummyStaff();
+        StaffManager.initializeDummyStaff();
         return true;
     }
-
-
 
 }
