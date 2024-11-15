@@ -4,8 +4,6 @@ import src.controller.InventoryManager;
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
-import src.model.Appointment;
-import src.model.Staff;
 import src.model.enums.*;
 import src.helper.*;
 
@@ -266,7 +264,7 @@ public void viewAppointmentDetails(String hospitalID){
         System.out.println("(1) View Upcoming Appointments");
         System.out.println("(2) View All Appointments");
         System.out.println("(3) Back ");
-        choice = Helper.readInt(1, 6);
+        choice = Helper.readInt(1, 3);
         switch(choice) {
             case 1:
                 AppointmentManager.viewScheduledAppointments(hospitalID, choice);
