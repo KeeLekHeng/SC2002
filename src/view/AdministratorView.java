@@ -39,9 +39,7 @@ public class AdministratorView extends MainView {
                     break;
                 case 2:
                     //View appointment details
-                    //AppointmentManager.viewScheduledAppointments();
-
-
+                    viewAppointmentDetails(hospitalID);
                     ;
                     break;
                 case 3:
@@ -54,8 +52,10 @@ public class AdministratorView extends MainView {
                     //Approve replenishment requests
                     //approveReplenishmentRequest();
                     //check with kee
-                    PrescriptionManager.getPendingRequests(); //this is a loop
-                    PrescriptionManager.printReplenishRequest(null); //this is just one
+                    PrescriptionManager.getPendingRequests(); 
+                    //loop body
+                    PrescriptionManager.printReplenishRequest(null); 
+                    
                     //PrescriptionManager.approveReplenishRequest();
                     break;
                 case 5:
@@ -256,6 +256,29 @@ public class AdministratorView extends MainView {
             }
         } while (opt != 3);
     }
+    //////////////////viewAppointmentDetails()////////////////////
+public void viewAppointmentDetails(String hospitalID){
+    int choice;
+    do {
+        Helper.clearScreen();
+        printBreadCrumbs("Main Menu > View Appointment Details");
+        System.out.println("What would you like to do ?");
+        System.out.println("(1) View Upcoming Appointments");
+        System.out.println("(2) View All Appointments");
+        System.out.println("(3) Back ");
+        choice = Helper.readInt(1, 6);
+        switch(choice) {
+            case 1:
+                AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                break;
+            case 2:
+                AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                break;
+            case 3:
+                break;
+            default: System.out.println("Invalid Choice");
+        }
+    } while (choice != 3);
+    }
 }
-
 
