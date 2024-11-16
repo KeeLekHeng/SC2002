@@ -188,7 +188,6 @@ public class AppointmentManager {
     public static void viewScheduledAppointments(String hospitalID, int attributeCode){
         List<Appointment> appointmentList = new ArrayList<Appointment>();
         LocalDateTime currentDateTime = LocalDateTime.now();
-
             //patient or Doctor or Admin
         switch(attributeCode){
             case 1:

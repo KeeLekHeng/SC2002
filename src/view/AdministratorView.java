@@ -1,9 +1,13 @@
+//notes
+//approve replenishment request is buggy
+//view staff only show correct ID
+//database not showing
+
 package src.view;
 import java.util.List;
 import src.controller.AppointmentManager;
 import src.controller.InventoryManager;
 import src.controller.LoginManager;
-import src.controller.PatientManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
 import src.database.Database;
@@ -426,10 +430,16 @@ public void viewAppointmentDetails(String hospitalID){
         choice = Helper.readInt(1, 3);
         switch(choice) {
             case 1:
+                Helper.clearScreen();
+                printBreadCrumbs("Main Menu > View Appointment Details");
                 AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                Helper.pressAnyKeyToContinue();
                 break;
             case 2:
+                Helper.clearScreen();
+                printBreadCrumbs("Main Menu > View Appointment Details");
                 AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                Helper.pressAnyKeyToContinue();
                 break;
             case 3:
                 break;
