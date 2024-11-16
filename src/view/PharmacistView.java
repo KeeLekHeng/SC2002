@@ -1,3 +1,5 @@
+//view appointment outcome record is bugged
+
 package src.view;
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
@@ -32,19 +34,18 @@ public class PharmacistView extends MainView {
                 case 1:
                     //View appointment outcome record
                     PrescriptionManager.viewRecentAppointmentOutcomeRecord();
-
+                    Helper.pressAnyKeyToContinue();
                     ;
                     break;
                 case 2:
                     //Update prescription status
                     updatePrescriptionStatus();
-
-
                     ;
                     break;
                 case 3:
                     //View medication inventory
                     PrescriptionManager.viewMedicationInventory();
+                    Helper.pressAnyKeyToContinue()
                     ;
                     break;
                 case 4:
@@ -56,6 +57,7 @@ public class PharmacistView extends MainView {
                     System.out.println("Enter the quantity: ");
                     int quantity = Helper.readInt(1, 100);
                     PrescriptionManager.submitReplenishRequest(hospitalID, medicationName, quantity);
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 5:
                     //Change password
@@ -76,12 +78,15 @@ public void updatePrescriptionStatus() {
     printBreadCrumbs("Main Menu > Update Prescription Status");
     System.out.print("Enter the prescription ID: ");
                     String prescriptionID = Helper.readString();
-                    
+                    if(PrescriptionManager.searchPrescriptionById(prescriptionID) == null){
+                        System.out.println("Prescription not found.");
+                        Helper.pressAnyKeyToContinue();
+                        return;
+                    }
                     System.out.println("Select an action:");
                     System.out.println("1. Dispense");
                     System.out.println("2. Back");
                     int action = Helper.readInt();
-
                     boolean success;
                     if (action == 1) {
                         // Attempt to dispense
