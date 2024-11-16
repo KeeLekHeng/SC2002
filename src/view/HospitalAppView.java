@@ -11,7 +11,7 @@ public class HospitalAppView extends MainView {
 
     public String userLogin() {
         Helper.clearScreen();
-        printBreadCrumbs("Main Menu");
+        printBreadCrumbs("User Login");
         boolean isLoginSuccessful = false;
         System.out.println("Please enter your username and password to login");
         String password = "";

@@ -2,7 +2,6 @@ package src.model.enums;
 
 /**
  * Enum representing the employment status of an individual.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -26,7 +25,6 @@ public enum EmploymentStatus {
 
     /**
      * Constructor for the EmploymentStatus Enum.
-     * 
      * @param employmentStatusAsStr Employment status as a string
      */
     private EmploymentStatus(String employmentStatusAsStr) {

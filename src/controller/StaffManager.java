@@ -76,6 +76,7 @@ public class StaffManager {
                     break;
             }
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -98,6 +99,7 @@ public class StaffManager {
                     break;
             }
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -120,6 +122,7 @@ public class StaffManager {
                     break;
             }
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -142,6 +145,7 @@ public class StaffManager {
                     break;
             }
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -161,6 +165,7 @@ public class StaffManager {
                 return false;
             }
         }
+        Database.STAFF.remove(staffId);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -211,6 +216,11 @@ public class StaffManager {
         // copy
         for (Staff staff : Database.STAFF.values()) {
             sortedList.add(staff);
+        }
+
+        if (sortedList.isEmpty()){
+            System.out.println("There is no staff in database");
+            return;
         }
         // if (byId) {
         // for (int index = 1; index < sortedList.size(); index++) {

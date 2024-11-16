@@ -16,7 +16,9 @@ import src.helper.Helper;
 import src.model.AppOutcomeRecord;
 import src.model.Appointment;
 import src.model.AppointmentSlot;
+import src.model.Patient;
 import src.model.PrescribeMedication;
+import src.model.Staff;
 import src.model.TimeSlot;
 import src.model.enums.AppointmentStatus;
 import src.model.enums.PrescribeStatus;
@@ -29,12 +31,29 @@ public class AppointmentManager {
 
     }
 
+    public static void getDoctorList(){
+        List<Staff> doctorList = new ArrayList<Staff>();
+        for(Staff staff : Database.STAFF.values()){
+            String staffID = staff.getId();
+            if (staffID.startsWith("D") && staffID.substring(1).matches("\\d{3}")){
+                doctorList.add(staff);
+            }
+        }
+        int numberOfDoctors = doctorList.size();
 
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        System.out.println("Our hospital has " + numberOfDoctors + " doctors. Doctors List:");
+        for (Staff staff : doctorList){
+            System.out.println("Name: " + staff.getName() + " , DoctorID: " + staff.getId());
+        }
+        System.out.println(String.format("%-40s", "").replace(" ", "-")); 
+    }
+    
     //timeSlots in a day
     public static List<TimeSlot> generateTimeSlots(LocalDate date){
         final int startHour = 12;
         final int endHour = 5;
-        final int slotDuration = 30;
+        final int slotDuration = 59;
 
         List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
         for (int hour = startHour; hour <= endHour; hour++){
@@ -45,10 +64,10 @@ public class AppointmentManager {
         return timeSlots;
     }
 
-    public List<AppointmentSlot> getAvailableSlotsByDoctor(LocalDate date, String doctorID){
+    public static List<AppointmentSlot> getAvailableSlotsByDoctor(LocalDate newDateTime, String doctorID){
         List<AppointmentSlot> availableSlots = new ArrayList<AppointmentSlot>();
 
-        for (TimeSlot slot: generateTimeSlots(date)){
+        for (TimeSlot slot: generateTimeSlots(newDateTime)){
             if (isAppointmentSlotAvailable(slot, doctorID)){
                 availableSlots.add(new AppointmentSlot(doctorID, slot));
             }
@@ -147,6 +166,7 @@ public class AppointmentManager {
 
         //check if got appointment then or not and u are the patient
         if(!validateAppointmentOwnership(appointmentID, patientID)){
+            System.out.println("You do not have an appointment with this AppointmentID:" + appointmentID);
             return false;
         }
         
@@ -162,15 +182,15 @@ public class AppointmentManager {
             Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
             return true;
         } else {
+            System.out.println("Appointment is not cancelled");
             return false;
         } 
     }
 
     //do a if for 3 roles. attribute code   [1. for upcoming, 2. for all]
-    public static void viewScheduledAppointments(String hospitalID, int attributeCode){
+    public static boolean viewScheduledAppointments(String hospitalID, int attributeCode){
         List<Appointment> appointmentList = new ArrayList<Appointment>();
         LocalDateTime currentDateTime = LocalDateTime.now();
-
             //patient or Doctor or Admin
         switch(attributeCode){
             case 1:
@@ -210,12 +230,19 @@ public class AppointmentManager {
                 }
                 break;
             default:
-                return;
+                return false;
         }
-        System.out.println("Upcoming appointments:");
-        for (Appointment appointment : appointmentList){
+        if (!appointmentList.isEmpty()){
+            System.out.println("Here are your scheduled appointments:");
+            for (Appointment appointment : appointmentList){
             printAppointmentDetails(appointment);
+            return true;
             }
+        } else {
+            System.out.println("No appointments scheduled");
+            return false;
+        }
+        return false;
     }
 
 
@@ -310,7 +337,15 @@ public class AppointmentManager {
         return true;
     }
     
-
+    public static Appointment searchAppointmentByID(String appointmentID) {
+            // Check if the appointmentID exists in the database
+            if (Database.APPOINTMENT.containsKey(appointmentID)) {
+                return Database.APPOINTMENT.get(appointmentID);
+            } else {
+                // Return null if appointment is not found
+                return null;
+            }
+        }
     //need to make a list of Prescribed Medication before passing it into this function
     public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
         

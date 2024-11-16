@@ -2,7 +2,6 @@ package src.model.enums;
 
 /**
  * Enum representing different roles in the system.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -36,7 +35,6 @@ public enum Role {
 
     /**
      * Constructor for the Role Enum.
-     * 
      * @param RoleAsStr Role type as a string
      */
     private Role(String RoleAsStr) {

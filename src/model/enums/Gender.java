@@ -2,7 +2,6 @@ package src.model.enums;
 
 /**
  * Enum representing the gender of an individual.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -26,7 +25,6 @@ public enum Gender {
 
     /**
      * Constructor for the Gender Enum.
-     * 
      * @param genderAsStr Gender as a string
      */
     private Gender(String genderAsStr) {

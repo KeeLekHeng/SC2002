@@ -39,7 +39,7 @@ public class PrescriptionManager {
 
 
         int rid = Helper.generateUniqueId(Database.REQUESTS);
-        String requestID = String.format("R%05d", rid);
+        String requestID = String.format("R%04d", rid);
         ReplenishRequest replenishRequest = new ReplenishRequest(pharmacistID, requestID, medicationName, medicationAmount);
 
         Database.REQUESTS.put(requestID, replenishRequest);
@@ -154,6 +154,7 @@ public class PrescriptionManager {
         return medication.getStock() <= medication.getLowStockAlert();
     }
 
+    //from pharmacist to doctor
     public static ArrayList<List<PrescribeMedication>> getPendingRequests(){
         ArrayList<List<PrescribeMedication>> prescribeRequestList = new ArrayList<>();
 
@@ -166,8 +167,12 @@ public class PrescriptionManager {
                 }
             }
         }
-
-        return prescribeRequestList;
+        if (!prescribeRequestList.isEmpty()){
+            return prescribeRequestList;
+            } else {
+            System.out.println("No Pending Prescriptions to settle .");
+            return null;
+        }
     }
 
     public static List<PrescribeMedication> searchPrescriptionById(String prescriptionID) {

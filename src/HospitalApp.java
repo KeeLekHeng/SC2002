@@ -1,17 +1,23 @@
 package src;
 
+import src.database.Database;
 import src.helper.Helper;
 import src.view.HospitalAppView;
 
 public class HospitalApp {
     public static void main(String[] args) {
-        Helper.clearScreen();
-        printHMSTitle();
-        Helper.pressAnyKeyToContinue();
-        String hospitalID = "";
-        HospitalAppView hospitalAppView = new HospitalAppView();
-        hospitalID = hospitalAppView.userLogin();
-        hospitalAppView.viewApp(hospitalID);
+        while(true){
+                Helper.clearScreen();
+                printHMSTitle();
+                Helper.pressAnyKeyToContinue();
+                String hospitalID = "";
+                HospitalAppView hospitalAppView = new HospitalAppView();
+                hospitalID = hospitalAppView.userLogin();
+                hospitalAppView.viewApp(hospitalID);
+                Database.saveAllFiles();
+                System.out.println("Thank you for using Hospital Management System");
+                Helper.pressAnyKeyToContinue();
+        }
     }
 
     private static void printHMSTitle() {

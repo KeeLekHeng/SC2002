@@ -2,6 +2,7 @@ package src.helper;
 
 //REMOVE STUFF WE DONT NEED + ADD STUFF WE NEED
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -201,6 +202,32 @@ public class Helper {
     }
 
     /**
+     * Method to set the date for either current date or user input date without time
+     * 
+     * @return String object for the date in the format "yyyy-MM-dd"
+     */
+    public static String setDateOnly() {
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        System.out.println("Please enter the date in this format: 'yyyy-MM-dd'");
+        String date = sc.nextLine();
+        try {
+            LocalDateTime Date = LocalDateTime.parse(date, format);
+            date = format.format(Date);
+            if (validateDate(date, format)) {
+                return date;
+
+            } else {
+                System.out.println("Invalid Date");
+            }
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid Date format");
+        }
+        return "";
+    }
+
+    /**
      * Method to parse a string date in a format
      * 
      * @param date   Date in string
@@ -210,6 +237,18 @@ public class Helper {
      */
     public static LocalDateTime getDate(String date, DateTimeFormatter format) {
         return LocalDateTime.parse(date, format);
+    }
+
+    /**
+     * Method to parse a string date in a format
+     * 
+     * @param date   Date in string
+     * @param format {@link DateTimeFormatter} object for formatting of dates
+     * @return {@link LocalDateTime} object after parsing the string date with the
+     *         formatter
+     */
+    public static LocalDate getDateOnly(String date, DateTimeFormatter format) {
+        return LocalDate.parse(date, format);
     }
 
     /**
