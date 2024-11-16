@@ -154,6 +154,7 @@ public class PrescriptionManager {
         return medication.getStock() <= medication.getLowStockAlert();
     }
 
+    //from pharmacist to doctor
     public static ArrayList<List<PrescribeMedication>> getPendingRequests(){
         ArrayList<List<PrescribeMedication>> prescribeRequestList = new ArrayList<>();
 

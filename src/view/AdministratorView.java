@@ -1,9 +1,14 @@
 package src.view;
+import java.util.ArrayList;
+import java.util.List;
+
 import src.controller.AppointmentManager;
 import src.controller.InventoryManager;
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
+import src.model.PrescribeMedication;
+import src.model.ReplenishRequest;
 import src.model.enums.*;
 import src.helper.*;
 
@@ -48,13 +53,7 @@ public class AdministratorView extends MainView {
                     break;
                 case 4:
                     //Approve replenishment requests
-                    //approveReplenishmentRequest();
-                    //check with kee
-                    PrescriptionManager.getPendingRequests(); 
-                    //loop below
-                    PrescriptionManager.printReplenishRequest(null); 
-                    
-                    //PrescriptionManager.approveReplenishRequest();
+                    approveReplenishmentRequest();
                     break;
                 case 5:
                     LoginManager.createNewPassword(hospitalID);
@@ -177,7 +176,34 @@ public class AdministratorView extends MainView {
 
     //////////////////////approveReplenishmentRequest()/////////////////////
     public void approveReplenishmentRequest() {
-        PrescriptionManager.printPrescriptionRequest(null);
+        PrescriptionManager prescriptionManager = new PrescriptionManager();
+        Helper.clearScreen();
+        printBreadCrumbs("Main Menu > Approve Replenishment Requests");
+        //loop below
+        List <ReplenishRequest> replenishRequests = PrescriptionManager.getReplenishRequests();
+        for (ReplenishRequest request : replenishRequests) {
+            PrescriptionManager.printReplenishRequest(request); // Call the static method
+            //updatePrescriptionStatus(String prescriptionID, int attributeCode)
+            System.out.println("Do you want to approve this request?");
+            System.out.println("(1) Approve");
+            System.out.println("(2) Skip");
+            System.out.println("(3) Back");
+            int opt = Helper.readInt(1, 3);
+            switch(opt) {
+                case 1:
+                    //Approve
+                    prescriptionManager.updatePrescriptionStatus(request.getRequestID(), 1);
+                    break;
+                case 2:
+                    //Skip
+                    prescriptionManager.updatePrescriptionStatus(request.getRequestID(), 2);
+                    break;
+                case 3:
+                    break;
+            }
+            System.out.println("All request processed");
+        } 
+
     }
 
 
