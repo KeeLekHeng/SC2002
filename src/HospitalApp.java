@@ -20,8 +20,7 @@ public class HospitalApp {
      * The method loops indefinitely to handle user login and system interaction.
      * It clears the screen, displays the hospital management system title screen, 
      * and provides the login interface. After the user logs in, the app saves all files 
-     * and thanks the user before prompting them to press any key to continue or exit.
-     * 
+     * and thanks the user before prompting them to press any key to continue or exit.x
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
