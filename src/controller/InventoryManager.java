@@ -10,6 +10,7 @@ import src.model.enums.RequestStatus;
 import src.database.Database;
 import src.database.FileType;
 import src.helper.Helper;
+import src.model.Appointment;
 import src.model.Medication;
 import src.model.PrescribeMedication;
 import src.model.ReplenishRequest;
@@ -107,14 +108,20 @@ public class InventoryManager {
                 replenishList.add(replenishRequest);
             }
         }
-        return replenishList;
+
+        if (!replenishList.isEmpty()){
+            return replenishList;
+            } else {
+            System.out.println("No Pending Replenish Requests.");
+            return null;
+        }
+        
     }
 
     //approve or reject (ID or Reuqest)
     public static boolean updateReplenishRequests(String requestID, int attributeCode){
 
-        ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);  
-        String medicationName = requestToUpdate.getMedicationName();     
+        ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);     
         Medication medicationToUpdate = null;
         String medicineID = requestToUpdate.getMedicineID();
         int amount;
@@ -166,9 +173,13 @@ public class InventoryManager {
             medicationList.add(medication);
         }
 
-        //print
-        for (Medication medication : medicationList) {
+        if (!medicationList.isEmpty()){
+            System.out.println("Medications in inventory:");
+            for (Medication medication : medicationList){
             printMedicationDetails(medication);
+            }
+        } else {
+            System.out.println("No medications in storage");
         }
     }
 

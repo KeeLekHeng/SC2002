@@ -63,10 +63,10 @@ public class AppointmentManager {
         return timeSlots;
     }
 
-    public List<AppointmentSlot> getAvailableSlotsByDoctor(LocalDate date, String doctorID){
+    public static List<AppointmentSlot> getAvailableSlotsByDoctor(LocalDate newDateTime, String doctorID){
         List<AppointmentSlot> availableSlots = new ArrayList<AppointmentSlot>();
 
-        for (TimeSlot slot: generateTimeSlots(date)){
+        for (TimeSlot slot: generateTimeSlots(newDateTime)){
             if (isAppointmentSlotAvailable(slot, doctorID)){
                 availableSlots.add(new AppointmentSlot(doctorID, slot));
             }
@@ -165,6 +165,7 @@ public class AppointmentManager {
 
         //check if got appointment then or not and u are the patient
         if(!validateAppointmentOwnership(appointmentID, patientID)){
+            System.out.println("You do not have an appointment with this AppointmentID:" + appointmentID);
             return false;
         }
         
@@ -180,6 +181,7 @@ public class AppointmentManager {
             Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
             return true;
         } else {
+            System.out.println("Appointment is not cancelled");
             return false;
         } 
     }
