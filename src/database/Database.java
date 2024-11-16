@@ -189,7 +189,7 @@ public class Database {
     }
 
     public static boolean initializeDummyStaff() {
-        if (STAFF.size() != 0) {
+        if (!Database.STAFF.isEmpty()) {
             System.out.println("The database already has staff. Reset database first to initialize staff");
             return false;
         }
@@ -198,6 +198,11 @@ public class Database {
     }
 
     public static boolean initializeDummyAdmin(){
+        if (!Database.STAFF.isEmpty()) {
+            System.out.println("The database already has staff. Reset database first to initialize staff");
+            return false;
+        }
+
         StaffManager.createStaff("Admin Boss", Gender.MALE, 40, Role.ADMINISTRATOR);
         return true;
     }

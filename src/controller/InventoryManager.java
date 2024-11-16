@@ -28,7 +28,7 @@ public class InventoryManager {
 
     public static void addNewMedication(String name, int stock, int lowStockAlert){
         int mid = Helper.generateUniqueId(Database.MEDICATION);
-        String medicineID = String.format("M%05d", mid);
+        String medicineID = String.format("M%04d", mid);
         Medication newMedication = new Medication(name.toLowerCase(), medicineID, stock, lowStockAlert);
 
         //Do we need a unique medID? if need make a new medID generator then update all functions

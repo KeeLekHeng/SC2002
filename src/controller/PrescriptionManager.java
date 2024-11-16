@@ -39,7 +39,7 @@ public class PrescriptionManager {
 
 
         int rid = Helper.generateUniqueId(Database.REQUESTS);
-        String requestID = String.format("R%05d", rid);
+        String requestID = String.format("R%04d", rid);
         ReplenishRequest replenishRequest = new ReplenishRequest(pharmacistID, requestID, medicationName, medicationAmount);
 
         Database.REQUESTS.put(requestID, replenishRequest);
