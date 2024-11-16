@@ -9,7 +9,6 @@ import src.controller.StaffManager;
 import src.controller.InventoryManager;
 import src.controller.PrescriptionManager;
 import src.controller.AppointmentManager;
-import src.controller.MedicalRecordManager;
 import src.controller.LoginManager;
 import src.model.*;
 
@@ -22,6 +21,11 @@ import src.model.*;
  * Since: 2024-10-17
  */
 public class Database {
+
+    /**
+     * The folder name to contain .dat files.
+     */
+    private static final String folder = "data";
     
     public static HashMap<String, Patient> PATIENTS = new HashMap<>();
     
@@ -34,8 +38,6 @@ public class Database {
     public static HashMap<String, ReplenishRequest> REQUESTS = new HashMap<>();
 
     public static HashMap<String, Appointment> APPOINTMENT = new HashMap<>();
-
-    public static HashMap<String, MedicalRecord> MEDICALRECORD = new HashMap<>();
 
      public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
