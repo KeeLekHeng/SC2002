@@ -6,7 +6,9 @@ import src.controller.LoginManager;
 import src.controller.PatientManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
+import src.database.Database;
 import src.model.ReplenishRequest;
+import src.model.Staff;
 import src.model.enums.*;
 import src.helper.*;
 
@@ -17,6 +19,8 @@ public class AdministratorView extends MainView {
 
     @Override
     public void printMenu() {
+        Helper.clearScreen();
+        printBreadCrumbs("Main Menu");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View and Manage Hospital Staff"); //done
         System.out.println("(2) View Appointments details"); 
@@ -28,11 +32,11 @@ public class AdministratorView extends MainView {
 
     @Override
     public void viewApp(String hospitalID) {
-        int opt;
+        int mainOpt;
         do {
             printMenu();
-            opt = Helper.readInt(1, 6);
-            switch (opt) {
+            mainOpt = Helper.readInt(1, 6);
+            switch (mainOpt) {
                 case 1:
                     //View and manage hospital staff
                     viewAndManageStaff(hospitalID);
@@ -60,7 +64,7 @@ public class AdministratorView extends MainView {
                     //Logout
                     break;
             }
-        } while (opt != 6);
+        } while (mainOpt != 6);
     }
 ////////////////////////////// View and Manage Staff //////////////////////////////
     public void viewAndManageStaff(String hospitalID) {
@@ -74,10 +78,10 @@ public class AdministratorView extends MainView {
         System.out.println("(5) Initialize Dummy Staff");
         System.out.println("(6) Initialize Dummy Patients");
         System.out.println("(7) Back");
-        int opt;
+        int subOpt;
         do {
-            opt = Helper.readInt(1, 6);
-            switch (opt) {
+            subOpt = Helper.readInt(1, 7);
+            switch (subOpt) {
                 case 1:
                     //View Staff Details
                     //print all staff details
@@ -92,27 +96,33 @@ public class AdministratorView extends MainView {
                     System.out.println("(4) View Staff by Gender");
                     System.out.println("(5) View Staff by Role");
                     System.out.println("(6) Back");
-                    int choice = Helper.readInt(1, 5);
+                    int choice = Helper.readInt(1, 6);
                     switch(choice) {
                         case 1:
                             StaffManager.printAllStaff(true);
-                            break;
+                            Helper.pressAnyKeyToContinue();
+                            return;
                         case 2:
                             StaffManager.printAllStaff(false);
-                            break;
+                            Helper.pressAnyKeyToContinue();
+                            return;
                         case 3:
-                            StaffManager.viewStaff(choice-2);
-                            break;
+                            StaffManager.viewStaff(choice-2);                            
+                            Helper.pressAnyKeyToContinue();
+                            return;
                         case 4:
                             StaffManager.viewStaff(choice-2);
-                            break;
+                            Helper.pressAnyKeyToContinue();
+                            return;
                         case 5:
                             StaffManager.viewStaff(choice-2);
-                            break;
+                            Helper.pressAnyKeyToContinue();
+                            return;
                         case 6:
-                            break;
-                        default: System.out.println("Invalid Choice");
+                            return;
+                        default: System.out.println("Unexpected error occurred. Please try again.");
                     }
+                    break;
                 case 2:
                     //Create Staff
                     //createStaff(String name, Gender gender, int age, Role role, String password) 
@@ -124,17 +134,23 @@ public class AdministratorView extends MainView {
                     System.out.println("(1) Doctor");
                     System.out.println("(2) Administrator");
                     System.out.println("(3) Pharmacist");
-                    opt = Helper.readInt(1, 3);
+                    System.out.println("(4) Back");
+                    int opt = Helper.readInt(1, 4);
                     if(opt == 1) {
                         role = Role.DOCTOR;
                     } else if(opt == 2) {
                         role = Role.ADMINISTRATOR;
-                    } else {
+                    } else if(opt == 3) {
                         role = Role.PHARMACIST;
+                    }else{
+                        break;
                     }
-                
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Create Staff");
                     System.out.println("Enter Staff Name: ");
                     String name = Helper.readString();
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Create Staff");
                     System.out.println("Select Gender");
                     System.out.println("(1) Male");
                     System.out.println("(2) Female");
@@ -144,36 +160,149 @@ public class AdministratorView extends MainView {
                     } else {
                         gender = Gender.FEMALE;
                     }
-                    
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Create Staff");
                     System.out.println("Enter Staff Age: ");
                     int age = Helper.readInt(1, 100);
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Create Staff");
                     StaffManager.createStaff(name, gender, age, role);
-                    break;
+                    Helper.pressAnyKeyToContinue();
+                    return;
                 case 3:
                     //Update Staff Details
                     //enter staff id den will display staff details, can select which attribute to update
+                    do {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Update Staff Details");
-                    StaffManager.printStaffDetails(hospitalID);
-                    break;
+                    System.out.println("Enter Staff ID to Update: ");
+                    String updateID = Helper.readString();
+                    Staff staff = StaffManager.searchStaffById(updateID);
+                    if(staff == null) {
+                        System.out.println("Staff not found");
+                        Helper.pressAnyKeyToContinue();
+                        opt = 5;
+                        return;
+                    }
+                    StaffManager.printStaffDetails(updateID);
+                    System.out.println("What would you like to update: ");
+                    System.out.println("(1) Name");
+                    System.out.println("(2) Age");
+                    System.out.println("(3) Gender");
+                    System.out.println("(4) Role");
+                    System.out.println("(5) Back");
+                    opt = Helper.readInt(1, 5);
+                        switch(opt) {
+                            case 1:
+                                System.out.println("Enter New Name: ");
+                                String newName = Helper.readString();
+                                if(StaffManager.updateStaff(updateID, 1, newName)){
+                                    System.out.println("Staff Updated");
+                                }else{
+                                    System.out.println("Staff not found");
+                                }
+                                Helper.pressAnyKeyToContinue();
+                                return;
+                            case 2:
+                                System.out.println("Enter New Age: ");
+                                int newAge = Helper.readInt(1, 120);
+                                if(StaffManager.updateStaff(updateID, 2, newAge)){
+                                    System.out.println("Staff Updated");
+                                }else{
+                                    System.out.println("Staff not found");
+                                }
+                                Helper.pressAnyKeyToContinue();
+                                return;
+                            case 3:
+                                selectGender();
+                                Helper.pressAnyKeyToContinue();
+                                return;
+                            case 4:
+                                selectRole();
+                                Helper.pressAnyKeyToContinue();
+                                return;
+                            case 5:
+                                break;
+                        }
+                    } while (opt != 5);
+                    return;
                 case 4:
                     //Remove Staff
                     //enter staff id to remove
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Remove Staff");
-                    StaffManager.removeStaff(hospitalID);
-                    break;
+                    System.out.println("Enter Staff ID to Remove: ");
+                    String removeID = Helper.readString();
+                    if(StaffManager.removeStaff(removeID)){
+                        System.out.println("Staff Removed");
+                    }else{
+                        System.out.println("Staff not found");
+                    }
+                    return;
                 case 5: 
-                    StaffManager.createDummyStaff();
-                    break;
+                    Helper.clearScreen();
+                    if(initializeStaff()) {
+                        System.out.println("Dummy Staff Initialized");
+                    }else{
+                        System.out.println("Dummy Staff not Initialized");
+                    }
+                    Helper.pressAnyKeyToContinue();
+                    return;
                 case 6:
-                    PatientManager.initializeDummyPatients();
-                    ;
+                    Helper.clearScreen();
+                    if(initializeDummyPatients()) {
+                        System.out.println("Dummy Patients Initialized");
+                    }else{
+                        System.out.println("Dummy Patients not Initialized");
+                    }
+                    Helper.pressAnyKeyToContinue();
+                    return;
                 case 7:
                     break;
             }
-        } while (opt != 5);
+        } while (subOpt != 7);
     }
+
+    private boolean initializeStaff() {
+        return Database.initializeDummyStaff();
+    }
+
+    private boolean initializeDummyPatients() {
+        return Database.initializeDummyPatients();
+    }
+
+    private boolean selectGender() {
+        System.out.println("Select Gender:");
+        System.out.println("(1) Male");
+        System.out.println("(2) Female");
+        int genderOpt = Helper.readInt(1, 2); 
+        if (genderOpt == 1 || genderOpt == 2) {
+            Gender selectedGender = (genderOpt == 1) ? Gender.MALE : Gender.FEMALE;
+            System.out.println("Selected Gender: " + selectedGender);
+            return true; 
+        } else {
+            System.out.println("Invalid gender selection.");
+            return false; 
+        }
+    }
+    
+    private boolean selectRole() {
+        System.out.println("Select Role:");
+        System.out.println("(1) Doctor");
+        System.out.println("(2) Administrator");
+        System.out.println("(3) Pharmacist");
+        int roleOpt = Helper.readInt(1, 3);
+        if (roleOpt >= 1 && roleOpt <= 3) {
+            Role selectedRole = (roleOpt == 1) ? Role.DOCTOR :
+                               (roleOpt == 2) ? Role.ADMINISTRATOR : Role.PHARMACIST;
+            System.out.println("Selected Role: " + selectedRole);
+            return true;
+        } else {
+            System.out.println("Invalid role selection.");
+            return false;
+        }
+    }
+
 
     //////////////////////approveReplenishmentRequest()/////////////////////
     public void approveReplenishmentRequest() {
@@ -183,8 +312,7 @@ public class AdministratorView extends MainView {
         List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
         for (ReplenishRequest request : replenishRequests) {
             String requestID = request.getRequestID();
-            InventoryManager.printReplenishRequest(request); // Call the static method
-            //updatePrescriptionStatus(String prescriptionID, int attributeCode)
+            InventoryManager.printReplenishRequest(request); 
             System.out.println("Do you want to approve this request?");
             System.out.println("(1) Approve");
             System.out.println("(2) Reject");
@@ -212,6 +340,7 @@ public class AdministratorView extends MainView {
 
     public void viewAndManageMedicationInventory() {
         Helper.clearScreen();
+        printBreadCrumbs("Main Menu > View and Manage Medication Inventory");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Medication Inventory");
         System.out.println("(2) Update Medication Stock");
@@ -226,6 +355,8 @@ public class AdministratorView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > View Medication Inventory");
                     PrescriptionManager.viewMedicationInventory();
+                    Helper.pressAnyKeyToContinue();
+                    opt = 3;
                     break;
                 case 2:
                     //Update Medication Stock
@@ -235,6 +366,7 @@ public class AdministratorView extends MainView {
                     System.out.println("Enter Medication ID: ");
                     String medicationID = Helper.readString();
                     boolean found = InventoryManager.updateMedication(medicationID, 0, 0);
+                    int subOpt;
                     if(found) {
                         do {
                             System.out.println("What would you like to update: ");
@@ -243,8 +375,8 @@ public class AdministratorView extends MainView {
                             System.out.println("(3) Set Stock");
                             System.out.println("(4) Set Low Stock Limit");
                             System.out.println("(5) Back");
-                            int choice = Helper.readInt(1, 4);
-                            switch(choice) {
+                            subOpt = Helper.readInt(1, 5);
+                            switch (subOpt) {
                                 case 1:
                                     System.out.println("Enter Quantity to Add: ");
                                     int quantity = Helper.readInt(1, 100);
@@ -266,14 +398,14 @@ public class AdministratorView extends MainView {
                                     InventoryManager.updateMedication(medicationID, 4, quantity);
                                     break;
                                 case 5:
-                                    break;
+                                    break; // Exit the submenu
                             }
-                        } while (opt != 5);
+                        } while (subOpt != 5); // Correctly check submenu exit condition
                     } else {
                         System.out.println("Medication not found");
+                        Helper.pressAnyKeyToContinue();
+                        return;
                     }
-                    
-
                     break;
                 case 3:
                     //Back
