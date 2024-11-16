@@ -43,4 +43,28 @@ public class User implements Serializable {
     public String getId() {
         return this.id;
     }
+
+    /**
+     * Gets the role of the user.
+     * @return the role of the user.
+     */
+    public Role getRole() {
+        return this.role;
+    }
+
+    /**
+     * Gets the password of the user.
+     * @return the password of the user.
+     */
+    public String getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Sets the password of the user.
+     * @param password The new password for the user.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
