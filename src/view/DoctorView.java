@@ -63,6 +63,7 @@ public class DoctorView extends MainView{
                     break;
                 case 4:
                     //Set availability for appointments
+                    
                     break;
                 case 5:
                     //Accept or decline appointment requests
