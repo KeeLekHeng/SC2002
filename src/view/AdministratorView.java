@@ -1,13 +1,11 @@
 package src.view;
-import java.util.ArrayList;
 import java.util.List;
-
 import src.controller.AppointmentManager;
 import src.controller.InventoryManager;
 import src.controller.LoginManager;
+import src.controller.PatientManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
-import src.model.PrescribeMedication;
 import src.model.ReplenishRequest;
 import src.model.enums.*;
 import src.helper.*;
@@ -74,7 +72,8 @@ public class AdministratorView extends MainView {
         System.out.println("(3) Update Staff Details"); //update staff parameter is staff instead of hospitalID
         System.out.println("(4) Remove Staff");
         System.out.println("(5) Initialize Dummy Staff");
-        System.out.println("(6) Back");
+        System.out.println("(6) Initialize Dummy Patients");
+        System.out.println("(7) Back");
         int opt;
         do {
             opt = Helper.readInt(1, 6);
@@ -168,7 +167,9 @@ public class AdministratorView extends MainView {
                     StaffManager.createDummyStaff();
                     break;
                 case 6:
-                    //Back
+                    PatientManager.initializeDummyPatients();
+                    ;
+                case 7:
                     break;
             }
         } while (opt != 5);
@@ -176,27 +177,27 @@ public class AdministratorView extends MainView {
 
     //////////////////////approveReplenishmentRequest()/////////////////////
     public void approveReplenishmentRequest() {
-        PrescriptionManager prescriptionManager = new PrescriptionManager();
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
         //loop below
-        List <ReplenishRequest> replenishRequests = PrescriptionManager.getReplenishRequests();
+        List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
         for (ReplenishRequest request : replenishRequests) {
-            PrescriptionManager.printReplenishRequest(request); // Call the static method
+            String requestID = request.getRequestID();
+            InventoryManager.printReplenishRequest(request); // Call the static method
             //updatePrescriptionStatus(String prescriptionID, int attributeCode)
             System.out.println("Do you want to approve this request?");
             System.out.println("(1) Approve");
-            System.out.println("(2) Skip");
+            System.out.println("(2) Reject");
             System.out.println("(3) Back");
             int opt = Helper.readInt(1, 3);
             switch(opt) {
                 case 1:
                     //Approve
-                    prescriptionManager.updatePrescriptionStatus(request.getRequestID(), 1);
+                    InventoryManager.updateReplenishRequests(requestID, opt);
                     break;
                 case 2:
-                    //Skip
-                    prescriptionManager.updatePrescriptionStatus(request.getRequestID(), 2);
+                    //Reject
+                    InventoryManager.updateReplenishRequests(requestID, opt);
                     break;
                 case 3:
                     break;
