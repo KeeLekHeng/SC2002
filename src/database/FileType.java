@@ -1,10 +1,11 @@
 package src.database;
 
 /**
- * An Enum that corresponds to the different file types that the Hospital Management System will read from and write to.
- * Author: Abarna
- * Version: 1.0
- * Since: 2024-10-17
+ * An enum representing the different file types that the Hospital Management System will read from and write to.
+ * 
+ * @author Abarna
+ * @version 1.0
+ * @since 2024-10-17
  */
 public enum FileType {
     /**
@@ -38,13 +39,14 @@ public enum FileType {
     REQUESTS("Requests");
 
     /**
-     * A String value for the FileType for retrieval purposes.
+     * A string value for the FileType, used for retrieval purposes.
      */
     public final String fileName;
 
     /**
-     * Constructor for the FileType Enum.
-     * @param fileName The name of the file type
+     * Constructor for the FileType enum.
+     * 
+     * @param fileName The name of the file type.
      */
     private FileType(String fileName) {
         this.fileName = fileName;

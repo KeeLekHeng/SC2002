@@ -1,4 +1,5 @@
 package src.database;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
@@ -14,34 +15,33 @@ import src.model.*;
 import src.model.enums.Gender;
 import src.model.enums.Role;
 
-
 /**
  * A class for managing the database operations for the Hospital Management System.
  * This class handles reading from and writing to files.
- * Author: Abarna
- * Version: 1.0
- * Since: 2024-10-17
+ * 
+ * @author Abarna
+ * @version 1.0
+ * @since 2024-10-17
  */
 public class Database {
 
     /**
-     * The folder name to contain .dat files.
+     * The folder name containing the .dat files.
      */
     private static final String folder = "data";
     
     public static HashMap<String, Patient> PATIENTS = new HashMap<>();
-    
     public static HashMap<String, Staff> STAFF = new HashMap<>();
-
     public static HashMap<String, Medication> MEDICATION = new HashMap<>();
-
-    public static HashMap<String, List<PrescribeMedication>> PRESCRIPTION = new HashMap<>();         
-
+    public static HashMap<String, List<PrescribeMedication>> PRESCRIPTION = new HashMap<>();
     public static HashMap<String, ReplenishRequest> REQUESTS = new HashMap<>();
-
     public static HashMap<String, Appointment> APPOINTMENT = new HashMap<>();
 
-     public Database() {
+    /**
+     * Constructs a Database instance and attempts to read serialized objects
+     * into the corresponding fields for various data types.
+     */
+    public Database() {
         if (!readSerializedObject(FileType.PATIENTS)) {
             System.out.println("Read into Patients failed!");
         }
@@ -62,10 +62,18 @@ public class Database {
         }
     }
 
+    /**
+     * Saves a specific file type into the database.
+     * 
+     * @param fileType The type of file to save.
+     */
     public static void saveFileIntoDatabase(FileType fileType) {
         writeSerializedObject(fileType);
     }
 
+    /**
+     * Saves all file types into the database.
+     */
     public static void saveAllFiles() {
         saveFileIntoDatabase(FileType.PATIENTS);
         saveFileIntoDatabase(FileType.STAFF);
@@ -73,19 +81,19 @@ public class Database {
         saveFileIntoDatabase(FileType.REQUESTS);
         saveFileIntoDatabase(FileType.APPOINTMENTS);
         saveFileIntoDatabase(FileType.PRESCRIPTIONS);
-
     }
 
-   /**
-     * A method to read serialized object from a particular {@link FileType}.
-     * @param fileType file type to be read.
-     * @return {@code true} if read from file is successful. Otherwise, {@code false}.
+    /**
+     * Reads a serialized object from the specified {@link FileType}.
+     * 
+     * @param fileType The type of file to read.
+     * @return {@code true} if the file is read successfully, otherwise {@code false}.
      */
-     private static boolean readSerializedObject(FileType fileType) {
+    private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
         
-         try(FileInputStream fileInputStream = new FileInputStream(filePath);
+        try (FileInputStream fileInputStream = new FileInputStream(filePath);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             if (fileType == FileType.PATIENTS) {
@@ -94,15 +102,13 @@ public class Database {
                 STAFF = (HashMap<String, Staff>) objectInputStream.readObject();
             } else if (fileType == FileType.MEDICATION) {
                 MEDICATION = (HashMap<String, Medication>) objectInputStream.readObject();
-            }else if (fileType == FileType.REQUESTS) {
+            } else if (fileType == FileType.REQUESTS) {
                 REQUESTS = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
             } else if (fileType == FileType.APPOINTMENTS) {
                 APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
             } else if (fileType == FileType.PRESCRIPTIONS) {
                 PRESCRIPTION = (HashMap<String, List<PrescribeMedication>>) objectInputStream.readObject();
             }
-            
-
         } catch (EOFException err) {
             System.out.println("Warning: " + err.getMessage());
             return false;
@@ -112,18 +118,19 @@ public class Database {
         }
         return true;
     }
+
     /**
-     * A method to write serialized object to file.
-     * @param fileType file type to write into.
-     * @return {@code true} if write to file is successful. Otherwise, {@code false}.
+     * Writes a serialized object to the specified file.
+     * 
+     * @param fileType The type of file to write.
+     * @return {@code true} if the file is written successfully, otherwise {@code false}.
      */
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
         
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
 
             if (fileType == FileType.PATIENTS) {
                 objectOutputStream.writeObject(PATIENTS);
@@ -139,8 +146,6 @@ public class Database {
                 objectOutputStream.writeObject(REQUESTS);
             }
 
-            objectOutputStream.close();
-            fileOutputStream.close();
             return true;
         } catch (Exception err) {
             System.out.println("Error: " + err.getMessage());
@@ -148,65 +153,72 @@ public class Database {
         }
     }
 
-
-        /**
-     * A method to clear out all the data in database.
+    /**
+     * Clears all the data in the database.
+     * 
      * @return {@code true} if data is cleared successfully.
      */
-     public static boolean clearDatabase() {
-         PATIENTS = new HashMap<String, Patient>();
-         writeSerializedObject(FileType.PATIENTS);
+    public static boolean clearDatabase() {
+        PATIENTS = new HashMap<>();
+        writeSerializedObject(FileType.PATIENTS);
 
-         STAFF = new HashMap<String, Staff>();
-         writeSerializedObject(FileType.STAFF);
+        STAFF = new HashMap<>();
+        writeSerializedObject(FileType.STAFF);
 
-         MEDICATION = new HashMap<String, Medication>();
-         writeSerializedObject(FileType.MEDICATION);
+        MEDICATION = new HashMap<>();
+        writeSerializedObject(FileType.MEDICATION);
 
-         REQUESTS = new HashMap<String, ReplenishRequest>();
-         writeSerializedObject(FileType.REQUESTS);
+        REQUESTS = new HashMap<>();
+        writeSerializedObject(FileType.REQUESTS);
 
-         PRESCRIPTION = new HashMap<String, List<PrescribeMedication>>();
-         writeSerializedObject(FileType.APPOINTMENTS);
+        PRESCRIPTION = new HashMap<>();
+        writeSerializedObject(FileType.PRESCRIPTIONS);
 
-         APPOINTMENT = new HashMap<String, Appointment>();
-         writeSerializedObject(FileType.APPOINTMENTS);
+        APPOINTMENT = new HashMap<>();
+        writeSerializedObject(FileType.APPOINTMENTS);
 
-         return true;
-         
-     }
+        return true;
+    }
 
-    
-     //Update the initialize everything here (Managers appropriately yea)
-    
+    /**
+     * Initializes dummy patient data if the database is empty.
+     * 
+     * @return {@code true} if dummy patients are initialized, otherwise {@code false}.
+     */
     public static boolean initializeDummyPatients() {
         if (!Database.PATIENTS.isEmpty()) {
-            System.out.println("The database already has patients. Reset database first to initialize patients");
+            System.out.println("The database already has patients. Reset database first to initialize patients.");
             return false;
         }
         PatientManager.initializeDummyPatients();
         return true;
     }
 
+    /**
+     * Initializes dummy staff data if the database is empty.
+     * 
+     * @return {@code true} if dummy staff are initialized, otherwise {@code false}.
+     */
     public static boolean initializeDummyStaff() {
         if (!Database.STAFF.isEmpty()) {
-            System.out.println("The database already has staff. Reset database first to initialize staff");
+            System.out.println("The database already has staff. Reset database first to initialize staff.");
             return false;
         }
         StaffManager.createDummyStaff();
         return true;
     }
 
-    public static boolean initializeDummyMedication(){
+    /**
+     * Initializes dummy medication data if the database is empty.
+     * 
+     * @return {@code true} if dummy medications are initialized, otherwise {@code false}.
+     */
+    public static boolean initializeDummyMedication() {
         if (!Database.MEDICATION.isEmpty()) {
-            System.out.println("The database already has medications. Reset database first to initialize medications");
+            System.out.println("The database already has medications. Reset database first to initialize medications.");
             return false;
         }
-
         InventoryManager.initializeDummyMedication();
         return true;
     }
-
-
-
 }
