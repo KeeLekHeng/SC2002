@@ -230,10 +230,15 @@ public class AppointmentManager {
             default:
                 return;
         }
-        System.out.println("Upcoming appointments:");
-        for (Appointment appointment : appointmentList){
+        if (!appointmentList.isEmpty()){
+            System.out.println("Here are your scheduled appointments:");
+            for (Appointment appointment : appointmentList){
             printAppointmentDetails(appointment);
             }
+        } else {
+            System.out.println("No appointments scheduled");
+        }
+        
     }
 
 
