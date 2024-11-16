@@ -1,5 +1,4 @@
 package src.view;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,9 +71,18 @@ public class PatientView extends MainView {
                     //View available appointment slots
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Available Appointment Slots");
-                    LocalDate date = LocalDate.now();
-                    //insert doctor ID
-                    List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(date, hospitalID);
+                    System.out.println("Enter the date you wish to view available slots for (Format: 'yyyy-MM-dd' )");
+                    String newDateInput = Helper.setDateOnly();
+                    if (newDateInput.isEmpty()) {
+                        System.out.println("Failed to parse the date. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
+                    System.out.println("Enter doctor ID (DXXX): ");
+                    String doctorID = Helper.readString();
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDate newDate = Helper.getDateOnly(newDateInput, format);
+                    List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(newDate, doctorID);
                     for (AppointmentSlot slot : availableSlots) {
                         System.out.println(slot);
                     }
@@ -86,14 +94,14 @@ public class PatientView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
-                    String doctorID = Helper.readString();
+                    doctorID = Helper.readString();
                     if(StaffManager.searchStaffById(doctorID) == null){
                         System.out.println("Doctor not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
                     System.out.println("What date would you like to reschedule to?");
-                    String newDateInput = Helper.setDateOnly();
+                    newDateInput = Helper.setDateOnly();
                     if (newDateInput.isEmpty()) {
                         System.out.println("Failed to parse the date. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -134,6 +142,7 @@ public class PatientView extends MainView {
 
                     Helper.pressAnyKeyToContinue();
                     break;
+                }
                 case 6:
                     //Cancel an appointment
                     Helper.clearScreen();

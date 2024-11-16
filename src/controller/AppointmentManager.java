@@ -16,6 +16,7 @@ import src.helper.Helper;
 import src.model.AppOutcomeRecord;
 import src.model.Appointment;
 import src.model.AppointmentSlot;
+import src.model.Patient;
 import src.model.PrescribeMedication;
 import src.model.Staff;
 import src.model.TimeSlot;
@@ -52,7 +53,7 @@ public class AppointmentManager {
     public static List<TimeSlot> generateTimeSlots(LocalDate date){
         final int startHour = 12;
         final int endHour = 5;
-        final int slotDuration = 30;
+        final int slotDuration = 59;
 
         List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
         for (int hour = startHour; hour <= endHour; hour++){
@@ -336,7 +337,15 @@ public class AppointmentManager {
         return true;
     }
     
-
+    public static Appointment searchAppointmentByID(String appointmentID) {
+            // Check if the appointmentID exists in the database
+            if (Database.APPOINTMENT.containsKey(appointmentID)) {
+                return Database.APPOINTMENT.get(appointmentID);
+            } else {
+                // Return null if appointment is not found
+                return null;
+            }
+        }
     //need to make a list of Prescribed Medication before passing it into this function
     public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
         
