@@ -180,7 +180,7 @@ public class Database {
      //Update the initialize everything here (Managers appropriately yea)
     
     public static boolean initializeDummyPatients() {
-        if (PATIENTS.size() != 0) {
+        if (!Database.PATIENTS.isEmpty()) {
             System.out.println("The database already has patients. Reset database first to initialize patients");
             return false;
         }
@@ -197,13 +197,13 @@ public class Database {
         return true;
     }
 
-    public static boolean initializeDummyAdmin(){
-        if (!Database.STAFF.isEmpty()) {
-            System.out.println("The database already has staff. Reset database first to initialize staff");
+    public static boolean initializeDummyMedication(){
+        if (!Database.MEDICATION.isEmpty()) {
+            System.out.println("The database already has medications. Reset database first to initialize medications");
             return false;
         }
 
-        StaffManager.createStaff("Admin Boss", Gender.MALE, 40, Role.ADMINISTRATOR);
+        InventoryManager.initializeDummyMedication();
         return true;
     }
 

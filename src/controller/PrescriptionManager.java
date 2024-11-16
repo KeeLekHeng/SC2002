@@ -167,8 +167,12 @@ public class PrescriptionManager {
                 }
             }
         }
-
-        return prescribeRequestList;
+        if (!prescribeRequestList.isEmpty()){
+            return prescribeRequestList;
+            } else {
+            System.out.println("No Pending Prescriptions to settle .");
+            return null;
+        }
     }
 
     public static List<PrescribeMedication> searchPrescriptionById(String prescriptionID) {

@@ -203,6 +203,11 @@ public class StaffManager {
         for (Staff staff : Database.STAFF.values()) {
             sortedList.add(staff);
         }
+
+        if (sortedList.isEmpty()){
+            System.out.println("There is no staff in database");
+            return;
+        }
         // if (byId) {
         // for (int index = 1; index < sortedList.size(); index++) {
         // Staff currentStaff = sortedList.get(index);
