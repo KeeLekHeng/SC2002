@@ -187,7 +187,7 @@ public class AppointmentManager {
     }
 
     //do a if for 3 roles. attribute code   [1. for upcoming, 2. for all]
-    public static void viewScheduledAppointments(String hospitalID, int attributeCode){
+    public static boolean viewScheduledAppointments(String hospitalID, int attributeCode){
         List<Appointment> appointmentList = new ArrayList<Appointment>();
         LocalDateTime currentDateTime = LocalDateTime.now();
             //patient or Doctor or Admin
@@ -229,17 +229,19 @@ public class AppointmentManager {
                 }
                 break;
             default:
-                return;
+                return false;
         }
         if (!appointmentList.isEmpty()){
             System.out.println("Here are your scheduled appointments:");
             for (Appointment appointment : appointmentList){
             printAppointmentDetails(appointment);
+            return true;
             }
         } else {
             System.out.println("No appointments scheduled");
+            return false;
         }
-        
+        return false;
     }
 
 
