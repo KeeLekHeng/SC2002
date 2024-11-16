@@ -1,5 +1,4 @@
 package src.view;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -143,6 +142,7 @@ public class PatientView extends MainView {
 
                     Helper.pressAnyKeyToContinue();
                     break;
+                }
                 case 6:
                     //Cancel an appointment
                     Helper.clearScreen();

@@ -1,5 +1,12 @@
 package src.view;
 import src.model.Patient;
+import src.model.TimeSlot;
+import src.model.PrescribeMedication;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import src.controller.AppointmentManager;
 import src.controller.LoginManager;
 import src.controller.PatientManager;
@@ -34,8 +41,11 @@ public class DoctorView extends MainView{
             switch (opt) {
                 case 1:
                     //View patient medical record
-                    Patient patient = PatientManager.searchPatientByID(hospitalID);
+                    System.out.println("Enter patient ID: ");
+                    String patientID = Helper.readString();
+                    Patient patient = PatientManager.searchPatientByID(patientID);
                     PatientManager.viewPatientRecords(patient);
+                    Helper.pressAnyKeyToContinue()
                     ;
                     break;
                 case 2:
@@ -60,19 +70,72 @@ public class DoctorView extends MainView{
                     PatientView patientView = new PatientView();
                     patientView.viewScheduledAppointments(hospitalID);
                     ;
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 4:
                     //Set availability for appointments
-                    
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > Set Availability for Appointments");
+                    System.out.println("\"On what date and time would you like to block availability? (Format: 'yyyy-MM-dd HH:MM' )\")");
+                    String newDateInput = Helper.setDate(false);
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    LocalDateTime newDateTime = Helper.getDate(newDateInput, format);
+                    TimeSlot newTimeSlot = new TimeSlot(newDateTime);       
+                    if(AppointmentManager.setAvailability(hospitalID, newTimeSlot)){
+                        System.out.println("Availability set successfully!");
+                    } else {
+                        System.out.println("Availability set failed!");
+                    }   
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 5:
                     //Accept or decline appointment requests
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > Accept or Decline Appointment Requests");
+                    //print pending appointment requests
+                    System.out.println("Enter appointment ID to update request: ");
+                    String appointmentID2 = Helper.readString();
+                    System.out.println("Accept or Decline? (1: Accept, 2: Decline)");
+                    int decision = Helper.readInt(1, 2);
+                    if(AppointmentManager.updateAppointmentRequest(appointmentID2, hospitalID, decision)){
+                        System.out.println("Appointment request updated successfully!");
+                    } else {
+                        System.out.println("Appointment request update failed!");
+                    }   
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 6:
                     //View upcoming appointments
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View Upcoming Appointments");
+                    AppointmentManager.viewScheduledAppointments(hospitalID, 1);
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 7:
                     //Record appointment outcome
+                    System.out.println("Enter appointment ID to record outcome: ");
+                    String outcomeID = Helper.readString();
+                    System.out.println("Enter type of service: ");
+                    String outcomeService = Helper.readString();
+                    System.out.println("Enter consultation notes: ");
+                    String outcomeNotes = Helper.readString();
+                    System.out.println("Enter list of medications to prescribe (type 'done' to finish): ");
+                    List<PrescribeMedication> medications = new ArrayList<>();
+
+                    while (true) {
+                        System.out.println("Enter medication name (or 'done' to finish): ");
+                        String medicationName = Helper.readString();
+
+                        if (medicationName.equalsIgnoreCase("done")) {
+                            break; // Exit the loop when the user types "done"
+                        }
+
+                        System.out.println("Enter prescription amount: ");
+                        int amount = Helper.readInt(1, 100); // Ensure a valid amount
+
+                        medications.add(new PrescribeMedication(medicationName, amount));
+                    }
+                    AppointmentManager.recordAppointmentOutcome(outcomeID, hospitalID, outcomeService, outcomeNotes, medications);
                     break;
                 case 8:                
                     //Change password

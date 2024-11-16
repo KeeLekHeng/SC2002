@@ -66,7 +66,7 @@ public class AdministratorView extends MainView {
                     break;
                 case 6:
                     //Logout
-                    break;
+                    return;
             }
         } while (mainOpt != 6);
     }
