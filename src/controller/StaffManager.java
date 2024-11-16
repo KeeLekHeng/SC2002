@@ -73,6 +73,7 @@ public class StaffManager {
             default:
                 break;
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -92,6 +93,7 @@ public class StaffManager {
             default:
                 break;
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -111,6 +113,7 @@ public class StaffManager {
             default:
                 break;
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -130,6 +133,7 @@ public class StaffManager {
             default:
                 break;
         }
+        Database.STAFF.put(staffId, staffToUpdate);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -147,6 +151,7 @@ public class StaffManager {
         } else {
             return false;
         }
+        Database.STAFF.remove(staffId);
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }

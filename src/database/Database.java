@@ -11,6 +11,8 @@ import src.controller.PrescriptionManager;
 import src.controller.AppointmentManager;
 import src.controller.LoginManager;
 import src.model.*;
+import src.model.enums.Gender;
+import src.model.enums.Role;
 
 
 /**
@@ -192,6 +194,11 @@ public class Database {
             return false;
         }
         StaffManager.createDummyStaff();
+        return true;
+    }
+
+    public static boolean initializeDummyAdmin(){
+        StaffManager.createStaff("Admin Boss", Gender.MALE, 40, Role.ADMINISTRATOR);
         return true;
     }
 
