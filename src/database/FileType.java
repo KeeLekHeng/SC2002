@@ -2,7 +2,6 @@ package src.database;
 
 /**
  * An enum representing the different file types that the Hospital Management System will read from and write to.
- * 
  * @author Abarna
  * @version 1.0
  * @since 2024-10-17
@@ -45,7 +44,6 @@ public enum FileType {
 
     /**
      * Constructor for the FileType enum.
-     * 
      * @param fileName The name of the file type.
      */
     private FileType(String fileName) {

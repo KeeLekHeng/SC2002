@@ -18,7 +18,6 @@ import src.model.enums.Role;
 /**
  * A class for managing the database operations for the Hospital Management System.
  * This class handles reading from and writing to files.
- * 
  * @author Abarna
  * @version 1.0
  * @since 2024-10-17
@@ -64,7 +63,6 @@ public class Database {
 
     /**
      * Saves a specific file type into the database.
-     * 
      * @param fileType The type of file to save.
      */
     public static void saveFileIntoDatabase(FileType fileType) {
@@ -85,7 +83,6 @@ public class Database {
 
     /**
      * Reads a serialized object from the specified {@link FileType}.
-     * 
      * @param fileType The type of file to read.
      * @return {@code true} if the file is read successfully, otherwise {@code false}.
      */
@@ -121,7 +118,6 @@ public class Database {
 
     /**
      * Writes a serialized object to the specified file.
-     * 
      * @param fileType The type of file to write.
      * @return {@code true} if the file is written successfully, otherwise {@code false}.
      */
@@ -155,7 +151,6 @@ public class Database {
 
     /**
      * Clears all the data in the database.
-     * 
      * @return {@code true} if data is cleared successfully.
      */
     public static boolean clearDatabase() {
@@ -182,7 +177,6 @@ public class Database {
 
     /**
      * Initializes dummy patient data if the database is empty.
-     * 
      * @return {@code true} if dummy patients are initialized, otherwise {@code false}.
      */
     public static boolean initializeDummyPatients() {
@@ -196,7 +190,6 @@ public class Database {
 
     /**
      * Initializes dummy staff data if the database is empty.
-     * 
      * @return {@code true} if dummy staff are initialized, otherwise {@code false}.
      */
     public static boolean initializeDummyStaff() {
@@ -210,7 +203,6 @@ public class Database {
 
     /**
      * Initializes dummy medication data if the database is empty.
-     * 
      * @return {@code true} if dummy medications are initialized, otherwise {@code false}.
      */
     public static boolean initializeDummyMedication() {
