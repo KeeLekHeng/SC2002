@@ -2,7 +2,6 @@ package src.model.enums;
 
 /**
  * Enum representing the status of a request for replenishing medications or appointment approval by doctors.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -36,7 +35,6 @@ public enum RequestStatus {
 
     /**
      * Constructor for the RequestStatus Enum.
-     * 
      * @param requestStatusAsStr Request status as a string
      */
     private RequestStatus(String requestStatusAsStr) {
