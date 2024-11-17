@@ -25,16 +25,19 @@ public class HospitalApp {
      */
     public static void main(String[] args) {
       
-        Helper.clearScreen();
-        printHMSTitle();
-        Helper.pressAnyKeyToContinue();
-        String hospitalID = "";
-        HospitalAppView hospitalAppView = new HospitalAppView();
-        hospitalID = hospitalAppView.userLogin();
-        hospitalAppView.viewApp(hospitalID);
-        Database.saveAllFiles();
-        System.out.println("Thank you for using Hospital Management System");
-        Helper.pressAnyKeyToContinue();  // Prompt for any key to continue or exit.
+       while(true){
+            Helper.clearScreen();
+            printHMSTitle();
+            Helper.pressAnyKeyToContinue();  // Prompt for any key to continue before login.
+
+            HospitalAppView hospitalAppView = new HospitalAppView();
+            String hospitalID = hospitalAppView.userLogin();  // Handle user login.
+            hospitalAppView.viewApp(hospitalID);  // Display the app interface.
+
+            Database.saveAllFiles();  // Save all data to the database.
+            System.out.println("Thank you for using Hospital Management System");
+            Helper.pressAnyKeyToContinue();  // Prompt for any key to continue or exit.
+        }
     }
 
     /**
