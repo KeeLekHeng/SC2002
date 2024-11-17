@@ -1,5 +1,6 @@
 package src.database;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.io.*;
 import java.util.List;
@@ -85,9 +86,16 @@ public class Database {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
         
-         try(FileInputStream fileInputStream = new FileInputStream(filePath);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-
+         try{
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            Object object = objectInputStream.readObject();
+            
+            if (!(object instanceof HashMap) && !(object instanceof HashSet)) {
+                System.out.println(fileType.fileName);
+                objectInputStream.close();
+                return false;
+            }
             if (fileType == FileType.PATIENTS) {
                 PATIENTS = (HashMap<String, Patient>) objectInputStream.readObject();
             } else if (fileType == FileType.STAFF) {
@@ -101,7 +109,8 @@ public class Database {
             } else if (fileType == FileType.PRESCRIPTIONS) {
                 PRESCRIPTION = (HashMap<String, List<PrescribeMedication>>) objectInputStream.readObject();
             }
-            
+            objectInputStream.close();
+            fileInputStream.close();
 
         } catch (EOFException err) {
             System.out.println("Warning: " + err.getMessage());

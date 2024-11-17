@@ -1,5 +1,6 @@
 package src;
 
+import src.database.Database;
 import src.helper.Helper;
 import src.view.HospitalAppView;
 
@@ -12,6 +13,7 @@ public class HospitalApp {
         HospitalAppView hospitalAppView = new HospitalAppView();
         hospitalID = hospitalAppView.userLogin();
         hospitalAppView.viewApp(hospitalID);
+        Database.saveAllFiles();
     }
 
     private static void printHMSTitle() {

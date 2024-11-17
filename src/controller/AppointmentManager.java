@@ -52,7 +52,7 @@ public class AppointmentManager {
     public static List<TimeSlot> generateTimeSlots(LocalDate date){
         final int startHour = 12;
         final int endHour = 5;
-        final int slotDuration = 30;
+        final int slotDuration = 59;
 
         List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
         for (int hour = startHour; hour <= endHour; hour++){
@@ -186,12 +186,57 @@ public class AppointmentManager {
         } 
     }
 
+    /**
+     * Fetch appointment Outcome Records for patients based on the provided code.
+     *
+     * @param code          1 for fetching by appointment ID, 2 for fetching all past appointments for a patient.
+     * @param patientID     The patient ID (required if code is 2).
+     * @param appointmentID The appointment ID (required if code is 1).
+     */
+    public static boolean fetchAppointmentOutcomeRecords(int code, String patientID, String appointmentID) {
+        switch (code) {
+            case 1:
+                // Fetch appointment by ID
+                Appointment appointment = Database.APPOINTMENT.get(appointmentID);
+                if (appointment != null) {
+                    System.out.println("Appointment Details:");
+                    printAppointmentOutcomeRecord(appointment);
+                    return true;
+                } else {
+                    System.out.println("Appointment with ID " + appointmentID + " not found.");
+                    return false;
+                }
+            case 2:
+                // Fetch all appointments for a specific patient
+                List<Appointment> pastAppointments = new ArrayList<>();
+                for (Appointment app : Database.APPOINTMENT.values()) {
+                    if (app.getPatientID().equals(patientID)) {
+                        pastAppointments.add(app);
+                    }
+                }
+                if (pastAppointments.isEmpty()) {
+                    System.out.println("No past appointments found for patient ID " + patientID);
+                    return false;
+                } else {
+                    System.out.println("Past Appointments for Patient ID " + patientID + ":");
+                    for (Appointment pastAppointment : pastAppointments) {
+                        printAppointmentOutcomeRecord(pastAppointment);
+                    }
+                    return false;
+                }
+
+            default:
+                System.out.println("Invalid code! Use 1 for fetching by ID, or 2 for fetching all past appointments for a patient.");
+                return false;
+        }
+    }
+
     //do a if for 3 roles. attribute code   [1. for upcoming, 2. for all]
     public static void viewScheduledAppointments(String hospitalID, int attributeCode){
         List<Appointment> appointmentList = new ArrayList<Appointment>();
         LocalDateTime currentDateTime = LocalDateTime.now();
 
-            //patient or Doctor or Admin
+        //patient or Doctor or Admin
         switch(attributeCode){
             case 1:
                 for (Appointment appointment : Database.APPOINTMENT.values()){
@@ -292,8 +337,25 @@ public class AppointmentManager {
         }
     }
 
-    //FOR DOCTOR
+    
 
+    public static void viewPendingAppointmentRequeest(String doctorID){
+        ArrayList<Appointment> pendingAppointmentsList = new ArrayList<Appointment>();
+
+        for(Appointment app : Database.APPOINTMENT.values()){
+            if(app.getDoctorID().equals(doctorID) && app.getAppointmentStatus() == AppointmentStatus.PENDING){
+                pendingAppointmentsList.add(app);
+            }
+        }
+
+        if(pendingAppointmentsList.isEmpty()){
+            System.out.println("You have no pending appointment requests.");
+        } else {
+            for (Appointment app : pendingAppointmentsList){
+                printAppointmentDetails(app);
+            }
+        }
+    }
 
 
     public static boolean updateAppointmentRequest(String appointmentID, String staffID, int attributeCode){
@@ -369,7 +431,7 @@ public class AppointmentManager {
         appointment.setAppOutcomeRecord(outcomeRecord);
         appointment.setAppointmentStatus(AppointmentStatus.COMPLETED);
 
-        System.out.println("Appointment Outcome Record Set!");                        //See want print with Appointment Details or not
+        System.out.println("Appointment Outcome Record Set!");                        
         printAppointmentOutcomeRecord(appointment);
         Database.APPOINTMENT.put(appointmentID, appointment);
         Database.saveFileIntoDatabase(FileType.APPOINTMENTS);

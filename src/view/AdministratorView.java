@@ -3,14 +3,13 @@ import java.util.List;
 import src.controller.AppointmentManager;
 import src.controller.InventoryManager;
 import src.controller.LoginManager;
-import src.controller.PatientManager;
 import src.controller.PrescriptionManager;
 import src.controller.StaffManager;
 import src.database.Database;
+import src.helper.*;
 import src.model.ReplenishRequest;
 import src.model.Staff;
 import src.model.enums.*;
-import src.helper.*;
 
 public class AdministratorView extends MainView {
     public AdministratorView () {
@@ -335,7 +334,11 @@ public class AdministratorView extends MainView {
 
     }
 
-
+    /*
+    PatientManager.printAllPatients(true);
+    Helper.pressAnyKeyToContinue();
+    return;*/ 
+    
     //////////////////////View and Manage Medication Inventory/////////////////////
 
     public void viewAndManageMedicationInventory() {
