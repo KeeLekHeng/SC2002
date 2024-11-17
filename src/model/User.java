@@ -6,8 +6,6 @@ import src.model.enums.Role;
 /**
  * Represents a user with a unique ID, password, and role in the system.
  * Provides methods to retrieve user information and verify the user's role.
- * 
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -28,10 +26,9 @@ public class User implements Serializable {
 
     /**
      * Constructs a new User with the specified ID, password, and role.
-     * 
-     * @param id       Unique identifier of the user.
+     * @param id Unique identifier of the user.
      * @param password Password for the user.
-     * @param role     Role of the user within the system.
+     * @param role Role of the user within the system.
      */
     public User(String id, String password, Role role) {
         this.id = id;
@@ -41,7 +38,6 @@ public class User implements Serializable {
 
     /**
      * Gets the unique identifier of the user.
-     * 
      * @return the user's ID.
      */
     public String getId() {
@@ -49,67 +45,26 @@ public class User implements Serializable {
     }
 
     /**
-     * Gets the password of the user.
-     * 
-     * @return the user's password.
-     */
-    public String getPassword() {
-        return this.password;
-    }
-
-    /**
-     * Sets a new password for the user.
-     * 
-     * @param password New password for the user.
-     * @return true if the password was successfully set.
-     */
-    public boolean setPassword(String password) {
-        this.password = password;
-        return true; // Indicates success
-    }
-
-    /**
      * Gets the role of the user.
-     * 
-     * @return the user's role.
+     * @return the role of the user.
      */
     public Role getRole() {
         return this.role;
     }
 
     /**
-     * Checks if the user is a patient.
-     * 
-     * @return true if the user's role is PATIENT.
+     * Gets the password of the user.
+     * @return the password of the user.
      */
-    public boolean isPatient() {
-        return this.role == Role.PATIENT;
+    public String getPassword() {
+        return this.password;
     }
 
     /**
-     * Checks if the user is a doctor.
-     * 
-     * @return true if the user's role is DOCTOR.
+     * Sets the password of the user.
+     * @param password The new password for the user.
      */
-    public boolean isDoctor() {
-        return this.role == Role.DOCTOR;
-    }
-
-    /**
-     * Checks if the user is a pharmacist.
-     * 
-     * @return true if the user's role is PHARMACIST.
-     */
-    public boolean isPharmacist() {
-        return this.role == Role.PHARMACIST;
-    }
-
-    /**
-     * Checks if the user is an administrator.
-     * 
-     * @return true if the user's role is ADMINISTRATOR.
-     */
-    public boolean isAdministrator() {
-        return this.role == Role.ADMINISTRATOR;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
