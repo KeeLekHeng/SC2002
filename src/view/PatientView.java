@@ -10,6 +10,7 @@ import src.helper.Helper;
 import src.model.AppointmentSlot;
 import src.model.Patient;
 import src.model.TimeSlot;
+import src.controller.StaffManager;
 
 public class PatientView extends MainView {
     public PatientView () {
@@ -58,20 +59,34 @@ public class PatientView extends MainView {
                     System.out.println("(2) Email");
                     int choice = Helper.readInt(1, 2);
                     String newvalue = chooseUpdateAttribute(choice);
-                    PatientManager.updatePatientDetails(hospitalID, choice, newvalue);
+                    if(PatientManager.updatePatientDetails(hospitalID, choice, newvalue)){
+                        System.out.println("Update successful");
+                    } else {
+                        System.out.println("Invalid input");
+                    }
+                    Helper.pressAnyKeyToContinue();
                     ;
                     break;
                 case 3:
                     //View available appointment slots
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Available Appointment Slots");
-                    AppointmentManager appointmentManager = new AppointmentManager();
-                    LocalDate date = LocalDate.now();
-                    List<AppointmentSlot> availableSlots = appointmentManager.getAvailableSlotsByDoctor(date, hospitalID);
+                    System.out.println("Enter the date you wish to view available slots for (Format: 'yyyy-MM-dd' )");
+                    String newDateInput = Helper.setDateOnly();
+                    if (newDateInput.isEmpty()) {
+                        System.out.println("Failed to parse the date. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
+                    System.out.println("Enter doctor ID (DXXX): ");
+                    String doctorID = Helper.readString();
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDate newDate = Helper.getDateOnly(newDateInput, format);
+                    List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(newDate, doctorID);
                     for (AppointmentSlot slot : availableSlots) {
                         System.out.println(slot);
                     }
-                    ;
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 4:
                     //Schedule an appointment
@@ -79,10 +94,14 @@ public class PatientView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
-                    String doctorID = Helper.readString();
+                    doctorID = Helper.readString();
+                    if(StaffManager.searchStaffById(doctorID) == null){
+                        System.out.println("Doctor not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     System.out.println("What date would you like to reschedule to?");
-                    String newDateInput = Helper.setDateOnly();
-
+                    newDateInput = Helper.setDateOnly();
                     if (newDateInput.isEmpty()) {
                         System.out.println("Failed to parse the date. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -97,10 +116,16 @@ public class PatientView extends MainView {
                     //Reschedule an appointment(maybe can display available slots)
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Rechedule an Appointment");
-                    viewScheduledAppointments(hospitalID);
-
+                    //true false
+                    if(AppointmentManager.viewScheduledAppointments(hospitalID, 1)){
+                        
                     System.out.println("Enter the Appointment ID to reschedule: AppointmentID format (AXXXXX)");
                     String appointmentID = Helper.readString();
+                    if(AppointmentManager.searchAppointmentByID(appointmentID) == null){
+                        System.out.println("Appointment not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     System.out.println("\"What date and time would you like to schedule an appointment? (Format: 'yyyy-MM-dd HH:MM' )\")");
                     newDateInput = Helper.setDate(false);
                     
@@ -112,15 +137,18 @@ public class PatientView extends MainView {
 
                     if(!rescheduleAppointment(hospitalID, appointmentID, newDateInput)){
                         System.out.println("Unable to reschedule appointment.");
+                    } else {
                     }
+
                     Helper.pressAnyKeyToContinue();
                     break;
+                }
                 case 6:
                     //Cancel an appointment
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Cancel Appointment");
                     System.out.println("Enter the appointment ID to cancel (AXXXXX): ");
-                    appointmentID = Helper.readString();
+                    String appointmentID = Helper.readString();
                     AppointmentManager.cancelAppointment(appointmentID, hospitalID);
                     break;
                 case 7:
@@ -131,7 +159,7 @@ public class PatientView extends MainView {
                 case 8:
                     //View past appointment outcome records
                     AppointmentManager.viewPastAppointmentOutcomeRecords(hospitalID);
-                    
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 9:
                     //Change password
@@ -164,6 +192,7 @@ public class PatientView extends MainView {
     ////////////view Scheduled Appointment///////////////
 public void viewScheduledAppointments(String hospitalID){
     Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View Scheduled Appointments");
                     System.out.println("What would you like to view ?");
                     System.out.println("(1) Upcoming Appointments");
                     System.out.println("(2) All Appointments");
@@ -172,9 +201,11 @@ public void viewScheduledAppointments(String hospitalID){
                     do {
                         if (choice == 1) {
                             AppointmentManager.viewScheduledAppointments(hospitalID, 1);
+                            Helper.pressAnyKeyToContinue();
                             break;
                         } else if (choice == 2) {
                             AppointmentManager.viewScheduledAppointments(hospitalID, 2);
+                            Helper.pressAnyKeyToContinue();
                             break;
                         } else if (choice == 3) {
                             break;

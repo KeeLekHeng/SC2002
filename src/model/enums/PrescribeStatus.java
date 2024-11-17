@@ -2,7 +2,6 @@ package src.model.enums;
 
 /**
  * Enum representing the status of medication prescription approval by pharmacists.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -31,7 +30,6 @@ public enum PrescribeStatus {
 
     /**
      * Constructor for the PrescribeStatus Enum.
-     * 
      * @param prescribedStatusAsStr Prescribed status as a string
      */
     private PrescribeStatus(String prescribedStatusAsStr) {

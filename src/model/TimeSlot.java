@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 /**
  * Represents a time slot, encapsulating a specific date and time. 
  * Provides methods for formatting and comparing time slots.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -23,7 +22,6 @@ public class TimeSlot implements Serializable, Comparable<TimeSlot> {
 
     /**
      * Constructs a new TimeSlot with the specified date and time.
-     * 
      * @param dateTime The date and time for the time slot.
      */
     public TimeSlot(LocalDateTime dateTime) {
@@ -72,7 +70,6 @@ public class TimeSlot implements Serializable, Comparable<TimeSlot> {
 
     /**
      * Checks if the current time slot is equal to another time slot.
-     * 
      * @param slot The other time slot to compare with.
      * @return true if the time slots are equal, otherwise false.
      */
@@ -82,7 +79,6 @@ public class TimeSlot implements Serializable, Comparable<TimeSlot> {
 
     /**
      * Compares the current time slot with another time slot.
-     * 
      * @param o The other time slot to compare with.
      * @return a negative integer, zero, or a positive integer as this time slot
      *         is less than, equal to, or greater than the specified time slot.

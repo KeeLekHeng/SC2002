@@ -1,3 +1,8 @@
+//notes
+//approve replenishment request is buggy
+//view staff only show correct ID
+//database not showing
+
 package src.view;
 import java.util.List;
 import src.controller.AppointmentManager;
@@ -61,7 +66,7 @@ public class AdministratorView extends MainView {
                     break;
                 case 6:
                     //Logout
-                    break;
+                    return;
             }
         } while (mainOpt != 6);
     }
@@ -429,10 +434,16 @@ public void viewAppointmentDetails(String hospitalID){
         choice = Helper.readInt(1, 3);
         switch(choice) {
             case 1:
+                Helper.clearScreen();
+                printBreadCrumbs("Main Menu > View Appointment Details");
                 AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                Helper.pressAnyKeyToContinue();
                 break;
             case 2:
+                Helper.clearScreen();
+                printBreadCrumbs("Main Menu > View Appointment Details");
                 AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                Helper.pressAnyKeyToContinue();
                 break;
             case 3:
                 break;

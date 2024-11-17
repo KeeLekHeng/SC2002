@@ -16,6 +16,7 @@ import src.helper.Helper;
 import src.model.AppOutcomeRecord;
 import src.model.Appointment;
 import src.model.AppointmentSlot;
+import src.model.Patient;
 import src.model.PrescribeMedication;
 import src.model.Staff;
 import src.model.TimeSlot;
@@ -232,11 +233,11 @@ public class AppointmentManager {
     }
 
     //do a if for 3 roles. attribute code   [1. for upcoming, 2. for all]
-    public static void viewScheduledAppointments(String hospitalID, int attributeCode){
+    public static boolean viewScheduledAppointments(String hospitalID, int attributeCode){
         List<Appointment> appointmentList = new ArrayList<Appointment>();
         LocalDateTime currentDateTime = LocalDateTime.now();
 
-        //patient or Doctor or Admin
+            //patient or Doctor or Admin
         switch(attributeCode){
             case 1:
                 for (Appointment appointment : Database.APPOINTMENT.values()){
@@ -275,17 +276,19 @@ public class AppointmentManager {
                 }
                 break;
             default:
-                return;
+                return false;
         }
         if (!appointmentList.isEmpty()){
             System.out.println("Here are your scheduled appointments:");
             for (Appointment appointment : appointmentList){
             printAppointmentDetails(appointment);
+            return true;
             }
         } else {
             System.out.println("No appointments scheduled");
+            return false;
         }
-        
+        return false;
     }
 
 
@@ -397,7 +400,15 @@ public class AppointmentManager {
         return true;
     }
     
-
+    public static Appointment searchAppointmentByID(String appointmentID) {
+            // Check if the appointmentID exists in the database
+            if (Database.APPOINTMENT.containsKey(appointmentID)) {
+                return Database.APPOINTMENT.get(appointmentID);
+            } else {
+                // Return null if appointment is not found
+                return null;
+            }
+        }
     //need to make a list of Prescribed Medication before passing it into this function
     public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
         

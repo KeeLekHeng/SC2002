@@ -2,7 +2,6 @@ package src.model.enums;
 
 /**
  * Enum representing the different blood types.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -36,7 +35,6 @@ public enum BloodType {
 
     /**
      * Constructor for the BloodType Enum.
-     *
      * @param bloodTypeAsStr The string representation of the blood type.
      */
     private BloodType(String bloodTypeAsStr) {

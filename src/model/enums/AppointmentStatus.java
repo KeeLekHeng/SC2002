@@ -2,7 +2,6 @@ package src.model.enums;
 
 /**
  * Enum representing the different statuses an appointment can have.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -41,7 +40,6 @@ public enum AppointmentStatus {
 
     /**
      * Constructor for the AppointmentStatus Enum.
-     *
      * @param appointmentStatusTypeAsStr The string representation of the appointment status.
      */
     private AppointmentStatus(String appointmentStatusTypeAsStr) {
