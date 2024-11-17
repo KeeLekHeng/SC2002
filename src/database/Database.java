@@ -1,20 +1,13 @@
 package src.database;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
-
+import src.controller.InventoryManager;
 import src.controller.PatientManager;
 import src.controller.StaffManager;
-import src.controller.InventoryManager;
-import src.controller.PrescriptionManager;
-import src.controller.AppointmentManager;
-import src.controller.LoginManager;
+import src.helper.Helper;
 import src.model.*;
-import src.model.enums.Gender;
-import src.model.enums.Role;
 
 /**
  * A class for managing the database operations for the Hospital Management System.
@@ -87,6 +80,7 @@ public class Database {
      * @param fileType The type of file to read.
      * @return {@code true} if the file is read successfully, otherwise {@code false}.
      */
+    
     private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
@@ -96,35 +90,57 @@ public class Database {
             FileInputStream fileInputStream = new FileInputStream(filePath);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             Object object = objectInputStream.readObject();
+
+            //Debug
+            System.out.println("Reading from" + filePath);
+            Helper.pressAnyKeyToContinue();
             
-            if (!(object instanceof HashMap) && !(object instanceof HashSet)) {
+            if (!(object instanceof HashMap)) {
                 System.out.println(fileType.fileName);
                 objectInputStream.close();
                 return false;
             }
-      
+
+            //read into database
             if (fileType == FileType.PATIENTS) {
-                PATIENTS = (HashMap<String, Patient>) objectInputStream.readObject();
+                PATIENTS = (HashMap<String, Patient>) object;
             } else if (fileType == FileType.STAFF) {
-                STAFF = (HashMap<String, Staff>) objectInputStream.readObject();
+                STAFF = (HashMap<String, Staff>) object;
             } else if (fileType == FileType.MEDICATION) {
-                MEDICATION = (HashMap<String, Medication>) objectInputStream.readObject();
+                MEDICATION = (HashMap<String, Medication>) object;
             } else if (fileType == FileType.REQUESTS) {
-                REQUESTS = (HashMap<String, ReplenishRequest>) objectInputStream.readObject();
+                REQUESTS = (HashMap<String, ReplenishRequest>) object;
             } else if (fileType == FileType.APPOINTMENTS) {
-                APPOINTMENT = (HashMap<String, Appointment>) objectInputStream.readObject();
+                APPOINTMENT = (HashMap<String, Appointment>) object;
             } else if (fileType == FileType.PRESCRIPTIONS) {
-                PRESCRIPTION = (HashMap<String, List<PrescribeMedication>>) objectInputStream.readObject();
+                PRESCRIPTION = (HashMap<String, List<PrescribeMedication>>) object;
             }
 
             objectInputStream.close();
             fileInputStream.close();
-
         } catch (EOFException err) {
             System.out.println("Warning: " + err.getMessage());
-            return false;
-        } catch (IOException | ClassNotFoundException err) {
+            if (fileType == FileType.PATIENTS) {
+                PATIENTS = new HashMap<String, Patient>();
+            } else if (fileType == FileType.STAFF) {
+                STAFF = new HashMap<String, Staff>();
+            } else if (fileType == FileType.APPOINTMENTS) {
+                APPOINTMENT = new HashMap<String, Appointment>();
+            } else if (fileType == FileType.PRESCRIPTIONS) {
+                PRESCRIPTION = new HashMap<String, List<PrescribeMedication>>();
+            } else if (fileType == FileType.REQUESTS) {
+                REQUESTS = new HashMap<String, ReplenishRequest>();
+            } else if (fileType == FileType.MEDICATION) {
+                MEDICATION = new HashMap<String, Medication>();
+            } 
+        } catch (IOException err) {
             err.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException err) {
+            err.printStackTrace();
+            return false;
+        } catch (Exception err) {
+            System.out.println("Error: " + err.getMessage());
             return false;
         }
         return true;
@@ -155,7 +171,8 @@ public class Database {
             } else if (fileType == FileType.REQUESTS) {
                 objectOutputStream.writeObject(REQUESTS);
             }
-
+            objectOutputStream.close();
+            fileOutputStream.close();
             return true;
         } catch (Exception err) {
             System.out.println("Error: " + err.getMessage());
