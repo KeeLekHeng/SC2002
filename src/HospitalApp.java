@@ -24,6 +24,7 @@ public class HospitalApp {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
+      
         while(true){
             Helper.clearScreen();
             printHMSTitle();

@@ -107,42 +107,41 @@ public class PatientManager {
         return true;
     }
 
-    // public static void printAllPatients(boolean byID) {
-    // // Create a list to copy patients from the database
-    // ArrayList<Patient> sortedList = new ArrayList<>();
+/**
+ * Prints details of all patients in the database, sorted by either Patient ID or Name.
+ * 
+ * @param byID - if true, sort by Patient ID; if false, sort by Name.
+ */
+public static void printAllPatients(boolean byID) {
+    // Create a list to hold patients from the database
+    ArrayList<Patient> patientsList = new ArrayList<>(Database.PATIENTS.values());
 
-    // // Copy all patients from the database into sortedList
-    // for (Patient patient : Database.PATIENTS.values()) {
-    // sortedList.add(patient);
-    // }
+    // Sort the list based on the sorting preference
+    if (byID) {
+        // Sort by Patient ID (numerically)
+        patientsList.sort(Comparator.comparingInt(patient -> Integer.parseInt(patient.getPatientID().substring(1))));
+    } else {
+        // Sort by Name alphabetically
+        patientsList.sort(Comparator.comparing(Patient::getName));
+    }
 
-    // // Sort by patientID if byID is true
-    // if (byID) {
-    // for (int index = 1; index < sortedList.size(); index++) {
-    // Patient currentPatient = sortedList.get(index);
-    // int pid = Integer.parseInt(currentPatient.getPatientId().substring(1)); //
-    // Parse ID, ignoring the 'P'
-    // int position = index;
+    // Print all patients' details
+    System.out.println(String.format("%-40s", "").replace(" ", "="));
+    System.out.println(String.format("%-10s %-20s %-15s %-10s %-15s %-15s %-25s", 
+                                     "Patient ID", "Name", "Date of Birth", "Gender", 
+                                     "Blood Type", "Phone Number", "Email"));
+    System.out.println(String.format("%-40s", "").replace(" ", "="));
 
-    // // Perform insertion sort to keep the list ordered by patientID
-    // while (position > 0 && pid < Integer
-    // .parseInt(sortedList.get(position - 1).getPatientId().substring(1))) {
-    // sortedList.set(position, sortedList.get(position - 1));
-    // position--;
-    // }
-    // sortedList.set(position, currentPatient);
-    // }
-    // } else {
-    // // Sort by patient name if byID is false
-    // sortedList.sort(Comparator.comparing(currentPatient ->
-    // currentPatient.getName()));
-    // }
+    for (Patient patient : patientsList) {
+        System.out.println(String.format("%-10s %-20s %-15s %-10s %-15s %-15s %-25s",
+                                         patient.getPatientID(), patient.getName(), patient.getDob(),
+                                         patient.getGender(), patient.getBloodType(), 
+                                         patient.getPhonenumber(), patient.getEmail()));
+    }
 
-    // // Print sorted list of patients
-    // for (Patient patient : sortedList) {
-    // System.out.println(patient.getPatientId() + " = " + patient);
-    // }
-    // }
+    System.out.println(String.format("%-40s", "").replace(" ", "="));
+}
+
 
     public static void showPatientOverview(boolean byID, String doctorId) {
         ArrayList<Patient> viewList = new ArrayList<>();
