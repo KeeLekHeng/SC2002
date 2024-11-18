@@ -30,6 +30,7 @@ public class StaffManager {
 
     public static void createStaff(String name, Gender gender, int age, Role role) {
         int gid = Helper.generateUniqueId(Database.STAFF);
+        String employmentStatus = "EMPLOYED";
         String hospitalId = "";
         String pw = "password";
         switch (role) {
@@ -49,7 +50,7 @@ public class StaffManager {
                 throw new IllegalArgumentException("Invalid role specified: " + role);
         }
 
-        Staff newStaff = new Staff(hospitalId, pw, role, name, gender, age);
+        Staff newStaff = new Staff(hospitalId, pw, role, name, gender, age, employmentStatus);
 
         Database.STAFF.put(hospitalId, newStaff);
         Database.saveFileIntoDatabase(FileType.STAFF);
@@ -72,11 +73,15 @@ public class StaffManager {
                     staffToUpdate.setName(newValue);
                     Database.STAFF.put(staff.getId(), staffToUpdate);
                     break;
+                case 2:
+                    staffToUpdate.setEmploymentStatus(newValue);
+                    Database.STAFF.put(staff.getId(), staffToUpdate);
+                    break;
                 default:
                     break;
             }
         }
-        Database.STAFF.put(hospitalId, staffToUpdate);
+
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -91,7 +96,7 @@ public class StaffManager {
         for (Staff staff : updateList) {
             Staff staffToUpdate = Database.STAFF.get(hospitalId);
             switch (attributeCode) {
-                case 2:
+                case 3:
                     staffToUpdate.setAge(newValue);
                     Database.STAFF.put(staff.getId(), staffToUpdate);
                     break;
@@ -99,7 +104,7 @@ public class StaffManager {
                     break;
             }
         }
-        Database.STAFF.put(hospitalId, staffToUpdate);
+
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -114,7 +119,7 @@ public class StaffManager {
         for (Staff staff : updateList) {
             Staff staffToUpdate = Database.STAFF.get(hospitalId);
             switch (attributeCode) {
-                case 3:
+                case 4:
                     staffToUpdate.setGender(gender);
                     Database.STAFF.put(staff.getId(), staffToUpdate);
                     break;
@@ -122,7 +127,7 @@ public class StaffManager {
                     break;
             }
         }
-        Database.STAFF.put(hospitalId, staffToUpdate);
+
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -137,7 +142,7 @@ public class StaffManager {
         for (Staff staff : updateList) {
             Staff staffToUpdate = Database.STAFF.get(hospitalId);
             switch (attributeCode) {
-                case 4:
+                case 5:
                     staffToUpdate.setRole(role);
                     Database.STAFF.put(staff.getId(), staffToUpdate);
                     break;
@@ -145,7 +150,7 @@ public class StaffManager {
                     break;
             }
         }
-        Database.STAFF.put(hospitalId, staffToUpdate);
+
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
@@ -160,7 +165,7 @@ public class StaffManager {
         for (Staff staff : removeList) {
             printStaffDetails(staff);
             if (Helper.promptConfirmation("remove this staff")) {
-                Database.STAFF.remove(hospitalId);
+                staff.setEmploymentStatus("REMOVED");
             } else {
                 return false;
             }
@@ -277,6 +282,7 @@ public class StaffManager {
         System.out.println(String.format("%-20s: %s", "Name", staff.getName()));
         System.out.println(String.format("%-20s: %s", "Gender", staff.getGender().genderAsStr));
         System.out.println(String.format("%-20s: %s", "Password", staff.getPassword()));
+        System.out.println(String.format("%-20s: %s", "EmploymentStatus", staff.getEmploymentStatus()));
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
