@@ -19,7 +19,7 @@ public class HospitalAppView extends MainView {
         String role = "";
 
         System.out.println("Please enter your username and password to login");
-        hospitalID = Helper.readString();
+        Helper.readString();
 
         while (!isLoginSuccessful) {
             System.out.println("Hospital ID: ");
@@ -46,7 +46,7 @@ public class HospitalAppView extends MainView {
             password = Helper.readString();
 
             // Validate login credentials
-            currentUserRole = LoginManager.LoginUser(hospitalID, password);
+            currentUserRole = LoginManager.LoginUser(hospitalID, password); // currentuserrole = Doctor
             if (currentUserRole.equals("unsuccessful")) {
                 System.out.println("Invalid username or password. Please try again.");
             } else {
@@ -69,19 +69,19 @@ public class HospitalAppView extends MainView {
     @Override
     public void printMenu() {
         switch (currentUserRole) {
-            case "admin":
+            case "Admin":
                 AdministratorView adminView = new AdministratorView();
                 adminView.viewApp(hospitalID);
                 break;
-            case "patient":
+            case "Patient":
                 PatientView patientView = new PatientView();
                 patientView.viewApp(hospitalID);
                 break;
-            case "doctor":
+            case "Doctor":
                 DoctorView doctorView = new DoctorView();
                 doctorView.viewApp(hospitalID);
                 break;
-            case "pharmacist":
+            case "Pharmacist":
                 PharmacistView pharmacistView = new PharmacistView();
                 pharmacistView.viewApp(hospitalID);
                 break;
