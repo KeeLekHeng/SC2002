@@ -55,6 +55,11 @@ public class DoctorView extends MainView{
                     printBreadCrumbs("Main Menu > Update Patient Medical Records");
                     System.out.println("Enter appointment ID: ");
                     String appointmentID = Helper.readString();
+                    if(AppointmentManager.searchAppointmentByID(appointmentID)==null){
+                        System.out.println("Appointment does not exist!");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     System.out.println("Enter type of service: ");
                     String typeOfService = Helper.readString();
                     System.out.println("Enter consultation notes: ");
