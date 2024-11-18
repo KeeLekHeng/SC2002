@@ -238,11 +238,7 @@ public class Database {
             System.out.println("The database already has staff. Reset database first to initialize staff.");
             return false;
         }
-<<<<<<< Updated upstream
         StaffManager.createDummyStaff();
-=======
-        StaffManager.initializeDummyStaff();
->>>>>>> Stashed changes
         return true;
     }
 

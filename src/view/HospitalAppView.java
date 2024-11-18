@@ -3,7 +3,7 @@ import src.controller.LoginManager;
 import src.helper.*;
 
 public class HospitalAppView extends MainView {
-    private String currentUserRole = "patient";
+    private String currentUserRole = "";
     String hospitalID = "";
 
     public HospitalAppView() {
@@ -12,14 +12,8 @@ public class HospitalAppView extends MainView {
 
     public String userLogin() {
         Helper.clearScreen();
-<<<<<<< Updated upstream
         printBreadCrumbs("User Login");
         boolean isLoginSuccessful = false;
-=======
-        printBreadCrumbs("Hospital App View");
-        boolean isLoginSuccessful = true;
-        System.out.println("Please enter your username and password to login");
->>>>>>> Stashed changes
         String password = "";
         String role = "";
     
