@@ -363,6 +363,8 @@ public class Helper {
         try {
             System.in.read();
         } catch (Exception e) {
+        
+        } finally {
         }
     }
 

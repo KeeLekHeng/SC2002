@@ -19,6 +19,8 @@ public class DoctorView extends MainView{
 
     @Override
     public void printMenu() {
+        Helper.clearScreen();
+        printBreadCrumbs("Main Menu");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Patient Medical Records");
         System.out.println("(2) Update Patient Medical Records");
