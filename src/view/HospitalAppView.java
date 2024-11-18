@@ -19,8 +19,6 @@ public class HospitalAppView extends MainView {
         String role = "";
 
         System.out.println("Please enter your hospital ID and password to login");
-        Helper.readString();
-
         while (!isLoginSuccessful) {
             System.out.println("Hospital ID: ");
             hospitalID = Helper.readString();
