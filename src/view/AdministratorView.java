@@ -82,10 +82,12 @@ public class AdministratorView extends MainView {
         System.out.println("(4) Remove Staff");
         System.out.println("(5) Initialize Dummy Staff");
         System.out.println("(6) Initialize Dummy Patients");
-        System.out.println("(7) Back");
+        System.out.println("(7) Initialize Dummy Medications");
+        System.out.println("(8) Clear Database");
+        System.out.println("(9) Back");
         int subOpt;
         do {
-            subOpt = Helper.readInt(1, 7);
+            subOpt = Helper.readInt(1, 9);
             switch (subOpt) {
                 case 1:
                     //View Staff Details
@@ -263,9 +265,21 @@ public class AdministratorView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     return;
                 case 7:
+                    //initialize medications
+                    InventoryManager.initializeDummyMedication();
+                    System.out.println("Dummy Medications Initialized");
+                    Helper.pressAnyKeyToContinue();
+                    return;
+                case 8: 
+                    //clear database
+                    Database.clearDatabase();
+                    System.out.println("Database Cleared");
+                    Helper.pressAnyKeyToContinue();
+                    return;
+                case 9:
                     break;
             }
-        } while (subOpt != 7);
+        } while (subOpt != 9);
     }
 
     private boolean initializeStaff() {
@@ -275,6 +289,7 @@ public class AdministratorView extends MainView {
     private boolean initializeDummyPatients() {
         return Database.initializeDummyPatients();
     }
+
 
     private boolean selectGender() {
         System.out.println("Select Gender:");
@@ -369,11 +384,18 @@ public class AdministratorView extends MainView {
                 case 2:
                     //Update Medication Stock
                     //enter medication name and quantity to update
+                    boolean found;
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
                     System.out.println("Enter Medication ID: ");
                     String medicationID = Helper.readString();
-                    boolean found = InventoryManager.updateMedication(medicationID, 0, 0);
+                    if(InventoryManager.searchMedicineByID(medicationID)==null){
+                        System.out.println("Medication does not exist!");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }else{
+                        found = true;
+                    }
                     int subOpt;
                     if(found) {
                         do {
@@ -388,25 +410,45 @@ public class AdministratorView extends MainView {
                                 case 1:
                                     System.out.println("Enter Quantity to Add: ");
                                     int quantity = Helper.readInt(1, 100);
-                                    InventoryManager.updateMedication(medicationID, 1, quantity);
+                                    if(InventoryManager.updateMedication(medicationID, 1, quantity)){
+                                        System.out.println("Stock Updated");
+                                    }else{
+                                        System.out.println("Failed to add stock");
+                                    }
+                                    Helper.pressAnyKeyToContinue();
                                     break;
                                 case 2:
                                     System.out.println("Enter Quantity to Remove: ");
                                     quantity = Helper.readInt(1, 100);
-                                    InventoryManager.updateMedication(medicationID, 2, quantity);
+                                    if(InventoryManager.updateMedication(medicationID, 2, quantity)){
+                                        System.out.println("Stock Updated");
+                                    }else{
+                                        System.out.println("Failed to remove stock");
+                                    }
+                                    Helper.pressAnyKeyToContinue();
                                     break;
                                 case 3:
                                     System.out.println("Enter New Stock: ");
                                     quantity = Helper.readInt(1, 100);
-                                    InventoryManager.updateMedication(medicationID, 3, quantity);
+                                    if(InventoryManager.updateMedication(medicationID, 3, quantity)){
+                                        System.out.println("Stock Updated");
+                                    }else{
+                                        System.out.println("Failed to update stock");
+                                    }
+                                    Helper.pressAnyKeyToContinue();
                                     break;
                                 case 4:
                                     System.out.println("Enter New Low Stock Limit: ");
                                     quantity = Helper.readInt(1, 100);
-                                    InventoryManager.updateMedication(medicationID, 4, quantity);
+                                    if(InventoryManager.updateMedication(medicationID, 4, quantity)){
+                                        System.out.println("Low Stock Limit Updated");
+                                    }else{
+                                        System.out.println("Failed to update low stock limit");
+                                    }
+                                    Helper.pressAnyKeyToContinue();
                                     break;
                                 case 5:
-                                    break; // Exit the submenu
+                                    return; // Exit the submenu
                             }
                         } while (subOpt != 5); // Correctly check submenu exit condition
                     } else {

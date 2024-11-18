@@ -46,6 +46,11 @@ public class PatientView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Medical Record");
                     Patient patient = PatientManager.searchPatientByID(hospitalID);
+                    if(patient==null){
+                        System.out.println("Patient does not exist!");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     PatientManager.viewPatientRecords(patient);
                     ;
                     break;
@@ -80,6 +85,12 @@ public class PatientView extends MainView {
                     }
                     System.out.println("Enter doctor ID (DXXX): ");
                     String doctorID = Helper.readString();
+                    //not printing no doctor found
+                    if(StaffManager.searchStaffById(doctorID).isEmpty()){
+                        System.out.println("Doctor not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     LocalDate newDate = Helper.getDateOnly(newDateInput, format);
                     List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(newDate, doctorID);
@@ -95,6 +106,11 @@ public class PatientView extends MainView {
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
                     doctorID = Helper.readString();
+                    if(StaffManager.searchStaffById(doctorID).isEmpty()){
+                        System.out.println("Doctor not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     if(StaffManager.searchStaffById(doctorID) == null){
                         System.out.println("Doctor not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -150,6 +166,11 @@ public class PatientView extends MainView {
                     printBreadCrumbs("Main Menu > Cancel Appointment");
                     System.out.println("Enter the appointment ID to cancel (AXXXXX): ");
                     String appointmentID = Helper.readString();
+                    if(AppointmentManager.searchAppointmentByID(appointmentID) == null){
+                        System.out.println("Appointment not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     AppointmentManager.cancelAppointment(appointmentID, hospitalID);
                     break;
                 case 7:
