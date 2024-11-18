@@ -18,7 +18,7 @@ public class HospitalAppView extends MainView {
         String password = "";
         String role = "";
 
-        System.out.println("Please enter your username and password to login");
+        System.out.println("Please enter your hospital ID and password to login");
         Helper.readString();
 
         while (!isLoginSuccessful) {
@@ -69,19 +69,19 @@ public class HospitalAppView extends MainView {
     @Override
     public void printMenu() {
         switch (currentUserRole) {
-            case "Admin":
+            case "admin":
                 AdministratorView adminView = new AdministratorView();
                 adminView.viewApp(hospitalID);
                 break;
-            case "Patient":
+            case "patient":
                 PatientView patientView = new PatientView();
                 patientView.viewApp(hospitalID);
                 break;
-            case "Doctor":
+            case "doctor":
                 DoctorView doctorView = new DoctorView();
                 doctorView.viewApp(hospitalID);
                 break;
-            case "Pharmacist":
+            case "pharmacist":
                 PharmacistView pharmacistView = new PharmacistView();
                 pharmacistView.viewApp(hospitalID);
                 break;
