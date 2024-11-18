@@ -24,7 +24,8 @@ public class HospitalApp {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        while(true){
+      
+       while(true){
             Helper.clearScreen();
             printHMSTitle();
             Helper.pressAnyKeyToContinue();  // Prompt for any key to continue before login.

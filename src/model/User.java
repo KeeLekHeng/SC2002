@@ -10,6 +10,7 @@ import src.model.enums.Role;
  * @version 1.0
  * @since 2024-11-13
  */
+
 public class User implements Serializable {
 
     /** Unique identifier for the user. */

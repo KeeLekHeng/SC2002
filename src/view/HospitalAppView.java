@@ -1,4 +1,5 @@
 package src.view;
+import src.controller.LoginManager;
 import src.helper.*;
 
 public class HospitalAppView extends MainView {
@@ -13,33 +14,49 @@ public class HospitalAppView extends MainView {
         Helper.clearScreen();
         printBreadCrumbs("User Login");
         boolean isLoginSuccessful = false;
-        System.out.println("Please enter your username and password to login");
         String password = "";
-
+        String role = "";
+    
+        System.out.println("Please enter your username and password to login");
+    
         while (!isLoginSuccessful) {
             System.out.println("Hospital ID: ");
             hospitalID = Helper.readString();
+    
+            // Check for fake login
+            if (hospitalID.equalsIgnoreCase("fake")) {
+                System.out.println("Enter preset fake role (admin/patient/doctor/pharmacist): ");
+                role = Helper.readString().toLowerCase(); // Get fake role directly
+                if (role.equals("admin") || role.equals("patient") || role.equals("doctor") || role.equals("pharmacist")) {
+                    isLoginSuccessful = true; // Fake login successful
+                    currentUserRole = role;
+                    System.out.println("Logged in as: " + currentUserRole);
+                    break; // Exit the loop for fake login
+                } else {
+                    System.out.println("Invalid fake role. Valid options: admin, patient, doctor, pharmacist.");
+                    continue; // Retry for fake login
+                }
+            }
+    
+            // Prompt for real login
             System.out.println("Password: ");
             password = Helper.readString();
-
+    
             // Validate login credentials
-            currentUserRole = authenticateRole(hospitalID, password);
-            if (currentUserRole.equals("admin") ||
-                currentUserRole.equals("patient") ||
-                currentUserRole.equals("doctor") ||
-                currentUserRole.equals("pharmacist")) {
-                isLoginSuccessful = true;
-            }
-
-            if (!isLoginSuccessful) {
+            currentUserRole = LoginManager.LoginUser(hospitalID, password);
+            if (currentUserRole.equals("unsuccessful")) {
                 System.out.println("Invalid username or password. Please try again.");
+            } else {
+                isLoginSuccessful = true; // Real login successful
+                System.out.println("Logged in as: " + currentUserRole);
             }
         }
+    
         Helper.clearScreen();
-        System.out.println("Logged in as: " + currentUserRole);
         return hospitalID;
     }
-
+    
+    
     @Override
     public void viewApp(String hospitalID) {
         Helper.clearScreen();

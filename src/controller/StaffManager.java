@@ -291,14 +291,9 @@ public class StaffManager {
 
     public static void createDummyStaff() {
         createStaff("Dr. Alice Smith", Gender.FEMALE, 35, Role.DOCTOR);
-        createStaff("Dr. Bob Jones", Gender.MALE, 40, Role.DOCTOR);
         createStaff("Dr. Carol White", Gender.FEMALE, 45, Role.DOCTOR);
-
         createStaff("Admin John Brown", Gender.MALE, 50, Role.ADMINISTRATOR);
-        createStaff("Admin Jane Doe", Gender.FEMALE, 32, Role.ADMINISTRATOR);
-
         createStaff("Pharm. Dave Green", Gender.MALE, 29, Role.PHARMACIST);
-        createStaff("Pharm. Eve Black", Gender.FEMALE, 28, Role.PHARMACIST);
         createStaff("Pharm. Frank Lee", Gender.MALE, 33, Role.PHARMACIST);
     }
 
