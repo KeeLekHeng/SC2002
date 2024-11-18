@@ -83,15 +83,15 @@ public class LoginManager {
 
         switch (ch) {
             case 'D':
-                return "Doctor";
+                return "doctor";
             case 'A':
-                return "Administrator";
+                return "administrator";
             case 'P':
                 int length = hospitalId.length();
                 if (length == 4) {
-                    return "Pharmacist";
+                    return "pharmacist";
                 } else if (length == 5) {
-                    return "Patient";
+                    return "patient";
                 }
             default:
                 return "unsuccessful";
