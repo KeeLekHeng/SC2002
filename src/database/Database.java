@@ -75,6 +75,21 @@ public class Database {
         saveFileIntoDatabase(FileType.PRESCRIPTIONS);
     }
 
+    ////////////
+    public static void loadFileIntoDatabase(FileType fileType) {
+        readSerializedObject(fileType);
+    }
+
+    public static void loadAllFiles() {
+        loadFileIntoDatabase(FileType.PATIENTS);
+        loadFileIntoDatabase(FileType.STAFF);
+        loadFileIntoDatabase(FileType.MEDICATION);
+        loadFileIntoDatabase(FileType.REQUESTS);
+        loadFileIntoDatabase(FileType.APPOINTMENTS);
+        loadFileIntoDatabase(FileType.PRESCRIPTIONS);
+    }
+    /////////////
+
     /**
      * Reads a serialized object from the specified {@link FileType}.
      * @param fileType The type of file to read.
@@ -83,17 +98,13 @@ public class Database {
     
     private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
-        String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
+        String filePath = "./database/" + folder + "/" + fileType.fileName + fileExtension;
         
 
          try{
             FileInputStream fileInputStream = new FileInputStream(filePath);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             Object object = objectInputStream.readObject();
-
-            //Debug
-            System.out.println("Reading from" + filePath);
-            Helper.pressAnyKeyToContinue();
             
             if (!(object instanceof HashMap)) {
                 System.out.println(fileType.fileName);
@@ -153,7 +164,7 @@ public class Database {
      */
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
-        String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
+        String filePath = "./database/" + folder + "/" + fileType.fileName + fileExtension;
         
         try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
