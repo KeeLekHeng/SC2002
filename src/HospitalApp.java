@@ -29,6 +29,8 @@ public class HospitalApp {
             Helper.clearScreen();
             printHMSTitle();
             Helper.pressAnyKeyToContinue();  // Prompt for any key to continue before login.
+            
+            Database.loadAllFiles();
 
             HospitalAppView hospitalAppView = new HospitalAppView();
             String hospitalID = hospitalAppView.userLogin();  // Handle user login.
