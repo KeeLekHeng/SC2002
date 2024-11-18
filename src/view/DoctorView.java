@@ -42,6 +42,7 @@ public class DoctorView extends MainView{
             switch (opt) {
                 case 1:
                     //View patient medical record
+                    Helper.clearScreen();
                     System.out.println("Enter patient ID: ");
                     String patientID = Helper.readString();
                     Patient patient = PatientManager.searchPatientByID(patientID);
@@ -59,9 +60,10 @@ public class DoctorView extends MainView{
                     //recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications)
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Update Patient Medical Records");
-                    System.out.println("Enter appointment ID: ");
+                    System.out.println("Enter appointment ID (AXXXX): ");
                     String appointmentID = Helper.readString();
-                    if(AppointmentManager.searchAppointmentByID(appointmentID)==null){
+
+                    if(AppointmentManager.searchAppointmentByID(appointmentID) == null){
                         System.out.println("Appointment does not exist!");
                         Helper.pressAnyKeyToContinue();
                         break;
@@ -103,8 +105,12 @@ public class DoctorView extends MainView{
                     //Accept or decline appointment requests
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Accept or Decline Appointment Requests");
+
                     //print pending appointment requests
-                    AppointmentManager.viewPendingAppointmentRequeest(hospitalID);
+                    if(!AppointmentManager.viewPendingAppointmentRequeest(hospitalID)){
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     System.out.println("Enter appointment ID to update request: ");
                     String appointmentID2 = Helper.readString();
                     if(AppointmentManager.searchAppointmentByID(appointmentID2)==null){
@@ -130,7 +136,7 @@ public class DoctorView extends MainView{
                     break;
                 case 7:
                     //Record appointment outcome
-                    System.out.println("Enter appointment ID to record outcome: ");
+                    System.out.println("Enter appointment ID to record outcome (AXXXX): ");
                     String outcomeID = Helper.readString();
                     System.out.println("Enter type of service: ");
                     String outcomeService = Helper.readString();
@@ -142,15 +148,26 @@ public class DoctorView extends MainView{
                     while (true) {
                         System.out.println("Enter medication name (or 'done' to finish): ");
                         String medicationName = Helper.readString();
-
+                    
                         if (medicationName.equalsIgnoreCase("done")) {
                             break; // Exit the loop when the user types "done"
                         }
-
-                        System.out.println("Enter prescription amount: ");
-                        int amount = Helper.readInt(1, 100); // Ensure a valid amount
-
-                        medications.add(new PrescribeMedication(medicationName, amount));
+                    
+                        System.out.println("Enter prescription amount (or type 'done' to cancel): ");
+                        String amountInput = Helper.readString();
+                    
+                        if (amountInput.equalsIgnoreCase("done")) {
+                            System.out.println("Prescription for this medication canceled.");
+                            continue; // Skip to the next medication
+                        }
+                    
+                        // Validate the amount input
+                        try {
+                            int amount = Integer.parseInt(amountInput);
+                            medications.add(new PrescribeMedication(medicationName, amount));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid Input, Enter a valid integer!");
+                        }
                     }
                     AppointmentManager.recordAppointmentOutcome(outcomeID, hospitalID, outcomeService, outcomeNotes, medications);
                     break;

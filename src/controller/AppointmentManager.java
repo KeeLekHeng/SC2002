@@ -247,7 +247,7 @@ public class AppointmentManager {
                         appointmentList.add(appointment);
                     }
                 } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
-                    if (appointment.getPatientID().equals(hospitalID) &&  
+                    if (appointment.getDoctorID().equals(hospitalID) &&  
                     appointment.getTimeSlot().getDateTime().isAfter(currentDateTime) &&
                     appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
                         appointmentList.add(appointment);
@@ -268,7 +268,7 @@ public class AppointmentManager {
                         appointmentList.add(appointment);
                     }
                 } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
-                    if (appointment.getPatientID().equals(hospitalID)&&
+                    if (appointment.getDoctorID().equals(hospitalID)&&
                         appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
                         appointmentList.add(appointment);
                     }
@@ -347,7 +347,7 @@ public class AppointmentManager {
 
     
 
-    public static void viewPendingAppointmentRequeest(String doctorID){
+    public static boolean viewPendingAppointmentRequeest(String doctorID){
         ArrayList<Appointment> pendingAppointmentsList = new ArrayList<Appointment>();
 
         for(Appointment app : Database.APPOINTMENT.values()){
@@ -358,10 +358,12 @@ public class AppointmentManager {
 
         if(pendingAppointmentsList.isEmpty()){
             System.out.println("You have no pending appointment requests.");
+            return false;
         } else {
             for (Appointment app : pendingAppointmentsList){
                 printAppointmentDetails(app);
             }
+            return true;
         }
     }
 
