@@ -102,6 +102,7 @@ public class DoctorView extends MainView{
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Accept or Decline Appointment Requests");
                     //print pending appointment requests
+                    AppointmentManager.viewPendingAppointmentRequeest(hospitalID);
                     System.out.println("Enter appointment ID to update request: ");
                     String appointmentID2 = Helper.readString();
                     if(AppointmentManager.searchAppointmentByID(appointmentID2)==null){
