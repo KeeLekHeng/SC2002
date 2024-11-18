@@ -263,14 +263,17 @@ public class AppointmentManager {
             case 2:
             for (Appointment appointment : Database.APPOINTMENT.values()){
                 if (hospitalID.startsWith("P") && hospitalID.substring(1).matches("\\d{4}")){
-                    if (appointment.getPatientID().equals(hospitalID)){
+                    if (appointment.getPatientID().equals(hospitalID)&&
+                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
                         appointmentList.add(appointment);
                     }
                 } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
-                    if (appointment.getPatientID().equals(hospitalID)){
+                    if (appointment.getPatientID().equals(hospitalID)&&
+                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
                         appointmentList.add(appointment);
                     }
-                } else {             
+                } else {   
+                    if (appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE)          
                     appointmentList.add(appointment);
                     }
                 }
@@ -335,6 +338,8 @@ public class AppointmentManager {
                     // Print the appointment details including the outcome record
                     System.out.println("Past Appointment ID: " + appointment.getAppointmentID());
                     printAppointmentOutcomeRecord(appointment); 
+                } else {
+                    System.out.println("No past appointment outcome records found.");
                 }
             }
         }
