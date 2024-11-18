@@ -44,6 +44,11 @@ public class DoctorView extends MainView{
                     System.out.println("Enter patient ID: ");
                     String patientID = Helper.readString();
                     Patient patient = PatientManager.searchPatientByID(patientID);
+                    if(patient==null){
+                        System.out.println("Patient does not exist!");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     PatientManager.viewPatientRecords(patient);
                     Helper.pressAnyKeyToContinue()
                     ;
@@ -74,8 +79,8 @@ public class DoctorView extends MainView{
                     printBreadCrumbs("Main Menu > View Personal Schedule");
                     PatientView patientView = new PatientView();
                     patientView.viewScheduledAppointments(hospitalID);
-                    ;
                     Helper.pressAnyKeyToContinue();
+                    ;
                     break;
                 case 4:
                     //Set availability for appointments
@@ -100,6 +105,11 @@ public class DoctorView extends MainView{
                     //print pending appointment requests
                     System.out.println("Enter appointment ID to update request: ");
                     String appointmentID2 = Helper.readString();
+                    if(AppointmentManager.searchAppointmentByID(appointmentID2)==null){
+                        System.out.println("Appointment does not exist!");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     System.out.println("Accept or Decline? (1: Accept, 2: Decline)");
                     int decision = Helper.readInt(1, 2);
                     if(AppointmentManager.updateAppointmentRequest(appointmentID2, hospitalID, decision)){

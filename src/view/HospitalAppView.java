@@ -87,18 +87,4 @@ public class HospitalAppView extends MainView {
                 System.out.println("Invalid role or access not permitted.");
         }
     }
-
-    // Dummy Function
-    private String authenticateRole(String hospitalID, String password) {
-        if (hospitalID.equals("admin")) {
-            return "admin";
-        } else if (hospitalID.equals("patient")) {
-            return "patient";
-        } else if (hospitalID.equals("doctor")) {
-            return "doctor";
-        } else if (hospitalID.equals("pharmacist")) {
-            return "pharmacist";
-        }
-        return ""; 
-    }
 }

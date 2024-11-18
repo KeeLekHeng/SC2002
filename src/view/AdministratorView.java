@@ -314,6 +314,10 @@ public class AdministratorView extends MainView {
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
         //loop below
         List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
+        if(replenishRequests==null) {
+            Helper.pressAnyKeyToContinue();
+            return;
+        }
         for (ReplenishRequest request : replenishRequests) {
             String requestID = request.getRequestID();
             InventoryManager.printReplenishRequest(request); 
@@ -335,14 +339,9 @@ public class AdministratorView extends MainView {
                     break;
             }
             System.out.println("All request processed");
+            Helper.pressAnyKeyToContinue();
         } 
-
     }
-
-    /*
-    PatientManager.printAllPatients(true);
-    Helper.pressAnyKeyToContinue();
-    return;*/ 
     
     //////////////////////View and Manage Medication Inventory/////////////////////
 
