@@ -6,7 +6,6 @@ import java.util.List;
 import src.controller.InventoryManager;
 import src.controller.PatientManager;
 import src.controller.StaffManager;
-import src.helper.Helper;
 import src.model.*;
 
 /**
@@ -98,7 +97,7 @@ public class Database {
     
     private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
-        String filePath = "./database/" + folder + "/" + fileType.fileName + fileExtension;
+        String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
         
 
          try{
@@ -164,7 +163,7 @@ public class Database {
      */
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
-        String filePath = "./database/" + folder + "/" + fileType.fileName + fileExtension;
+        String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
         
         try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
