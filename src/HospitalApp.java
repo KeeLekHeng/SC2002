@@ -26,6 +26,7 @@ public class HospitalApp {
     public static void main(String[] args) {
       
        
+        
         Helper.clearScreen();
         printHMSTitle();
         Helper.pressAnyKeyToContinue();  // Prompt for any key to continue before login.

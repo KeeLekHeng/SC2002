@@ -363,6 +363,10 @@ public class Helper {
         try {
             System.in.read();
         } catch (Exception e) {
+        
+        } finally{
+            Scanner in = new Scanner(System.in);
+            in.nextLine();
         }
     }
 
