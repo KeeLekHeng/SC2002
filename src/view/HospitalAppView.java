@@ -1,4 +1,5 @@
 package src.view;
+
 import src.controller.LoginManager;
 import src.helper.*;
 
@@ -16,18 +17,20 @@ public class HospitalAppView extends MainView {
         boolean isLoginSuccessful = false;
         String password = "";
         String role = "";
-    
+
         System.out.println("Please enter your username and password to login");
-    
+        hospitalID = Helper.readString();
+
         while (!isLoginSuccessful) {
             System.out.println("Hospital ID: ");
             hospitalID = Helper.readString();
-    
+
             // Check for fake login
             if (hospitalID.equalsIgnoreCase("fake")) {
                 System.out.println("Enter preset fake role (admin/patient/doctor/pharmacist): ");
                 role = Helper.readString().toLowerCase(); // Get fake role directly
-                if (role.equals("admin") || role.equals("patient") || role.equals("doctor") || role.equals("pharmacist")) {
+                if (role.equals("admin") || role.equals("patient") || role.equals("doctor")
+                        || role.equals("pharmacist")) {
                     isLoginSuccessful = true; // Fake login successful
                     currentUserRole = role;
                     System.out.println("Logged in as: " + currentUserRole);
@@ -37,11 +40,11 @@ public class HospitalAppView extends MainView {
                     continue; // Retry for fake login
                 }
             }
-    
+
             // Prompt for real login
             System.out.println("Password: ");
             password = Helper.readString();
-    
+
             // Validate login credentials
             currentUserRole = LoginManager.LoginUser(hospitalID, password);
             if (currentUserRole.equals("unsuccessful")) {
@@ -51,12 +54,11 @@ public class HospitalAppView extends MainView {
                 System.out.println("Logged in as: " + currentUserRole);
             }
         }
-    
+
         Helper.clearScreen();
         return hospitalID;
     }
-    
-    
+
     @Override
     public void viewApp(String hospitalID) {
         Helper.clearScreen();

@@ -130,8 +130,9 @@ public class LoginManager {
                 }
                 tries++;
             }
+            tries = 0;
 
-            while (item) {
+            while (item && tries < 5) {
                 System.out.println("Enter the new password: ");
                 pw = scanner.nextLine();
                 // checks for valid password length
@@ -179,6 +180,7 @@ public class LoginManager {
                 }
                 // resets valid to zero before reentering while loop
                 valid = 0;
+                tries++;
             }
         } else {
             System.out.println("The hospitalId that you provided is invalid");
