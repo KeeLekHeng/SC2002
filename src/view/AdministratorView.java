@@ -4,6 +4,7 @@
 //database not showing
 
 package src.view;
+import java.util.ArrayList;
 import java.util.List;
 import src.controller.AppointmentManager;
 import src.controller.InventoryManager;
@@ -181,12 +182,12 @@ public class AdministratorView extends MainView {
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Update Staff Details");
                     System.out.println("Enter Staff ID to Update: ");
                     String updateID = Helper.readString();
-                    Staff staff = StaffManager.searchStaffById(updateID);
-                    if(staff == null) {
-                        System.out.println("Staff not found");
+                    ArrayList<Staff> staff = StaffManager.searchStaffById(updateID);
+                    if(staff.isEmpty()) {
+                        System.out.println("Staff with ID " + updateID + " not found");
                         Helper.pressAnyKeyToContinue();
                         opt = 5;
-                        return;
+                        break;
                     }
                     StaffManager.printStaffDetails(updateID);
                     System.out.println("What would you like to update: ");
