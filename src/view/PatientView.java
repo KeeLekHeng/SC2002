@@ -46,6 +46,11 @@ public class PatientView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Medical Record");
                     Patient patient = PatientManager.searchPatientByID(hospitalID);
+                    if(patient==null){
+                        System.out.println("Patient does not exist!");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     PatientManager.viewPatientRecords(patient);
                     ;
                     break;
@@ -80,6 +85,12 @@ public class PatientView extends MainView {
                     }
                     System.out.println("Enter doctor ID (DXXX): ");
                     String doctorID = Helper.readString();
+                    //not printing no doctor found
+                    if(StaffManager.searchStaffById(doctorID).isEmpty()){
+                        System.out.println("Doctor not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     LocalDate newDate = Helper.getDateOnly(newDateInput, format);
                     List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(newDate, doctorID);
@@ -95,6 +106,11 @@ public class PatientView extends MainView {
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
                     doctorID = Helper.readString();
+                    if(StaffManager.searchStaffById(doctorID).isEmpty()){
+                        System.out.println("Doctor not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     if(StaffManager.searchStaffById(doctorID) == null){
                         System.out.println("Doctor not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -150,17 +166,36 @@ public class PatientView extends MainView {
                     printBreadCrumbs("Main Menu > Cancel Appointment");
                     System.out.println("Enter the appointment ID to cancel (AXXXXX): ");
                     String appointmentID = Helper.readString();
+                    if(AppointmentManager.searchAppointmentByID(appointmentID) == null){
+                        System.out.println("Appointment not found. Returning to the main menu...");
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
                     AppointmentManager.cancelAppointment(appointmentID, hospitalID);
                     break;
                 case 7:
                     //View scheduled appointments
+                    Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Scheduled Appointments");
                     viewScheduledAppointments(hospitalID);
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 8:
                     //View past appointment outcome records
-                    AppointmentManager.viewPastAppointmentOutcomeRecords(hospitalID);
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View Past Appointment Outcome Records"); 
+                    System.out.println("What would you like to view ?");
+                    System.out.println("(1) View Specific Past Appointment Outcome Record");
+                    System.out.println("(2) View All Past Appointment Outcome Records");
+                    System.out.println("(3) Back");
+                    int choices = Helper.readInt(1, 3);
+                    if (choices == 1) {
+                        System.out.println("Enter the appointment ID to view the outcome record: ");
+                        String appID = Helper.readString();
+                        AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, appID);
+                    } else if (choices == 2) {
+                        AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, null);
+                    }
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 9:
@@ -215,6 +250,7 @@ public void viewScheduledAppointments(String hospitalID){
                     } while (choice != 3);
 }
 
+//////////////////////reschedule appointment//////////////////////
 public boolean rescheduleAppointment(String appointmentID, String patientID, String newDateInput){
     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     LocalDateTime newDateTime = Helper.getDate(newDateInput, format);
@@ -222,6 +258,7 @@ public boolean rescheduleAppointment(String appointmentID, String patientID, Str
     return AppointmentManager.rescheduleAppointment(appointmentID, patientID, newTimeSlot);
 }
 
+//////////////////////schedule appointment//////////////////////
 public boolean scheduleAppointment(String doctorID, String patientID, String newDateInput){
 
     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
