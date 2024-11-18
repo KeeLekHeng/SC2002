@@ -118,13 +118,13 @@ public class LoginManager {
                 String attempt = scanner.nextLine();
                 if ("PATIENTS".equals(role)) {
                     Patient patient = Database.PATIENTS.get(hospitalId);
-                    if (attempt == patient.getPassword()) {
+                    if (patient != null && attempt == patient.getPassword()) {
                         break;
                     }
                 }
                 if ("STAFF".equals(role)) {
                     Staff staff = Database.STAFF.get(hospitalId);
-                    if (attempt == staff.getPassword()) {
+                    if (staff != null && attempt == staff.getPassword()) {
                         break;
                     }
                 }
