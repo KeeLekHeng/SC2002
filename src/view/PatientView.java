@@ -153,13 +153,27 @@ public class PatientView extends MainView {
                     break;
                 case 7:
                     //View scheduled appointments
+                    Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Scheduled Appointments");
                     viewScheduledAppointments(hospitalID);
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 8:
                     //View past appointment outcome records
-                    AppointmentManager.viewPastAppointmentOutcomeRecords(hospitalID);
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View Past Appointment Outcome Records"); 
+                    System.out.println("What would you like to view ?");
+                    System.out.println("(1) View Specific Past Appointment Outcome Record");
+                    System.out.println("(2) View All Past Appointment Outcome Records");
+                    System.out.println("(3) Back");
+                    int choices = Helper.readInt(1, 3);
+                    if (choices == 1) {
+                        System.out.println("Enter the appointment ID to view the outcome record: ");
+                        String appID = Helper.readString();
+                        AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, appID);
+                    } else if (choices == 2) {
+                        AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, null);
+                    }
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 9:
@@ -214,6 +228,7 @@ public void viewScheduledAppointments(String hospitalID){
                     } while (choice != 3);
 }
 
+//////////////////////reschedule appointment//////////////////////
 public boolean rescheduleAppointment(String appointmentID, String patientID, String newDateInput){
     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     LocalDateTime newDateTime = Helper.getDate(newDateInput, format);
@@ -221,6 +236,7 @@ public boolean rescheduleAppointment(String appointmentID, String patientID, Str
     return AppointmentManager.rescheduleAppointment(appointmentID, patientID, newTimeSlot);
 }
 
+//////////////////////schedule appointment//////////////////////
 public boolean scheduleAppointment(String doctorID, String patientID, String newDateInput){
 
     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
