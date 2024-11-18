@@ -3,6 +3,7 @@ package src.controller;
 import java.util.Scanner;
 import java.util.ArrayList;
 import src.database.Database;
+import src.database.FileType;
 import src.model.Patient;
 import src.model.Staff;
 import src.model.User;
@@ -40,17 +41,19 @@ public class LoginManager {
             if (Database.STAFF.containsKey(hospitalID)) {
                 Staff staff = Database.STAFF.get(hospitalID);
                 pw = staff.getPassword();
-                if (pw == password) { // when input password is correct
+                if (password.equals(pw)) { // when input password is correct
                     // check for role then return role
-                    return checkRoleAndReturn(hospitalID);
+                    String item = checkRoleAndReturn(hospitalID);
+                    return item;
                 }
                 // checks if hospitalID is in PATIENT database and continue
             } else if (Database.PATIENTS.containsKey(hospitalID)) {
                 Patient patient = Database.PATIENTS.get(hospitalID);
                 pw = patient.getPassword();
-                if (pw == password) { // when input password is correct
+                if (password.equals(pw)) { // when input password is correct
                     // check for role then return role
-                    return checkRoleAndReturn(hospitalID);
+                    String item = checkRoleAndReturn(hospitalID);
+                    return item;
                 }
             }
         } else {
@@ -80,15 +83,15 @@ public class LoginManager {
 
         switch (ch) {
             case 'D':
-                return "Doctor";
+                return "doctor";
             case 'A':
-                return "Administrator";
+                return "administrator";
             case 'P':
                 int length = hospitalId.length();
                 if (length == 4) {
-                    return "Pharmacist";
+                    return "pharmacist";
                 } else if (length == 5) {
-                    return "Patient";
+                    return "patient";
                 }
             default:
                 return "unsuccessful";
@@ -118,22 +121,29 @@ public class LoginManager {
                 String attempt = scanner.nextLine();
                 if ("PATIENTS".equals(role)) {
                     Patient patient = Database.PATIENTS.get(hospitalId);
-                    if (patient != null && attempt == patient.getPassword()) {
+                    if (patient != null && attempt.equals(patient.getPassword())) {
                         break;
                     }
                 }
                 if ("STAFF".equals(role)) {
                     Staff staff = Database.STAFF.get(hospitalId);
-                    if (staff != null && attempt == staff.getPassword()) {
+                    if (staff != null && attempt.equals(staff.getPassword())) {
                         break;
                     }
                 }
                 tries++;
             }
+            tries = 0;
 
-            while (item) {
+            while (item && tries < 5) {
                 System.out.println("Enter the new password: ");
                 pw = scanner.nextLine();
+
+                valid = 0;
+                lowercase = 0;
+                uppercase = 0;
+                hasDigit = 0;
+                symbolCount = 0;
                 // checks for valid password length
                 if (pw.length() > 10) {
                     valid++;
@@ -161,24 +171,27 @@ public class LoginManager {
                 if (symbolCount >= 2) {
                     valid++;
                 }
-
+                System.out.println(valid);
                 // uppercase + lowercase + hasDigit + hasSymbol = 4
-                if (valid == 4) {
+                if (valid == 5) {
                     if ("STAFF".equals(role)) {
                         Staff staff = Database.STAFF.get(hospitalId);
-                        if (staff != null) {
-                            staff.setPassword(pw);
-                        }
+                        staff.setPassword(pw);
+                        Database.STAFF.put(staff.getId(), staff);
                     } else if ("PATIENTS".equals(role)) {
                         Patient patient = Database.PATIENTS.get(hospitalId);
-                        if (patient != null) {
-                            patient.setPassword(pw);
-                        }
+                        patient.setPassword(pw);
+                        Database.PATIENTS.put(patient.getId(), patient);
                     }
                     item = false;
+                    Database.saveFileIntoDatabase(FileType.STAFF);
                 }
-                // resets valid to zero before reentering while loop
-                valid = 0;
+                tries++;
+
+                if (tries == 5) {
+                    System.out.println("Too many attempts. Returning..");
+                }
+
             }
         } else {
             System.out.println("The hospitalId that you provided is invalid");

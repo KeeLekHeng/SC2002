@@ -111,41 +111,42 @@ public class PatientManager {
         return true;
     }
 
-/**
- * Prints details of all patients in the database, sorted by either Patient ID or Name.
- * 
- * @param byID - if true, sort by Patient ID; if false, sort by Name.
- */
-public static void printAllPatients(boolean byID) {
-    // Create a list to hold patients from the database
-    ArrayList<Patient> patientsList = new ArrayList<>(Database.PATIENTS.values());
+    /**
+     * Prints details of all patients in the database, sorted by either Patient ID
+     * or Name.
+     * 
+     * @param byID - if true, sort by Patient ID; if false, sort by Name.
+     */
+    public static void printAllPatients(boolean byID) {
+        // Create a list to hold patients from the database
+        ArrayList<Patient> patientsList = new ArrayList<>(Database.PATIENTS.values());
 
-    // Sort the list based on the sorting preference
-    if (byID) {
-        // Sort by Patient ID (numerically)
-        patientsList.sort(Comparator.comparingInt(patient -> Integer.parseInt(patient.getPatientID().substring(1))));
-    } else {
-        // Sort by Name alphabetically
-        patientsList.sort(Comparator.comparing(Patient::getName));
-    }
+        // Sort the list based on the sorting preference
+        if (byID) {
+            // Sort by Patient ID (numerically)
+            patientsList
+                    .sort(Comparator.comparingInt(patient -> Integer.parseInt(patient.getPatientID().substring(1))));
+        } else {
+            // Sort by Name alphabetically
+            patientsList.sort(Comparator.comparing(Patient::getName));
+        }
 
-    // Print all patients' details
-    System.out.println(String.format("%-40s", "").replace(" ", "="));
-    System.out.println(String.format("%-10s %-20s %-15s %-10s %-15s %-15s %-25s", 
-                                     "Patient ID", "Name", "Date of Birth", "Gender", 
-                                     "Blood Type", "Phone Number", "Email"));
-    System.out.println(String.format("%-40s", "").replace(" ", "="));
-
-    for (Patient patient : patientsList) {
+        // Print all patients' details
+        System.out.println(String.format("%-40s", "").replace(" ", "="));
         System.out.println(String.format("%-10s %-20s %-15s %-10s %-15s %-15s %-25s",
-                                         patient.getPatientID(), patient.getName(), patient.getDob(),
-                                         patient.getGender(), patient.getBloodType(), 
-                                         patient.getPhonenumber(), patient.getEmail()));
+                "Patient ID", "Name", "Date of Birth", "Gender",
+                "Blood Type", "Phone Number", "Email"));
+        System.out.println(String.format("%-40s", "").replace(" ", "="));
+
+        for (Patient patient : patientsList) {
+            System.out.println(String.format("%-10s %-20s %-15s %-10s %-15s %-15s %-25s",
+                    patient.getPatientID(), patient.getName(), patient.getDob(),
+                    patient.getGender(), patient.getBloodType(),
+                    patient.getPhonenumber(), patient.getEmail()));
+        }
+
+        System.out.println(String.format("%-40s", "").replace(" ", "="));
     }
-
-    System.out.println(String.format("%-40s", "").replace(" ", "="));
-}
-
 
     public static void showPatientOverview(boolean byID, String doctorId) {
         ArrayList<Patient> viewList = new ArrayList<>();
@@ -199,36 +200,40 @@ public static void printAllPatients(boolean byID) {
         System.out.println(String.format("%-20s: %s", "Blood Type", patient.getBloodType().toString()));
         System.out.println(String.format("%-20s: %s", "Phone Number", patient.getPhonenumber()));
         System.out.println(String.format("%-20s: %s", "Email", patient.getEmail()));
+        printPastMedicalRecord();
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
-    public static void printPastMedicalRecord(){
+    public static void printPastMedicalRecord() {
         ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
-        for (Appointment app : Database.APPOINTMENT.values()){
-            if(app.getAppointmentStatus() == AppointmentStatus.COMPLETED && app.getAppOutcomeRecord() != null){
+        for (Appointment app : Database.APPOINTMENT.values()) {
+            if (app.getAppointmentStatus() == AppointmentStatus.COMPLETED && app.getAppOutcomeRecord() != null) {
                 appointmentList.add(app);
             }
         }
 
-        if (!appointmentList.isEmpty()){
+        if (!appointmentList.isEmpty()) {
             System.out.println("Previous Medical Records:");
-            for (Appointment app : appointmentList){
+            for (Appointment app : appointmentList) {
                 AppOutcomeRecord outcome = app.getAppOutcomeRecord();
                 System.out.println(String.format("%-20s: %s", "Date", outcome.getEndDateTime()));
                 System.out.println(String.format("%-20s: %s", "Diagnoses", outcome.getConsultationNotes()));
                 System.out.println(String.format("%-20s: %s", "Treatments", outcome.getTypeOfService()));
-                
+
                 for (PrescribeMedication prescribeMedication : outcome.getPrescribeMedications()) {
-                    System.out.println(String.format("%-20s: %s", "Medication Name", prescribeMedication.getMedicationName()));
-                    System.out.println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
+                    System.out.println(
+                            String.format("%-20s: %s", "Medication Name", prescribeMedication.getMedicationName()));
+                    System.out
+                            .println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
                     System.out.println(String.format("%-40s", "").replace(" ", "-"));
                 }
             }
         } else {
             System.out.println("Previous Medical Records: None");
         }
-        
+
     }
+
     /**
      * Initializer for dummy patients in the hospital.
      */
@@ -239,5 +244,4 @@ public static void printAllPatients(boolean byID) {
                 BloodType.B);
     }
 
-    
 }
