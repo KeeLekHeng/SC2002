@@ -155,6 +155,7 @@ public class PatientView extends MainView {
                     //View scheduled appointments
                     printBreadCrumbs("Main Menu > View Scheduled Appointments");
                     viewScheduledAppointments(hospitalID);
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 8:
                     //View past appointment outcome records
@@ -201,11 +202,9 @@ public void viewScheduledAppointments(String hospitalID){
                     do {
                         if (choice == 1) {
                             AppointmentManager.viewScheduledAppointments(hospitalID, 1);
-                            Helper.pressAnyKeyToContinue();
                             break;
                         } else if (choice == 2) {
                             AppointmentManager.viewScheduledAppointments(hospitalID, 2);
-                            Helper.pressAnyKeyToContinue();
                             break;
                         } else if (choice == 3) {
                             break;
