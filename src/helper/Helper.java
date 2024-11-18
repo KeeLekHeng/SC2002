@@ -207,24 +207,28 @@ public class Helper {
      * @return String object for the date in the format "yyyy-MM-dd"
      */
     public static String setDateOnly() {
-
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        
+    
         System.out.println("Please enter the date in this format: 'yyyy-MM-dd'");
-        String date = sc.nextLine();
+        String dateInput = sc.nextLine();
+    
         try {
-            LocalDateTime Date = LocalDateTime.parse(date, format);
-            date = format.format(Date);
-            if (validateDate(date, format)) {
-                return date;
-
+            LocalDate date = LocalDate.parse(dateInput, format); 
+            if (validateDate(date)) { 
+                return date.format(format); 
             } else {
                 System.out.println("Invalid Date");
             }
         } catch (DateTimeParseException e) {
-            System.out.println("Invalid Date format");
+            System.out.println("Invalid Date format. Please use 'yyyy-MM-dd'.");
         }
-        return "";
+    
+        return ""; 
+    }
+    
+
+    public static boolean validateDate(LocalDate date) {
+        return date.isAfter(LocalDate.now()); // Example validation: only allow future dates
     }
 
     /**

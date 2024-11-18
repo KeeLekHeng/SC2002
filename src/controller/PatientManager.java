@@ -5,7 +5,11 @@ import java.util.Comparator;
 import src.database.Database;
 import src.database.FileType;
 import src.helper.Helper;
+import src.model.AppOutcomeRecord;
+import src.model.Appointment;
 import src.model.Patient;
+import src.model.PrescribeMedication;
+import src.model.enums.AppointmentStatus;
 import src.model.enums.BloodType;
 import src.model.enums.Gender;
 import src.model.enums.Role;
@@ -198,6 +202,33 @@ public static void printAllPatients(boolean byID) {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
+    public static void printPastMedicalRecord(){
+        ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
+        for (Appointment app : Database.APPOINTMENT.values()){
+            if(app.getAppointmentStatus() == AppointmentStatus.COMPLETED && app.getAppOutcomeRecord() != null){
+                appointmentList.add(app);
+            }
+        }
+
+        if (!appointmentList.isEmpty()){
+            System.out.println("Previous Medical Records:");
+            for (Appointment app : appointmentList){
+                AppOutcomeRecord outcome = app.getAppOutcomeRecord();
+                System.out.println(String.format("%-20s: %s", "Date", outcome.getEndDateTime()));
+                System.out.println(String.format("%-20s: %s", "Diagnoses", outcome.getConsultationNotes()));
+                System.out.println(String.format("%-20s: %s", "Treatments", outcome.getTypeOfService()));
+                
+                for (PrescribeMedication prescribeMedication : outcome.getPrescribeMedications()) {
+                    System.out.println(String.format("%-20s: %s", "Medication Name", prescribeMedication.getMedicationName()));
+                    System.out.println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
+                    System.out.println(String.format("%-40s", "").replace(" ", "-"));
+                }
+            }
+        } else {
+            System.out.println("Previous Medical Records: None");
+        }
+        
+    }
     /**
      * Initializer for dummy patients in the hospital.
      */
@@ -207,4 +238,6 @@ public static void printAllPatients(boolean byID) {
         PatientManager.createPatient("Doe John", "1995-12-12", Gender.MALE, "8565065", "endy@e.ntu.edu.sg",
                 BloodType.B);
     }
+
+    
 }

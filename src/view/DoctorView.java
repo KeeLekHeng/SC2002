@@ -1,16 +1,15 @@
 package src.view;
-import src.model.Patient;
-import src.model.TimeSlot;
-import src.model.PrescribeMedication;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 import src.controller.AppointmentManager;
 import src.controller.LoginManager;
 import src.controller.PatientManager;
 import src.helper.Helper;
+import src.model.Patient;
+import src.model.PrescribeMedication;
+import src.model.TimeSlot;
 
 
 public class DoctorView extends MainView{

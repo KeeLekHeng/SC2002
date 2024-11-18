@@ -6,11 +6,11 @@ import java.util.List;
 import src.controller.AppointmentManager;
 import src.controller.LoginManager;
 import src.controller.PatientManager;
+import src.controller.StaffManager;
 import src.helper.Helper;
 import src.model.AppointmentSlot;
 import src.model.Patient;
 import src.model.TimeSlot;
-import src.controller.StaffManager;
 
 public class PatientView extends MainView {
     public PatientView () {
@@ -100,7 +100,7 @@ public class PatientView extends MainView {
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
-                    System.out.println("What date would you like to reschedule to?");
+                    System.out.println("What date would you like to schedule to?");
                     newDateInput = Helper.setDateOnly();
                     if (newDateInput.isEmpty()) {
                         System.out.println("Failed to parse the date. Returning to the main menu...");
@@ -112,6 +112,7 @@ public class PatientView extends MainView {
                     Helper.pressAnyKeyToContinue();
 
                     break;
+
                 case 5:
                     //Reschedule an appointment(maybe can display available slots)
                     Helper.clearScreen();
