@@ -266,12 +266,14 @@ public class AdministratorView extends MainView {
                     return;
                 case 7:
                     //initialize medications
-                    InventoryManager.initializeDummyMedication();
+                    Helper.clearScreen();
+                    Database.initializeDummyMedication();
                     System.out.println("Dummy Medications Initialized");
                     Helper.pressAnyKeyToContinue();
                     return;
                 case 8: 
                     //clear database
+                    Helper.clearScreen();
                     Database.clearDatabase();
                     Database.initializeStartingAdmin();
                     System.out.println("Database Cleared and Starting Admin initialized ");

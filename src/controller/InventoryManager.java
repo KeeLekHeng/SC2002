@@ -185,9 +185,9 @@ public class InventoryManager {
 
 
     public static void initializeDummyMedication() {
-        InventoryManager.addNewMedication("Ibuprofen", 50, 10);
-        InventoryManager.addNewMedication("Paracetamol", 100, 20);
-        InventoryManager.addNewMedication("Amoxicillin", 75, 15);
+        addNewMedication("Ibuprofen", 50, 10);
+        addNewMedication("Paracetamol", 100, 20);
+        addNewMedication("Amoxicillin", 75, 15);
     }
 
 
