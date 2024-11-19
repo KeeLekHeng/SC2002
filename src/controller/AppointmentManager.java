@@ -9,6 +9,7 @@ import java.util.Map;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import src.database.Database;
 import src.database.FileType;
@@ -50,19 +51,23 @@ public class AppointmentManager {
     }
     
     //timeSlots in a day
-    public static List<TimeSlot> generateTimeSlots(LocalDate date){
-        final int startHour = 12;
-        final int endHour = 5;
-        final int slotDuration = 59;
+    public static List<TimeSlot> generateTimeSlots(LocalDate date) {
+    final int startHour = 9;  
+    final int endHour = 17; 
+    final int slotDuration = 60; 
 
-        List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
-        for (int hour = startHour; hour <= endHour; hour++){
-            for (int minute = 0; minute < 60; minute += slotDuration){
-                timeSlots.add(new TimeSlot(date.atTime(hour,minute)));
-            }
-        }
-        return timeSlots;
+    List<TimeSlot> timeSlots = new ArrayList<>();
+
+    LocalTime startTime = LocalTime.of(startHour, 0);
+    LocalTime endTime = LocalTime.of(endHour, 0);
+
+    while (!startTime.isAfter(endTime)) {
+        timeSlots.add(new TimeSlot(date.atTime(startTime)));
+        startTime = startTime.plusMinutes(slotDuration); // Increment by slot duration
     }
+
+    return timeSlots;
+}
 
     public static List<AppointmentSlot> getAvailableSlotsByDoctor(LocalDate newDateTime, String doctorID){
         List<AppointmentSlot> availableSlots = new ArrayList<AppointmentSlot>();
@@ -129,7 +134,7 @@ public class AppointmentManager {
         List<TimeSlot> timeSlots = AppointmentManager.generateTimeSlots(date);
 
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
-        System.out.println("Available Appointment Slots for" + date + ":");
+        System.out.println("Available Appointment Slots for " + date + ":");
         
         //print out all available slots for that doctor
         for (TimeSlot slot : timeSlots) {
@@ -152,9 +157,9 @@ public class AppointmentManager {
 
         Appointment appointment;
         int aid = Helper.generateUniqueId(Database.APPOINTMENT);
-        String appointmentID = String.format("M%05d", aid);
+        String appointmentID = String.format("A%05d", aid);
         appointment = new Appointment(appointmentID, doctorID, patientID, timeSlot);
-        System.out.println("Appointment scheduled for" + timeSlot.getFormattedDate() + "at" + timeSlot.getFormattedTime() + ". Appointment Details:");
+        System.out.println("Appointment scheduled for " + timeSlot.getFormattedDate() + " at " + timeSlot.getFormattedTime() + ". Appointment Details:");
         printAppointmentDetails(appointment);
         Database.APPOINTMENT.put(appointmentID, appointment);
         Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
@@ -176,7 +181,7 @@ public class AppointmentManager {
             
         if (Helper.promptConfirmation("cancel this appointment")){
             appointment.setAppointmentStatus(AppointmentStatus.CANCELED);
-            System.out.println("You have cancelled the appointment on" + timeSlot.getFormattedDate() + "at" + timeSlot.getFormattedTime());
+            System.out.println("You have cancelled the appointment on " + timeSlot.getFormattedDate() + " at " + timeSlot.getFormattedTime());
 
             Database.APPOINTMENT.put(appointmentID, appointment);
             Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
@@ -305,43 +310,48 @@ public class AppointmentManager {
             System.out.println("Here are your scheduled appointments:");
             for (Appointment appointment : appointmentList){
             printAppointmentDetails(appointment);
-            return true;
             }
+            return true;
         } else {
             System.out.println("No appointments scheduled");
             return false;
         }
-        return false;
     }
 
 
 
     
     //want implement like cant reschedule a day before appointment??
-    public static boolean rescheduleAppointment(String appointmentID, String patientID, TimeSlot newTimeSlot){
+    public static boolean rescheduleAppointment(String appointmentID, String patientID, TimeSlot newTimeSlot) {
         
-        //check whether old appointment valid and is yours
-        if(!validateAppointmentOwnership(appointmentID, patientID)){
+        if (!validateAppointmentOwnership(appointmentID, patientID)) {
             return false;
         }
-
-        //check whether new appointment is free
+    
+        
         Appointment appointment = Database.APPOINTMENT.get(appointmentID);
-        if(isAppointmentSlotAvailable(newTimeSlot, appointment.getDoctorID())){
-            cancelAppointment(appointmentID, patientID);
-            
+        if (appointment == null) {
+            System.out.println("Appointment not found.");
+            return false;
+        }
+    
+        // Check whether the new time slot is available
+        if (isAppointmentSlotAvailable(newTimeSlot, appointment.getDoctorID())) {
+            if(!cancelAppointment(appointmentID, patientID)){
+                return false;
+            }
+    
             int aid = Helper.generateUniqueId(Database.APPOINTMENT);
             String newAppointmentID = String.format("M%05d", aid);
-            Appointment newAppointment = new Appointment(appointmentID, appointment.getDoctorID(), patientID, newTimeSlot);
-            System.out.println("Appointment rescheduled for" + newTimeSlot.getFormattedDate() + "at" + newTimeSlot.getFormattedTime());
-
+            Appointment newAppointment = new Appointment(newAppointmentID, appointment.getDoctorID(), patientID, newTimeSlot);
+    
             Database.APPOINTMENT.put(newAppointmentID, newAppointment);
             Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
             return true;
         } else {
-            System.out.println("Time slot " + newTimeSlot.getFormattedDateTime() +  " is not available.");
+            System.out.println("Time slot " + newTimeSlot.getFormattedDateTime() + " is not available.");
             return false;
-        }   
+        }
     }
 
     
@@ -484,7 +494,7 @@ public class AppointmentManager {
         System.out.println(String.format("%-20s: %s", "Patient ID", appointment.getPatientID()));
         System.out.println(String.format("%-20s: %s", "Doctor ID", appointment.getDoctorID()));
         System.out.println(String.format("%-20s: %s", "Appointment Status", appointment.getAppointmentStatus()));
-        System.out.println(String.format("%-20s: %s", "Time Slot", appointment.getTimeSlot()));
+        System.out.println(String.format("%-20s: %s", "Time Slot", appointment.getTimeSlot().getFormattedDateTime()));
     
         // If appointment has an outcome record, call the printAppointmentOutcomeRecord method
         if (appointment.getAppOutcomeRecord() != null) {
