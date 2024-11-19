@@ -3,8 +3,9 @@ This is our group assignment for SC2002 (Object Oriented Programming).
 
 # Setup Instructions
 ## Project Folder Structure
+> Folder structure of our project.
 
-**Top Level Directory Layout**
+### Top Level Directory Layout
 ```
 .
 ├── declarations               # Individual GAI Declarations
@@ -15,7 +16,7 @@ This is our group assignment for SC2002 (Object Oriented Programming).
 ├── LICENSE
 └── README.md
 ```
-**Source Files**
+### Source Files**
 ```
 .
 ├── ...
@@ -30,10 +31,18 @@ This is our group assignment for SC2002 (Object Oriented Programming).
 ```
 
 ## Scripts
+> How to run our project
+1. In your command line change directory into src
+` path `
+2. Compile the java files using command line
+` path `
+3. Run the java file using command line
+` code to run `
+
 
 # Java docs
 Create javadocs - make sure you are at ?  
-?  
+`?javadoc path`
 Launch the index.html under ./javadoc/index.html  
 
 # Contributors
