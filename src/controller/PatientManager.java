@@ -1,5 +1,6 @@
 package src.controller;
 
+import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.Comparator;
 import src.database.Database;
@@ -28,14 +29,19 @@ public class PatientManager {
         String password = "password";
         Role role = Role.PATIENT;
         String doctorID = null;
-        Patient newPatient = new Patient(patientID, doctorID, password, role, name, dob, gender, phoneNumber, email,
-                bloodType);
 
-        // Saving to database
-        Database.PATIENTS.put(patientID, newPatient);
-        Database.saveFileIntoDatabase(FileType.PATIENTS);
-        System.out.println("Patient Created! Patient Details: ");
-        viewPatientRecords(newPatient);
+        if (Helper.EmailValidator(email) && Helper.PhoneNumValidator(phoneNumber)) {
+            Patient newPatient = new Patient(patientID, doctorID, password, role, name, dob, gender, phoneNumber, email,
+                    bloodType);
+
+            // Saving to database
+            Database.PATIENTS.put(patientID, newPatient);
+            Database.saveFileIntoDatabase(FileType.PATIENTS);
+            System.out.println("Patient Created! Patient Details: ");
+            viewPatientRecords(newPatient);
+        } else {
+            System.out.println("Email or Phone Number is invalid. Please try again.");
+        }
     }
 
     public static boolean updatePatientDetails(String patientID, int attributeCode, String newvalue) {
@@ -48,11 +54,15 @@ public class PatientManager {
         switch (attributeCode) {
             case 1:
                 patientToUpdate = Database.PATIENTS.get(patientID);
-                patientToUpdate.setPhonenumber(newvalue);
+                if (Helper.PhoneNumValidator(newvalue)) {
+                    patientToUpdate.setPhonenumber(newvalue);
+                }
                 break;
             case 2:
                 patientToUpdate = Database.PATIENTS.get(patientID);
-                patientToUpdate.setEmail(newvalue);
+                if (Helper.EmailValidator(newvalue)) {
+                    patientToUpdate.setEmail(newvalue);
+                }
                 break;
             case 3:
                 patientToUpdate = Database.PATIENTS.get(patientID);

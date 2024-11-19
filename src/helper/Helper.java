@@ -10,6 +10,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Helper class to provide support functions for other classes
@@ -54,6 +55,45 @@ public class Helper {
                 System.out.println("Invalid Input, Enter an integer!");
             }
         }
+    }
+
+    /*
+     * Function to validate email provided
+     * 
+     * It checks whether the the email provided meets the email valid format
+     * If the email is invalid, then false will be returned
+     * Otherwise, true will be returned for a valid email
+     */
+    public static boolean EmailValidator(String email) {
+        // Define the regex pattern for a valid email address
+        final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+        // Compile the regex and match the email
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        boolean isValid = email != null && pattern.matcher(email).matches();
+
+        // Return the result
+        if (isValid) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * Function to validate phone number provided
+     * 
+     * It checks whether the phone number provided meets the accepted criteria
+     * If the phone number is invalid, then false will be returned
+     * Otherwise, true will be returned for a valid phone number
+     */
+    public static boolean PhoneNumValidator(String phoneNumber) {
+        if (phoneNumber.length() != 10) {
+            return false;
+        } else if (phoneNumber.charAt(0) != 6 && phoneNumber.charAt(1) != 5) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -133,7 +173,9 @@ public class Helper {
     }
 
     /**
-     * Reads a valid Appointment ID in the format "AXXXXX" or allows the user to go back.
+     * Reads a valid Appointment ID in the format "AXXXXX" or allows the user to go
+     * back.
+     * 
      * @return A valid appointment ID or null if the user enters "back".
      */
     public static String readAppointmentID() {
@@ -154,6 +196,7 @@ public class Helper {
 
     /**
      * Reads a valid Patient ID in the format "PXXXX" or allows the user to go back.
+     * 
      * @return A valid patient ID or null if the user enters "back".
      */
     public static String readPatientID() {
@@ -173,7 +216,9 @@ public class Helper {
     }
 
     /**
-     * Reads a valid Pharmacist, Doctor, or Admin ID in the format "PXXX", "DXXX", or "AXXX" or allows the user to go back.
+     * Reads a valid Pharmacist, Doctor, or Admin ID in the format "PXXX", "DXXX",
+     * or "AXXX" or allows the user to go back.
+     * 
      * @return A valid staff ID or null if the user enters "back".
      */
     public static String readStaffID() {
@@ -192,7 +237,9 @@ public class Helper {
     }
 
     /**
-     * Reads a valid Prescription ID in the format "PXXXXX" or allows the user to go back.
+     * Reads a valid Prescription ID in the format "PXXXXX" or allows the user to go
+     * back.
+     * 
      * @return A valid prescription ID or null if the user enters "back".
      */
     public static String readPrescriptionID() {
@@ -213,6 +260,7 @@ public class Helper {
 
     /**
      * Reads a valid Request ID in the format "RXXXX" or allows the user to go back.
+     * 
      * @return A valid request ID or null if the user enters "back".
      */
     public static String readRequestID() {
@@ -232,7 +280,9 @@ public class Helper {
     }
 
     /**
-     * Reads a valid Medicine ID in the format "MXXXX" or allows the user to go back.
+     * Reads a valid Medicine ID in the format "MXXXX" or allows the user to go
+     * back.
+     * 
      * @return A valid medicine ID or null if the user enters "back".
      */
     public static String readMedicineID() {
@@ -321,30 +371,30 @@ public class Helper {
     }
 
     /**
-     * Method to set the date for either current date or user input date without time
+     * Method to set the date for either current date or user input date without
+     * time
      * 
      * @return String object for the date in the format "yyyy-MM-dd"
      */
     public static String setDateOnly() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    
+
         System.out.println("Please enter the date in this format: 'yyyy-MM-dd'");
         String dateInput = sc.nextLine();
-    
+
         try {
-            LocalDate date = LocalDate.parse(dateInput, format); 
-            if (validateDate(date)) { 
-                return date.format(format); 
+            LocalDate date = LocalDate.parse(dateInput, format);
+            if (validateDate(date)) {
+                return date.format(format);
             } else {
                 System.out.println("Invalid Date");
             }
         } catch (DateTimeParseException e) {
             System.out.println("Invalid Date format. Please use 'yyyy-MM-dd'.");
         }
-    
-        return ""; 
+
+        return "";
     }
-    
 
     public static boolean validateDate(LocalDate date) {
         return date.isAfter(LocalDate.now()); // Example validation: only allow future dates
@@ -385,7 +435,8 @@ public class Helper {
         return date.format(format);
     }
 
-    /**                                                                     MAYBE CAN THROW AWAY
+    /**
+     * MAYBE CAN THROW AWAY
      * Method to validate date
      * 
      * @param date   Date in string
@@ -400,7 +451,8 @@ public class Helper {
         return (Date.compareTo(now) >= 0 ? true : false);
     }
 
-    /**                                                                    MAYBE CAN THROW AWAY
+    /**
+     * MAYBE CAN THROW AWAY
      * Method to check if the time difference of the input date and current time
      * exceeds 1 hour (Hotel check in / check out checking)
      * 
@@ -482,7 +534,7 @@ public class Helper {
         try {
             System.in.read();
         } catch (Exception e) {
-        
+
         } finally {
         }
     }

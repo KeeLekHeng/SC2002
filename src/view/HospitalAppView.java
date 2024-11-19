@@ -1,5 +1,6 @@
 package src.view;
 
+import java.io.Console;
 import src.controller.LoginManager;
 import src.helper.*;
 
@@ -12,14 +13,17 @@ public class HospitalAppView extends MainView {
     }
 
     public String userLogin() {
+        // Initialize console
+        Console console = System.console();
         Helper.clearScreen();
         printBreadCrumbs("User Login");
         boolean isLoginSuccessful = false;
-        String password = "";
         String role = "";
+        int tries = 0;
 
         System.out.println("Please enter your hospital ID and password to login");
-        while (!isLoginSuccessful) {
+        Helper.readString();
+        while (!isLoginSuccessful && tries < 5) {
             System.out.println("Hospital ID: ");
             hospitalID = Helper.readString();
 
@@ -40,28 +44,39 @@ public class HospitalAppView extends MainView {
             }
 
             // Prompt for real login
-            System.out.println("Password: ");
-            password = Helper.readString();
+            char[] passwordArray = console.readPassword("Password: ");
+            String password = new String(passwordArray);
 
             // Validate login credentials
-            currentUserRole = LoginManager.LoginUser(hospitalID, password); // currentuserrole = Doctor
+            currentUserRole = LoginManager.LoginUser(hospitalID, password);
             if (currentUserRole.equals("unsuccessful")) {
-                System.out.println("Invalid username or password. Please try again.");
+                tries++;
+                if (tries == 5) {
+                    System.out.println("Max attempts exceeded. ");
+                    break;
+                }
+                System.out.println(
+                        "Invalid username or password. " + (5 - tries) + " attempts remaining. Please try again.");
+
             } else {
                 isLoginSuccessful = true; // Real login successful
                 System.out.println("Logged in as: " + currentUserRole);
             }
         }
-        /*if(password.equals("password")){
-            Helper.clearScreen();
-            printBreadCrumbs("Security Alert");
-            System.out.println("Your password is the default password. Please change your password for security reasons.");
-            System.out.println("You will be redirected to create new password.");
-            Helper.pressAnyKeyToContinue();
-            Helper.clearScreen();
-            printBreadCrumbs("Create New Password");
-            LoginManager.createNewPassword(hospitalID);
-        }*/
+        /*
+         * if(password.equals("password")){
+         * Helper.clearScreen();
+         * printBreadCrumbs("Security Alert");
+         * System.out.
+         * println("Your password is the default password. Please change your password for security reasons."
+         * );
+         * System.out.println("You will be redirected to create new password.");
+         * Helper.pressAnyKeyToContinue();
+         * Helper.clearScreen();
+         * printBreadCrumbs("Create New Password");
+         * LoginManager.createNewPassword(hospitalID);
+         * }
+         */
         Helper.clearScreen();
         return hospitalID;
     }

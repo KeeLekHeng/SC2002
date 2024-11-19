@@ -7,7 +7,6 @@ import src.database.FileType;
 import src.model.Patient;
 import src.model.Staff;
 import src.model.User;
-import src.view.MainView;
 
 // For javadocs
 
@@ -133,11 +132,16 @@ public class LoginManager {
                     }
                 }
                 tries++;
+                System.out.println("Incorrect password provided. " + (3 - tries) + " tries left.");
             }
             tries = 0;
 
             while (item && tries < 5) {
-                System.out.println("Enter the new password: ");
+                if (tries == 0) {
+                    System.out.println("Enter the new password: ");
+                } else {
+                    System.out.println("Invalid password. Enter new password: " + (5 - tries) + " tries left.");
+                }
                 pw = scanner.nextLine();
 
                 valid = 0;
@@ -172,7 +176,6 @@ public class LoginManager {
                 if (symbolCount >= 2) {
                     valid++;
                 }
-                System.out.println(valid);
                 // uppercase + lowercase + hasDigit + hasSymbol = 4
                 if (valid == 5) {
                     if ("STAFF".equals(role)) {
@@ -192,6 +195,7 @@ public class LoginManager {
                 if (tries == 5) {
                     System.out.println("Too many attempts. Returning..");
                 }
+
             }
         } else {
             System.out.println("The hospitalId that you provided is invalid");

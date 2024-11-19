@@ -187,21 +187,32 @@ public class StaffManager {
         viewList.addAll(Database.STAFF.values());
 
         switch (choice) {
-            case 1: // Sort by age
+            case 1:
+                viewList.sort(Comparator.comparingInt(staff -> Integer.parseInt(staff.getId().substring(1))));
+                System.out.println("Staff sorted by ID:");
+                break;
+            case 2:
+                viewList.sort(Comparator.comparing(Staff::getName));
+                System.out.println("Staff sorted by name:");
+                break;
+            case 3: // Sort by age
                 viewList.sort(Comparator.comparingInt(Staff::getAge));
                 System.out.println("Staff sorted by age:");
                 break;
 
-            case 2: // Sort by gender
+            case 4: // Sort by gender
                 viewList.sort(Comparator.comparing(Staff::getGender));
                 System.out.println("Staff sorted by gender:");
                 break;
 
-            case 3: // Sort by role
+            case 5: // Sort by role
                 viewList.sort(Comparator.comparing(Staff::getRole));
                 System.out.println("Staff sorted by role:");
                 break;
-
+            case 6: // Sort by EmploymentStatus
+                viewList.sort(Comparator.comparing(Staff::getEmploymentStatus));
+                System.out.println("Staff sorted by employment status:");
+                break;
             default:
                 System.out.println("Invalid choice.");
                 return;
@@ -303,7 +314,7 @@ public class StaffManager {
         createStaff("Pharm. Frank Lee", Gender.MALE, 33, Role.PHARMACIST);
     }
 
-    public static void createStartingAdmin(){
+    public static void createStartingAdmin() {
         createStaff("Admin", Gender.MALE, 50, Role.ADMINISTRATOR);
     }
 
