@@ -342,7 +342,7 @@ public class AppointmentManager {
             }
     
             int aid = Helper.generateUniqueId(Database.APPOINTMENT);
-            String newAppointmentID = String.format("M%05d", aid);
+            String newAppointmentID = String.format("A%05d", aid);
             Appointment newAppointment = new Appointment(newAppointmentID, appointment.getDoctorID(), patientID, newTimeSlot);
     
             Database.APPOINTMENT.put(newAppointmentID, newAppointment);
