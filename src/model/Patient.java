@@ -178,5 +178,4 @@ public class Patient extends User {
     public void setBloodType(BloodType bloodType) {
         this.bloodType = bloodType;
     }
-
 }
