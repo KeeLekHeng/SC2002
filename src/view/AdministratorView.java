@@ -17,24 +17,43 @@ import src.model.ReplenishRequest;
 import src.model.Staff;
 import src.model.enums.*;
 
+/**
+ * This class represents the administrator view, extending the main view. 
+ * It provides methods for administrators to manage staff, appointments, 
+ * medication inventory, and other related operations.
+ * @author Seann
+ * @version 1.0
+ * @since 2024-11-20
+ */
 public class AdministratorView extends MainView {
-    public AdministratorView () {
+
+    /**
+     * Constructs an AdministratorView and initializes the main view.
+     */
+    public AdministratorView() {
         super();
     }
 
+    /**
+     * Displays the main menu for the administrator.
+     */
     @Override
     public void printMenu() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu");
         System.out.println("What would you like to do ?");
-        System.out.println("(1) View and Manage Hospital Staff"); //done
-        System.out.println("(2) View Appointments details"); 
-        System.out.println("(3) View and Manage Medication Inventory ");
-        System.out.println("(4) Approve Replenishment Requests ");
+        System.out.println("(1) View and Manage Hospital Staff");
+        System.out.println("(2) View Appointments details");
+        System.out.println("(3) View and Manage Medication Inventory");
+        System.out.println("(4) Approve Replenishment Requests");
         System.out.println("(5) Change Password");
-        System.out.println("(6) Logout ");
+        System.out.println("(6) Logout");
     }
 
+    /**
+     * Handles the administrator's interactions within the application.
+     * @param hospitalID The unique ID of the hospital.
+     */
     @Override
     public void viewApp(String hospitalID) {
         int mainOpt;
@@ -43,42 +62,37 @@ public class AdministratorView extends MainView {
             mainOpt = Helper.readInt(1, 6);
             switch (mainOpt) {
                 case 1:
-                    //View and manage hospital staff
                     viewAndManageStaff(hospitalID);
-                    ;
                     break;
                 case 2:
-                    //View appointment details
                     viewAppointmentDetails(hospitalID);
-                    ;
                     break;
                 case 3:
-                    //View and manage medication inventory
-                    //can view or manage or back
                     viewAndManageMedicationInventory();
-                    ;
                     break;
                 case 4:
-                    //Approve replenishment requests
                     approveReplenishmentRequest();
                     break;
                 case 5:
                     LoginManager.createNewPassword(hospitalID);
                     break;
                 case 6:
-                    //Logout
                     return;
             }
         } while (mainOpt != 6);
     }
-////////////////////////////// View and Manage Staff //////////////////////////////
+
+    /**
+     * Displays options for viewing, creating, updating, and managing hospital staff.
+     * @param hospitalID The unique ID of the hospital.
+     */
     public void viewAndManageStaff(String hospitalID) {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > View and Manage Hospital Staff");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Staff Details");
         System.out.println("(2) Create Staff");
-        System.out.println("(3) Update Staff Details"); //update staff parameter is staff instead of hospitalID
+        System.out.println("(3) Update Staff Details");
         System.out.println("(4) Remove Staff");
         System.out.println("(5) Initialize Dummy Staff");
         System.out.println("(6) Initialize Dummy Patients");
@@ -90,10 +104,6 @@ public class AdministratorView extends MainView {
             subOpt = Helper.readInt(1, 9);
             switch (subOpt) {
                 case 1:
-                    //View Staff Details
-                    //print all staff details
-                    //can select role and gender, then print all staff of that role and gender
-                    //can filter by age
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > View Staff Details");
                     System.out.println("What would you like to do ?");
@@ -127,12 +137,11 @@ public class AdministratorView extends MainView {
                             return;
                         case 6:
                             return;
-                        default: System.out.println("Unexpected error occurred. Please try again.");
+                        default: 
+                            System.out.println("Unexpected error occurred. Please try again.");
                     }
                     break;
                 case 2:
-                    //Create Staff
-                    //createStaff(String name, Gender gender, int age, Role role, String password) 
                     Role role = null;
                     Gender gender = null;
                     Helper.clearScreen();
@@ -177,28 +186,26 @@ public class AdministratorView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     return;
                 case 3:
-                    //Update Staff Details
-                    //enter staff id den will display staff details, can select which attribute to update
                     do {
-                    Helper.clearScreen();
-                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Update Staff Details");
-                    System.out.println("Enter Staff ID to Update: ");
-                    String updateID = Helper.readString();
-                    ArrayList<Staff> staff = StaffManager.searchStaffById(updateID);
-                    if(staff.isEmpty()) {
-                        System.out.println("Staff with ID " + updateID + " not found");
-                        Helper.pressAnyKeyToContinue();
-                        opt = 5;
-                        break;
-                    }
-                    StaffManager.printStaffDetails(updateID);
-                    System.out.println("What would you like to update: ");
-                    System.out.println("(1) Name");
-                    System.out.println("(2) Age");
-                    System.out.println("(3) Gender");
-                    System.out.println("(4) Role");
-                    System.out.println("(5) Back");
-                    opt = Helper.readInt(1, 5);
+                        Helper.clearScreen();
+                        printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Update Staff Details");
+                        System.out.println("Enter Staff ID to Update: ");
+                        String updateID = Helper.readString();
+                        ArrayList<Staff> staff = StaffManager.searchStaffById(updateID);
+                        if(staff.isEmpty()) {
+                            System.out.println("Staff with ID " + updateID + " not found");
+                            Helper.pressAnyKeyToContinue();
+                            opt = 5;
+                            break;
+                        }
+                        StaffManager.printStaffDetails(updateID);
+                        System.out.println("What would you like to update: ");
+                        System.out.println("(1) Name");
+                        System.out.println("(2) Age");
+                        System.out.println("(3) Gender");
+                        System.out.println("(4) Role");
+                        System.out.println("(5) Back");
+                        opt = Helper.readInt(1, 5);
                         switch(opt) {
                             case 1:
                                 System.out.println("Enter New Name: ");
@@ -234,8 +241,6 @@ public class AdministratorView extends MainView {
                     } while (opt != 5);
                     return;
                 case 4:
-                    //Remove Staff
-                    //enter staff id to remove
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Remove Staff");
                     System.out.println("Enter Staff ID to Remove: ");
@@ -265,14 +270,12 @@ public class AdministratorView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     return;
                 case 7:
-                    //initialize medications
                     Helper.clearScreen();
                     Database.initializeDummyMedication();
                     System.out.println("Dummy Medications Initialized");
                     Helper.pressAnyKeyToContinue();
                     return;
                 case 8: 
-                    //clear database
                     Helper.clearScreen();
                     Database.clearDatabase();
                     Database.initializeStartingAdmin();
@@ -285,15 +288,26 @@ public class AdministratorView extends MainView {
         } while (subOpt != 9);
     }
 
+    /**
+     * Initializes dummy staff data in the database.
+     * @return true if dummy staff data is successfully initialized, false otherwise.
+     */
     private boolean initializeStaff() {
         return Database.initializeDummyStaff();
     }
 
+    /**
+     * Initializes dummy patient data in the database.
+     * @return true if dummy patient data is successfully initialized, false otherwise.
+     */
     private boolean initializeDummyPatients() {
         return Database.initializeDummyPatients();
     }
 
-
+    /**
+     * Prompts the user to select a gender and returns the selection.
+     * @return true if a valid gender is selected, false if the selection is invalid.
+     */
     private boolean selectGender() {
         System.out.println("Select Gender:");
         System.out.println("(1) Male");
@@ -308,7 +322,11 @@ public class AdministratorView extends MainView {
             return false; 
         }
     }
-    
+
+    /**
+     * Prompts the user to select a role and returns the selection.
+     * @return true if a valid role is selected, false if the selection is invalid.
+     */
     private boolean selectRole() {
         System.out.println("Select Role:");
         System.out.println("(1) Doctor");
@@ -317,7 +335,7 @@ public class AdministratorView extends MainView {
         int roleOpt = Helper.readInt(1, 3);
         if (roleOpt >= 1 && roleOpt <= 3) {
             Role selectedRole = (roleOpt == 1) ? Role.DOCTOR :
-                               (roleOpt == 2) ? Role.ADMINISTRATOR : Role.PHARMACIST;
+                            (roleOpt == 2) ? Role.ADMINISTRATOR : Role.PHARMACIST;
             System.out.println("Selected Role: " + selectedRole);
             return true;
         } else {
@@ -327,11 +345,13 @@ public class AdministratorView extends MainView {
     }
 
 
-    //////////////////////approveReplenishmentRequest()/////////////////////
+    /**
+     * Approves or rejects replenishment requests.
+     * Loops through the pending replenish requests and processes user input for approval or rejection.
+     */
     public void approveReplenishmentRequest() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
-        //loop below
         List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
         if(replenishRequests==null) {
             Helper.pressAnyKeyToContinue();
@@ -347,11 +367,9 @@ public class AdministratorView extends MainView {
             int opt = Helper.readInt(1, 3);
             switch(opt) {
                 case 1:
-                    //Approve
                     InventoryManager.updateReplenishRequests(requestID, opt);
                     break;
                 case 2:
-                    //Reject
                     InventoryManager.updateReplenishRequests(requestID, opt);
                     break;
                 case 3:
@@ -361,9 +379,11 @@ public class AdministratorView extends MainView {
             Helper.pressAnyKeyToContinue();
         } 
     }
-    
-    //////////////////////View and Manage Medication Inventory/////////////////////
 
+    /**
+     * Allows viewing and managing the medication inventory.
+     * Includes options to view inventory, update stock, or set low stock limits.
+     */
     public void viewAndManageMedicationInventory() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > View and Manage Medication Inventory");
@@ -376,8 +396,6 @@ public class AdministratorView extends MainView {
             opt = Helper.readInt(1,3);
             switch (opt) {
                 case 1:
-                    //View Medication Inventory
-                    //print all medication inventory
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > View Medication Inventory");
                     PrescriptionManager.viewMedicationInventory();
@@ -385,8 +403,6 @@ public class AdministratorView extends MainView {
                     opt = 3;
                     break;
                 case 2:
-                    //Update Medication Stock
-                    //enter medication name and quantity to update
                     boolean found;
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
@@ -396,7 +412,7 @@ public class AdministratorView extends MainView {
                         System.out.println("Medication does not exist!");
                         Helper.pressAnyKeyToContinue();
                         return;
-                    }else{
+                    } else {
                         found = true;
                     }
                     int subOpt;
@@ -415,7 +431,7 @@ public class AdministratorView extends MainView {
                                     int quantity = Helper.readInt(1, 100);
                                     if(InventoryManager.updateMedication(medicationID, 1, quantity)){
                                         System.out.println("Stock Updated");
-                                    }else{
+                                    } else {
                                         System.out.println("Failed to add stock");
                                     }
                                     Helper.pressAnyKeyToContinue();
@@ -425,7 +441,7 @@ public class AdministratorView extends MainView {
                                     quantity = Helper.readInt(1, 100);
                                     if(InventoryManager.updateMedication(medicationID, 2, quantity)){
                                         System.out.println("Stock Updated");
-                                    }else{
+                                    } else {
                                         System.out.println("Failed to remove stock");
                                     }
                                     Helper.pressAnyKeyToContinue();
@@ -435,7 +451,7 @@ public class AdministratorView extends MainView {
                                     quantity = Helper.readInt(1, 100);
                                     if(InventoryManager.updateMedication(medicationID, 3, quantity)){
                                         System.out.println("Stock Updated");
-                                    }else{
+                                    } else {
                                         System.out.println("Failed to update stock");
                                     }
                                     Helper.pressAnyKeyToContinue();
@@ -445,15 +461,15 @@ public class AdministratorView extends MainView {
                                     quantity = Helper.readInt(1, 100);
                                     if(InventoryManager.updateMedication(medicationID, 4, quantity)){
                                         System.out.println("Low Stock Limit Updated");
-                                    }else{
+                                    } else {
                                         System.out.println("Failed to update low stock limit");
                                     }
                                     Helper.pressAnyKeyToContinue();
                                     return;
                                 case 5:
-                                    return; // Exit the submenu
+                                    return;
                             }
-                        } while (subOpt != 5); // Correctly check submenu exit condition
+                        } while (subOpt != 5);
                     } else {
                         System.out.println("Medication not found");
                         Helper.pressAnyKeyToContinue();
@@ -461,40 +477,43 @@ public class AdministratorView extends MainView {
                     }
                     break;
                 case 3:
-                    //Back
                     break;
             }
         } while (opt != 3);
     }
-    //////////////////viewAppointmentDetails()////////////////////
-public void viewAppointmentDetails(String hospitalID){
-    int choice;
-    do {
-        Helper.clearScreen();
-        printBreadCrumbs("Main Menu > View Appointment Details");
-        System.out.println("What would you like to do ?");
-        System.out.println("(1) View Upcoming Appointments");
-        System.out.println("(2) View All Appointments");
-        System.out.println("(3) Back ");
-        choice = Helper.readInt(1, 3);
-        switch(choice) {
-            case 1:
-                Helper.clearScreen();
-                printBreadCrumbs("Main Menu > View Appointment Details");
-                AppointmentManager.viewScheduledAppointments(hospitalID, choice);
-                Helper.pressAnyKeyToContinue();
-                break;
-            case 2:
-                Helper.clearScreen();
-                printBreadCrumbs("Main Menu > View Appointment Details");
-                AppointmentManager.viewScheduledAppointments(hospitalID, choice);
-                Helper.pressAnyKeyToContinue();
-                break;
-            case 3:
-                break;
-            default: System.out.println("Invalid Choice");
-        }
-    } while (choice != 3);
-    }
-}
 
+    /**
+     * Views appointment details based on the provided hospital ID.
+     * Allows the user to view upcoming or all appointments.
+     * @param hospitalID the ID of the hospital to view appointments for
+     */
+    public void viewAppointmentDetails(String hospitalID){
+        int choice;
+        do {
+            Helper.clearScreen();
+            printBreadCrumbs("Main Menu > View Appointment Details");
+            System.out.println("What would you like to do ?");
+            System.out.println("(1) View Upcoming Appointments");
+            System.out.println("(2) View All Appointments");
+            System.out.println("(3) Back ");
+            choice = Helper.readInt(1, 3);
+            switch(choice) {
+                case 1:
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View Appointment Details");
+                    AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                    Helper.pressAnyKeyToContinue();
+                    break;
+                case 2:
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > View Appointment Details");
+                    AppointmentManager.viewScheduledAppointments(hospitalID, choice);
+                    Helper.pressAnyKeyToContinue();
+                    break;
+                case 3:
+                    break;
+                default: System.out.println("Invalid Choice");
+            }
+        } while (choice != 3);
+    }
+    }
