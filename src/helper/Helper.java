@@ -179,7 +179,6 @@ public class Helper {
     public static String readStaffID() {
         String staffID;
         while (true) {
-            System.out.print("Enter Staff ID (Format: PXXX, DXXX, or AXXX) or type 'back' to go back: ");
             staffID = sc.nextLine().trim();
             if (staffID.equalsIgnoreCase("back")) {
                 return "";

@@ -23,7 +23,11 @@ public class PrescriptionManager {
 
 
     //view appointment record one by one by VIEW
-    public static void viewRecentAppointmentOutcomeRecord() {
+    public static boolean viewRecentAppointmentOutcomeRecord() {
+        int success = 0;
+        if(Database.APPOINTMENT.isEmpty()){
+            return false;
+        }
         for (String appointmentID : Database.APPOINTMENT.keySet()) {
             
             Appointment appointment = Database.APPOINTMENT.get(appointmentID);
@@ -31,8 +35,11 @@ public class PrescriptionManager {
 
             if (outcomeRecord != null && outcomeRecord.getPrescribeStatus() == PrescribeStatus.PENDING) {
                 AppointmentManager.printAppointmentOutcomeRecord(appointment);
+                success++;
             }
         }
+        return success != 0;
+       
     }
 
     public static void submitReplenishRequest(String pharmacistID, String medicationName, int medicationAmount){

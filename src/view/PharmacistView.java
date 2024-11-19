@@ -32,22 +32,27 @@ public class PharmacistView extends MainView {
             opt = Helper.readInt(1, 6);
             switch (opt) {
                 case 1:
+                    Helper.clearScreen();
                     //View appointment outcome record
-                    PrescriptionManager.viewRecentAppointmentOutcomeRecord();
+                    if(!PrescriptionManager.viewRecentAppointmentOutcomeRecord()){
+                        System.out.println("There is no recent pending appointment outcome records");
+                    }
                     Helper.pressAnyKeyToContinue();
                     ;
-                    break;
+                    return;
                 case 2:
+                    Helper.clearScreen();
                     //Update prescription status
                     updatePrescriptionStatus();
                     ;
-                    break;
+                    return;
                 case 3:
+                    Helper.clearScreen();
                     //View medication inventory
                     PrescriptionManager.viewMedicationInventory();
                     Helper.pressAnyKeyToContinue()
                     ;
-                    break;
+                    return;
                 case 4:
                     //Submit replenishment request
                     Helper.clearScreen();
@@ -58,14 +63,16 @@ public class PharmacistView extends MainView {
                     int quantity = Helper.readInt(1, 100);
                     PrescriptionManager.submitReplenishRequest(hospitalID, medicationName, quantity);
                     Helper.pressAnyKeyToContinue();
-                    break;
+                    return;
                 case 5:
                     //Change password
+                    Helper.clearScreen();
                     LoginManager.createNewPassword(hospitalID);
-                    break;
+                    return;
                 case 6:
+                    Helper.clearScreen();
                     //Logout
-                    break;
+                    return;
             }
         } while (opt != 6);
     }
