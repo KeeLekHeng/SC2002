@@ -234,7 +234,7 @@ public class Database {
      * @return {@code true} if dummy staff are initialized, otherwise {@code false}.
      */
     public static boolean initializeDummyStaff() {
-        if (!(Database.STAFF.size() > 2)) {
+        if (Database.STAFF.size() > 2) {
             System.out.println("The database already has staff. Reset database first to initialize staff.");
             return false;
         }

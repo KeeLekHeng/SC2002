@@ -266,12 +266,14 @@ public class AdministratorView extends MainView {
                     return;
                 case 7:
                     //initialize medications
-                    InventoryManager.initializeDummyMedication();
+                    Helper.clearScreen();
+                    Database.initializeDummyMedication();
                     System.out.println("Dummy Medications Initialized");
                     Helper.pressAnyKeyToContinue();
                     return;
                 case 8: 
                     //clear database
+                    Helper.clearScreen();
                     Database.clearDatabase();
                     Database.initializeStartingAdmin();
                     System.out.println("Database Cleared and Starting Admin initialized ");
@@ -389,7 +391,7 @@ public class AdministratorView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
                     System.out.println("Enter Medication ID: ");
-                    String medicationID = Helper.readString();
+                    String medicationID = Helper.readMedicineID();
                     if(InventoryManager.searchMedicineByID(medicationID)==null){
                         System.out.println("Medication does not exist!");
                         Helper.pressAnyKeyToContinue();
