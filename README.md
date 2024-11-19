@@ -5,12 +5,12 @@ This is our group assignment for SC2002 (Object Oriented Programming).
 ## Project Folder Structure
 
 **Top Level Directory Layout**
-`.
+```.
 ├── build                   # Compiled jar file
 ├── docs                    # Javadocs generated as html
 ├── src                     # Source files (all the codes)
 ├── LICENSE
-└── README.md`
+└── README.md```
 
 **Source Files**
 
