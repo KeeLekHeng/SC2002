@@ -105,7 +105,11 @@ public class PatientView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
+                    System.out.println("Type 'back' to return to main menu");     
                     doctorID = Helper.readStaffID();
+                    if(doctorID.equalsIgnoreCase("back")){
+                        return;
+                    }  
                     if (StaffManager.searchStaffById(doctorID).isEmpty()) {
                         System.out.println("Doctor not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -188,13 +192,13 @@ public class PatientView extends MainView {
                     System.out.println("(3) Back");
                     int choices = Helper.readInt(1, 3);
                     if (choices == 1) {
+                        
                         System.out.println("Enter the appointment ID to view the outcome record: ");
                         String appID = Helper.readAppointmentID();
                         AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, appID);
                     } else if (choices == 2) {
                         AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, null);
                     }
-                    Helper.pressAnyKeyToContinue();
                     break;
                 case 9:
                     // Change password
@@ -296,7 +300,6 @@ public class PatientView extends MainView {
                     selectedSlot.getFormattedDate() + " at " + selectedSlot.getFormattedTime());
             }
     
-            Helper.pressAnyKeyToContinue();
         } else {
             System.out.println("No scheduled appointments found for rescheduling.");
             Helper.pressAnyKeyToContinue();

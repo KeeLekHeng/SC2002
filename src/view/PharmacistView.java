@@ -39,20 +39,19 @@ public class PharmacistView extends MainView {
                     }
                     Helper.pressAnyKeyToContinue();
                     ;
-                    return;
+                    break;
                 case 2:
                     Helper.clearScreen();
                     //Update prescription status
                     updatePrescriptionStatus();
-                    ;
-                    return;
+                    break;
                 case 3:
                     Helper.clearScreen();
                     //View medication inventory
                     PrescriptionManager.viewMedicationInventory();
                     Helper.pressAnyKeyToContinue()
                     ;
-                    return;
+                    break;
                 case 4:
                     //Submit replenishment request
                     Helper.clearScreen();
@@ -63,16 +62,16 @@ public class PharmacistView extends MainView {
                     int quantity = Helper.readInt(1, 100);
                     PrescriptionManager.submitReplenishRequest(hospitalID, medicationName, quantity);
                     Helper.pressAnyKeyToContinue();
-                    return;
+                    break;
                 case 5:
                     //Change password
                     Helper.clearScreen();
                     LoginManager.createNewPassword(hospitalID);
-                    return;
+                    break;
                 case 6:
                     Helper.clearScreen();
                     //Logout
-                    return;
+                    break;
             }
         } while (opt != 6);
     }
@@ -83,8 +82,11 @@ public class PharmacistView extends MainView {
 public void updatePrescriptionStatus() {
     Helper.clearScreen();
     printBreadCrumbs("Main Menu > Update Prescription Status");
-    System.out.print("Enter the prescription ID: ");
+    System.out.print("Enter the prescription ID (type 'back to return to main menu'): ");
                     String prescriptionID = Helper.readString();
+                    if(prescriptionID.equals("back")){
+                        return;
+                    }
                     if(PrescriptionManager.searchPrescriptionById(prescriptionID) == null){
                         System.out.println("Prescription not found.");
                         Helper.pressAnyKeyToContinue();
