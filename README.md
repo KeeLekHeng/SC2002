@@ -32,17 +32,17 @@ This is our group assignment for SC2002 (Object Oriented Programming).
 
 ## Scripts
 > How to run our project
-1. In your command line change directory into src
-` path `
-2. Compile the java files using command line
-` path `
-3. Run the java file using command line
-` code to run `
+1. In your command line change directory into src  
+` path `  
+2. Compile the java files using command line  
+` path `  
+3. Run the java file using command line  
+` code to run `  
 
 
 # Java docs
 Create javadocs - make sure you are at ?  
-`?javadoc path`
+`?javadoc path`  
 Launch the index.html under ./javadoc/index.html  
 
 # Contributors
