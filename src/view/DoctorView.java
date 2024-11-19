@@ -68,12 +68,33 @@ public class DoctorView extends MainView{
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
-                    System.out.println("Enter type of service: ");
-                    String typeOfService = Helper.readString();
-                    System.out.println("Enter consultation notes: ");
-                    String consultationNotes = Helper.readString();
+                    System.out.println("Enter patient's diagnosis: ");
+                    String diagnosis = Helper.readString();
+                    System.out.println("Enter patient's treatment: ");
+                    String treatment = Helper.readString();
                     //prescribe medication
-                    AppointmentManager.recordAppointmentOutcome(appointmentID, hospitalID, typeOfService, consultationNotes, null);
+                    System.out.println("Enter list of medications to prescribe (type 'done' to finish): ");
+                    List<PrescribeMedication> prescriptions = new ArrayList<>();
+                    while(true){
+                        System.out.println("Enter medication name (or 'done' to finish): ");
+                        String medicationName = Helper.readString();
+                        if(medicationName.equalsIgnoreCase("done")){
+                            break;
+                        }
+                        System.out.println("Enter prescription amount (or type 'done' to cancel): ");
+                        String amountInput = Helper.readString();
+                        if(amountInput.equalsIgnoreCase("done")){
+                            System.out.println("Prescription for this medication canceled.");
+                            continue;
+                        }
+                        try {
+                            int amount = Integer.parseInt(amountInput);
+                            prescriptions.add(new PrescribeMedication(medicationName, amount));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid Input, Enter a valid integer!");
+                        }
+                    }
+                    AppointmentManager.recordAppointmentOutcome(appointmentID, hospitalID, treatment, diagnosis, prescriptions);
                     ;
                     break;
                 case 3:
@@ -90,7 +111,11 @@ public class DoctorView extends MainView{
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Set Availability for Appointments");
                     System.out.println("\"On what date and time would you like to block availability? (Format: 'yyyy-MM-dd HH:MM' )\")");
-                    String newDateInput = Helper.setDate(false);
+                    System.out.println("Type 'back' to return to main menu");
+                    String newDateInput = Helper.setDate(false);            
+                    if(newDateInput.equalsIgnoreCase("back")){
+                        return;
+                    }       
                     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     LocalDateTime newDateTime = Helper.getDate(newDateInput, format);
                     TimeSlot newTimeSlot = new TimeSlot(newDateTime);       

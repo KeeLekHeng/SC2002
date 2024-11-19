@@ -7,6 +7,7 @@ import src.database.FileType;
 import src.model.Patient;
 import src.model.Staff;
 import src.model.User;
+import src.view.MainView;
 
 // For javadocs
 
@@ -191,7 +192,6 @@ public class LoginManager {
                 if (tries == 5) {
                     System.out.println("Too many attempts. Returning..");
                 }
-
             }
         } else {
             System.out.println("The hospitalId that you provided is invalid");
