@@ -133,6 +133,126 @@ public class Helper {
     }
 
     /**
+     * Reads a valid Appointment ID in the format "AXXXXX" or allows the user to go back.
+     * @return A valid appointment ID or null if the user enters "back".
+     */
+    public static String readAppointmentID() {
+        String appointmentID;
+        while (true) {
+            System.out.print("Enter Appointment ID (Format: AXXXXX) or type 'back' to go back: ");
+            appointmentID = sc.nextLine().trim();
+            if (appointmentID.equalsIgnoreCase("back")) {
+                return "";
+            }
+            if (appointmentID.matches("A\\d{5}")) {
+                return appointmentID;
+            } else {
+                System.out.println("Invalid format! Please try again.");
+            }
+        }
+    }
+
+    /**
+     * Reads a valid Patient ID in the format "PXXXX" or allows the user to go back.
+     * @return A valid patient ID or null if the user enters "back".
+     */
+    public static String readPatientID() {
+        String patientID;
+        while (true) {
+            System.out.print("Enter Patient ID (Format: PXXXX) or type 'back' to go back: ");
+            patientID = sc.nextLine().trim();
+            if (patientID.equalsIgnoreCase("back")) {
+                return "";
+            }
+            if (patientID.matches("P\\d{4}")) {
+                return patientID;
+            } else {
+                System.out.println("Invalid format! Please try again.");
+            }
+        }
+    }
+
+    /**
+     * Reads a valid Pharmacist, Doctor, or Admin ID in the format "PXXX", "DXXX", or "AXXX" or allows the user to go back.
+     * @return A valid staff ID or null if the user enters "back".
+     */
+    public static String readStaffID() {
+        String staffID;
+        while (true) {
+            System.out.print("Enter Staff ID (Format: PXXX, DXXX, or AXXX) or type 'back' to go back: ");
+            staffID = sc.nextLine().trim();
+            if (staffID.equalsIgnoreCase("back")) {
+                return "";
+            }
+            if (staffID.matches("[PDA]\\d{3}")) {
+                return staffID;
+            } else {
+                System.out.println("Invalid format! Please try again.");
+            }
+        }
+    }
+
+    /**
+     * Reads a valid Prescription ID in the format "PXXXXX" or allows the user to go back.
+     * @return A valid prescription ID or null if the user enters "back".
+     */
+    public static String readPrescriptionID() {
+        String prescriptionID;
+        while (true) {
+            System.out.print("Enter Prescription ID (Format: PXXXXX) or type 'back' to go back: ");
+            prescriptionID = sc.nextLine().trim();
+            if (prescriptionID.equalsIgnoreCase("back")) {
+                return "";
+            }
+            if (prescriptionID.matches("P\\d{5}")) {
+                return prescriptionID;
+            } else {
+                System.out.println("Invalid format! Please try again.");
+            }
+        }
+    }
+
+    /**
+     * Reads a valid Request ID in the format "RXXXX" or allows the user to go back.
+     * @return A valid request ID or null if the user enters "back".
+     */
+    public static String readRequestID() {
+        String requestID;
+        while (true) {
+            System.out.print("Enter Request ID (Format: RXXXX) or type 'back' to go back: ");
+            requestID = sc.nextLine().trim();
+            if (requestID.equalsIgnoreCase("back")) {
+                return "";
+            }
+            if (requestID.matches("R\\d{4}")) {
+                return requestID;
+            } else {
+                System.out.println("Invalid format! Please try again.");
+            }
+        }
+    }
+
+    /**
+     * Reads a valid Medicine ID in the format "MXXXX" or allows the user to go back.
+     * @return A valid medicine ID or null if the user enters "back".
+     */
+    public static String readMedicineID() {
+        String medicineID;
+        while (true) {
+            System.out.print("Enter Medicine ID (Format: MXXXX) or type 'back' to go back: ");
+            medicineID = sc.nextLine().trim();
+            if (medicineID.equalsIgnoreCase("back")) {
+                return "";
+            }
+            if (medicineID.matches("M\\d{4}")) {
+                return medicineID;
+            } else {
+                System.out.println("Invalid format! Please try again.");
+            }
+        }
+    }
+
+    /**
      * Method to prompt confirmation from the user. Usually for confirmation of
      * removing data
      * 

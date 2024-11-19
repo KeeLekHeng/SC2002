@@ -273,7 +273,8 @@ public class AdministratorView extends MainView {
                 case 8: 
                     //clear database
                     Database.clearDatabase();
-                    System.out.println("Database Cleared");
+                    Database.initializeStartingAdmin();
+                    System.out.println("Database Cleared and Starting Admin initialized ");
                     Helper.pressAnyKeyToContinue();
                     return;
                 case 9:
@@ -392,7 +393,7 @@ public class AdministratorView extends MainView {
                     if(InventoryManager.searchMedicineByID(medicationID)==null){
                         System.out.println("Medication does not exist!");
                         Helper.pressAnyKeyToContinue();
-                        break;
+                        return;
                     }else{
                         found = true;
                     }
@@ -416,7 +417,7 @@ public class AdministratorView extends MainView {
                                         System.out.println("Failed to add stock");
                                     }
                                     Helper.pressAnyKeyToContinue();
-                                    break;
+                                    return;
                                 case 2:
                                     System.out.println("Enter Quantity to Remove: ");
                                     quantity = Helper.readInt(1, 100);
@@ -426,7 +427,7 @@ public class AdministratorView extends MainView {
                                         System.out.println("Failed to remove stock");
                                     }
                                     Helper.pressAnyKeyToContinue();
-                                    break;
+                                    return;
                                 case 3:
                                     System.out.println("Enter New Stock: ");
                                     quantity = Helper.readInt(1, 100);
@@ -436,7 +437,7 @@ public class AdministratorView extends MainView {
                                         System.out.println("Failed to update stock");
                                     }
                                     Helper.pressAnyKeyToContinue();
-                                    break;
+                                    return;
                                 case 4:
                                     System.out.println("Enter New Low Stock Limit: ");
                                     quantity = Helper.readInt(1, 100);
@@ -446,7 +447,7 @@ public class AdministratorView extends MainView {
                                         System.out.println("Failed to update low stock limit");
                                     }
                                     Helper.pressAnyKeyToContinue();
-                                    break;
+                                    return;
                                 case 5:
                                     return; // Exit the submenu
                             }

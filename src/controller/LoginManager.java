@@ -85,7 +85,7 @@ public class LoginManager {
             case 'D':
                 return "doctor";
             case 'A':
-                return "administrator";
+                return "admin";
             case 'P':
                 int length = hospitalId.length();
                 if (length == 4) {

@@ -197,6 +197,11 @@ public class AppointmentManager {
     public static boolean fetchAppointmentOutcomeRecords(int code, String patientID, String appointmentID) {
         switch (code) {
             case 1:
+                if (Database.APPOINTMENT.isEmpty()){
+                    System.out.println("Appointment with ID " + appointmentID + " not found.");
+                    return false;
+                }
+
                 // Fetch appointment by ID
                 Appointment appointment = Database.APPOINTMENT.get(appointmentID);
                 if (appointment != null) {
@@ -210,8 +215,13 @@ public class AppointmentManager {
             case 2:
                 // Fetch all appointments for a specific patient
                 List<Appointment> pastAppointments = new ArrayList<>();
+                if (Database.APPOINTMENT.isEmpty()){
+                    System.out.println("No past appointments found for patient ID " + patientID);
+                    return false;
+                }
+
                 for (Appointment app : Database.APPOINTMENT.values()) {
-                    if (app.getPatientID().equals(patientID)) {
+                    if (app.getPatientID() != null && app.getPatientID().equals(patientID)) {
                         pastAppointments.add(app);
                     }
                 }
@@ -237,24 +247,32 @@ public class AppointmentManager {
         List<Appointment> appointmentList = new ArrayList<Appointment>();
         LocalDateTime currentDateTime = LocalDateTime.now();
 
+        if (Database.APPOINTMENT.isEmpty()) {
+            System.out.println("No appointments in the system.");
+            return false;
+        }
+
             //patient or Doctor or Admin
         switch(attributeCode){
             case 1:
                 for (Appointment appointment : Database.APPOINTMENT.values()){
                 if (hospitalID.startsWith("P") && hospitalID.substring(1).matches("\\d{4}")){
-                    if (appointment.getPatientID().equals(hospitalID) &&  
-                        appointment.getTimeSlot().getDateTime().isAfter(currentDateTime)){
+                    if (appointment.getPatientID() != null &&  
+                        appointment.getTimeSlot().getDateTime().isAfter(currentDateTime) &&
+                        appointment.getPatientID().equals(hospitalID)){
                         appointmentList.add(appointment);
                     }
                 } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
-                    if (appointment.getDoctorID().equals(hospitalID) &&  
+                    if (appointment.getDoctorID() != null &&  
                     appointment.getTimeSlot().getDateTime().isAfter(currentDateTime) &&
-                    appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
+                    appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE &&
+                    appointment.getDoctorID().equals(hospitalID)){
                         appointmentList.add(appointment);
                     }
                 } else {
-                    if (appointment.getTimeSlot().getDateTime().isAfter(currentDateTime) &&
-                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
+                    if (appointment.getPatientID() != null &&
+                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE&&
+                        appointment.getTimeSlot().getDateTime().isAfter(currentDateTime)){
                         appointmentList.add(appointment);
                         }
                     }
@@ -263,13 +281,15 @@ public class AppointmentManager {
             case 2:
             for (Appointment appointment : Database.APPOINTMENT.values()){
                 if (hospitalID.startsWith("P") && hospitalID.substring(1).matches("\\d{4}")){
-                    if (appointment.getPatientID().equals(hospitalID)&&
-                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
+                    if (appointment.getPatientID() != null &&
+                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE &&
+                        appointment.getPatientID().equals(hospitalID)){
                         appointmentList.add(appointment);
                     }
                 } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
-                    if (appointment.getDoctorID().equals(hospitalID)&&
-                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE){
+                    if (appointment.getDoctorID() != null&&
+                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE &&
+                        appointment.getDoctorID().equals(hospitalID)){
                         appointmentList.add(appointment);
                     }
                 } else {   

@@ -87,7 +87,7 @@ public class PatientView extends MainView {
                         break;
                     }
                     System.out.println("Enter doctor ID (DXXX): ");
-                    String doctorID = Helper.readString();
+                    String doctorID = Helper.readStaffID();
                     // not printing no doctor found
                     if (StaffManager.searchStaffById(doctorID).isEmpty()) {
                         System.out.println("Doctor not found. Returning to the main menu...");
@@ -109,7 +109,7 @@ public class PatientView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
-                    doctorID = Helper.readString();
+                    doctorID = Helper.readStaffID();
                     if (StaffManager.searchStaffById(doctorID).isEmpty()) {
                         System.out.println("Doctor not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -140,8 +140,8 @@ public class PatientView extends MainView {
                     // true false
                     if (AppointmentManager.viewScheduledAppointments(hospitalID, 1)) {
 
-                        System.out.println("Enter the Appointment ID to reschedule: AppointmentID format (AXXXXX)");
-                        String appointmentID = Helper.readString();
+                        System.out.println("Enter the Appointment ID to reschedule:");
+                        String appointmentID = Helper.readAppointmentID();
                         if (AppointmentManager.searchAppointmentByID(appointmentID) == null) {
                             System.out.println("Appointment not found. Returning to the main menu...");
                             Helper.pressAnyKeyToContinue();
@@ -169,8 +169,12 @@ public class PatientView extends MainView {
                     // Cancel an appointment
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Cancel Appointment");
-                    System.out.println("Enter the appointment ID to cancel (AXXXXX): ");
-                    String appointmentID = Helper.readString();
+                    if(!AppointmentManager.viewScheduledAppointments(hospitalID, 1)){
+                        break;
+                    }
+                    System.out.println("Enter the appointment ID to cancel: ");
+                    String appointmentID = Helper.readAppointmentID();
+                    
                     if (AppointmentManager.searchAppointmentByID(appointmentID) == null) {
                         System.out.println("Appointment not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -196,7 +200,7 @@ public class PatientView extends MainView {
                     int choices = Helper.readInt(1, 3);
                     if (choices == 1) {
                         System.out.println("Enter the appointment ID to view the outcome record: ");
-                        String appID = Helper.readString();
+                        String appID = Helper.readAppointmentID();
                         AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, appID);
                     } else if (choices == 2) {
                         AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, null);
