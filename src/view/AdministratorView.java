@@ -389,7 +389,7 @@ public class AdministratorView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
                     System.out.println("Enter Medication ID: ");
-                    String medicationID = Helper.readString();
+                    String medicationID = Helper.readMedicineID();
                     if(InventoryManager.searchMedicineByID(medicationID)==null){
                         System.out.println("Medication does not exist!");
                         Helper.pressAnyKeyToContinue();
