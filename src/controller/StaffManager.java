@@ -303,4 +303,8 @@ public class StaffManager {
         createStaff("Pharm. Frank Lee", Gender.MALE, 33, Role.PHARMACIST);
     }
 
+    public static void createStartingAdmin(){
+        createStaff("Admin", Gender.MALE, 50, Role.ADMINISTRATOR);
+    }
+
 }

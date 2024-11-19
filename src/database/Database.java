@@ -234,11 +234,20 @@ public class Database {
      * @return {@code true} if dummy staff are initialized, otherwise {@code false}.
      */
     public static boolean initializeDummyStaff() {
-        if (!Database.STAFF.isEmpty()) {
+        if (!(Database.STAFF.size() > 2)) {
             System.out.println("The database already has staff. Reset database first to initialize staff.");
             return false;
         }
         StaffManager.createDummyStaff();
+        return true;
+    }
+
+    public static boolean initializeStartingAdmin(){
+        if (!Database.STAFF.isEmpty()){
+            System.out.println("The database already has staff. Reset database first to initialize starting admin.");
+            return false;
+        }
+        StaffManager.createStartingAdmin();
         return true;
     }
 
