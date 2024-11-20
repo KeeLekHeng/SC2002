@@ -95,6 +95,8 @@ public class PatientView extends MainView {
                         break;
                     }
                     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    System.out.println("Doctor's name:");
+                    System.out.println(StaffManager.searchStaffById(doctorID).get(0).getName());
                     LocalDate newDate = Helper.getDateOnly(newDateInput, format);
                     AppointmentManager.viewAvailableAppointmentSlots(hospitalID, doctorID, newDate);
                     Helper.pressAnyKeyToContinue();
@@ -199,6 +201,7 @@ public class PatientView extends MainView {
                     } else if (choices == 2) {
                         AppointmentManager.fetchAppointmentOutcomeRecords(choices, hospitalID, null);
                     }
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 9:
                     // Change password
@@ -240,12 +243,10 @@ public class PatientView extends MainView {
             if (choice == 1) {
                 Helper.clearScreen();
                 AppointmentManager.viewScheduledAppointments(hospitalID, 1);
-                Helper.pressAnyKeyToContinue();
                 break;
             } else if (choice == 2) {
                 Helper.clearScreen();
                 AppointmentManager.viewScheduledAppointments(hospitalID, 2);
-                Helper.pressAnyKeyToContinue();
                 break;
             } else if (choice == 3) {
                 break;

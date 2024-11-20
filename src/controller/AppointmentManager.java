@@ -493,6 +493,7 @@ public class AppointmentManager {
         System.out.println(String.format("%-20s: %s", "Appointment ID", appointment.getAppointmentID()));
         System.out.println(String.format("%-20s: %s", "Patient ID", appointment.getPatientID()));
         System.out.println(String.format("%-20s: %s", "Doctor ID", appointment.getDoctorID()));
+        System.out.println(String.format("%-20s: %s", "Doctor's Name", Database.STAFF.get(appointment.getDoctorID()).getName()));
         System.out.println(String.format("%-20s: %s", "Appointment Status", appointment.getAppointmentStatus()));
         System.out.println(String.format("%-20s: %s", "Time Slot", appointment.getTimeSlot().getFormattedDateTime()));
     
