@@ -74,11 +74,17 @@ public class Database {
         saveFileIntoDatabase(FileType.PRESCRIPTIONS);
     }
 
-    ////////////
+    /**
+     * Loads a specific file type into the database.
+     * @param fileType The type of file to load into the database.
+     */
     public static void loadFileIntoDatabase(FileType fileType) {
         readSerializedObject(fileType);
     }
 
+    /**
+     * Loads all file types into the database.
+     */
     public static void loadAllFiles() {
         loadFileIntoDatabase(FileType.PATIENTS);
         loadFileIntoDatabase(FileType.STAFF);
@@ -87,31 +93,28 @@ public class Database {
         loadFileIntoDatabase(FileType.APPOINTMENTS);
         loadFileIntoDatabase(FileType.PRESCRIPTIONS);
     }
-    /////////////
+
 
     /**
      * Reads a serialized object from the specified {@link FileType}.
      * @param fileType The type of file to read.
      * @return {@code true} if the file is read successfully, otherwise {@code false}.
      */
-    
     private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
-        
 
-         try{
+        try {
             FileInputStream fileInputStream = new FileInputStream(filePath);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             Object object = objectInputStream.readObject();
-            
+
             if (!(object instanceof HashMap)) {
                 System.out.println(fileType.fileName);
                 objectInputStream.close();
                 return false;
             }
 
-            //read into database
             if (fileType == FileType.PATIENTS) {
                 PATIENTS = (HashMap<String, Patient>) object;
             } else if (fileType == FileType.STAFF) {
@@ -142,7 +145,7 @@ public class Database {
                 REQUESTS = new HashMap<String, ReplenishRequest>();
             } else if (fileType == FileType.MEDICATION) {
                 MEDICATION = new HashMap<String, Medication>();
-            } 
+            }
         } catch (IOException err) {
             err.printStackTrace();
             return false;
@@ -164,7 +167,7 @@ public class Database {
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/database/" + folder + "/" + fileType.fileName + fileExtension;
-        
+
         try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
 
@@ -242,7 +245,11 @@ public class Database {
         return true;
     }
 
-    public static boolean initializeStartingAdmin(){
+    /**
+     * Initializes the starting admin if the database is empty.
+     * @return {@code true} if starting admin is initialized, otherwise {@code false}.
+     */
+    public static boolean initializeStartingAdmin() {
         if (!Database.STAFF.isEmpty()){
             System.out.println("The database already has staff. Reset database first to initialize starting admin.");
             return false;
