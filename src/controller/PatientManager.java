@@ -1,5 +1,6 @@
 package src.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import src.database.Database;
@@ -19,6 +20,7 @@ import src.model.enums.Role;
  * including creating new patient records and updating existing patient details.
  * It provides functionality to create patients, update patient attributes, and
  * view patient records.
+ * 
  * @author Benjamin, Kee
  * @version 1.0
  * @since 2024-11-20
@@ -30,6 +32,7 @@ public class PatientManager {
 
     /**
      * Creates a new patient and adds it to the database.
+     * 
      * @param name        The name of the patient.
      * @param dob         The date of birth of the patient.
      * @param gender      The gender of the patient.
@@ -61,6 +64,7 @@ public class PatientManager {
 
     /**
      * Updates the details of an existing patient.
+     * 
      * @param patientID     The ID of the patient whose details are to be updated.
      * @param attributeCode The attribute to be updated (1 for phone number, 2 for
      *                      email, 3 for doctor ID, 4 for name).
@@ -80,12 +84,18 @@ public class PatientManager {
                 patientToUpdate = Database.PATIENTS.get(patientID);
                 if (Helper.PhoneNumValidator(newvalue)) {
                     patientToUpdate.setPhonenumber(newvalue);
+                    System.out.println("Phone number updated successfully");
+                } else {
+                    System.out.println("Unsuccessful. Phone number is invalid");
                 }
                 break;
             case 2:
                 patientToUpdate = Database.PATIENTS.get(patientID);
                 if (Helper.EmailValidator(newvalue)) {
                     patientToUpdate.setEmail(newvalue);
+                    System.out.println("Phone number updated successfully");
+                } else {
+                    System.out.println("Unsuccesful. Email is invalid");
                 }
                 break;
             case 3:
@@ -103,6 +113,7 @@ public class PatientManager {
 
     /**
      * Updates the gender of an existing patient.
+     * 
      * @param patientID     The ID of the patient whose gender is to be updated.
      * @param attributeCode The attribute code (5 for gender).
      * @param gender        The new gender to be assigned to the patient.
@@ -128,6 +139,7 @@ public class PatientManager {
 
     /**
      * Updates the blood type of an existing patient.
+     * 
      * @param patientID     The ID of the patient whose blood type is to be updated.
      * @param attributeCode The attribute code (6 for blood type).
      * @param bloodType     The new blood type to be assigned to the patient.
@@ -154,6 +166,7 @@ public class PatientManager {
     /**
      * Prints details of all patients in the database, sorted by either Patient ID
      * or Name.
+     * 
      * @param byID if true, sort by Patient ID; if false, sort by Name.
      */
     public static void printAllPatients(boolean byID) {
@@ -185,6 +198,7 @@ public class PatientManager {
      * Displays an overview of patients under a specific doctor, sorted by either
      * Patient ID
      * or Name.
+     * 
      * @param byID     if true, sort by Patient ID; if false, sort by Name.
      * @param doctorId the ID of the doctor to filter patients by.
      */
@@ -211,6 +225,7 @@ public class PatientManager {
 
     /**
      * Validates if a given patient ID exists in the database.
+     * 
      * @param patientID the ID of the patient to validate.
      * @return true if the patient ID exists; false otherwise.
      */
@@ -220,6 +235,7 @@ public class PatientManager {
 
     /**
      * Searches for a patient by their ID in the database.
+     * 
      * @param patientID the ID of the patient to search for.
      * @return the Patient object if found; null otherwise.
      */
@@ -233,6 +249,7 @@ public class PatientManager {
 
     /**
      * Prints the complete details of the given patient.
+     * 
      * @param patient {@link Patient} object to print
      */
     public static void viewPatientRecords(Patient patient) {
@@ -244,7 +261,7 @@ public class PatientManager {
         System.out.println(String.format("%-20s: %s", "Blood Type", patient.getBloodType().toString()));
         System.out.println(String.format("%-20s: %s", "Phone Number", patient.getPhonenumber()));
         System.out.println(String.format("%-20s: %s", "Email", patient.getEmail()));
-        printPastOutcomeRecord();
+        printPastOutcomeRecord(patient);
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
@@ -252,31 +269,40 @@ public class PatientManager {
      * Prints past medical records of the patient.
      * If there are no records, it prints "None".
      */
-    public static void printPastOutcomeRecord() {
-        ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
+    public static void printPastOutcomeRecord(Patient patient) {
+        ArrayList<Appointment> appointmentList = new ArrayList<>();
+
+        // Filter appointments relevant to the specific patient
         for (Appointment app : Database.APPOINTMENT.values()) {
-            if (app.getAppointmentStatus() == AppointmentStatus.COMPLETED && app.getAppOutcomeRecord() != null) {
+            if (app.getAppointmentStatus() == AppointmentStatus.COMPLETED
+                    && app.getAppOutcomeRecord() != null
+                    && app.getPatientID().equals(patient.getPatientID())) { // Ensure appointment is for the given
+                                                                            // patient
                 appointmentList.add(app);
             }
         }
 
+        // Check if there are relevant appointments and print them
         if (!appointmentList.isEmpty()) {
-            System.out.println("Previous Outcome Records:");
+            System.out.println("Previous Outcome Records for " + patient.getName() + ":");
             for (Appointment app : appointmentList) {
                 AppOutcomeRecord outcome = app.getAppOutcomeRecord();
-                System.out.println(String.format("%-20s: %s", "Date", outcome.getEndDateTime()));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                System.out.println(String.format("%-20s: %s", "Date", outcome.getEndDateTime().format(formatter)));
                 System.out.println(String.format("%-20s: %s", "Diagnoses", outcome.getConsultationNotes()));
                 System.out.println(String.format("%-20s: %s", "Treatments", outcome.getTypeOfService()));
 
+                // Print prescribed medications
                 for (PrescribeMedication prescribeMedication : outcome.getPrescribeMedications()) {
                     System.out.println(
                             String.format("%-20s: %s", "Medication Name", prescribeMedication.getMedicationName()));
-                    System.out.println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
+                    System.out
+                            .println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
                     System.out.println(String.format("%-40s", "").replace(" ", "-"));
                 }
             }
         } else {
-            System.out.println("Previous Medical Records: None");
+            System.out.println("Previous Medical Records for " + patient.getName() + ": None");
         }
     }
 

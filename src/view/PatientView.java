@@ -16,9 +16,11 @@ import src.model.TimeSlot;
 /**
  * The PatientView class is responsible for providing the user interface for
  * patient-related actions such as viewing medical records, scheduling and
- * rescheduling appointments, updating personal information, and more. It extends
+ * rescheduling appointments, updating personal information, and more. It
+ * extends
  * the MainView class and implements its abstract methods to interact with the
  * user.
+ * 
  * @author Seann
  * @version 1.0
  * @since 2024-11-20
@@ -55,6 +57,7 @@ public class PatientView extends MainView {
      * Handles the patient's main menu operations, such as viewing medical records,
      * updating personal information, scheduling appointments, and managing past
      * appointment records.
+     * 
      * @param hospitalID The unique ID of the hospital for which the operations are
      *                   carried out.
      * @since 2024-11-20
@@ -88,11 +91,7 @@ public class PatientView extends MainView {
                     System.out.println("(2) Email");
                     int choice = Helper.readInt(1, 2);
                     String newvalue = chooseUpdateAttribute(choice);
-                    if (PatientManager.updatePatientDetails(hospitalID, choice, newvalue)) {
-                        System.out.println("Update successful");
-                    } else {
-                        System.out.println("Invalid input");
-                    }
+                    PatientManager.updatePatientDetails(hospitalID, choice, newvalue);
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 3:
@@ -105,6 +104,7 @@ public class PatientView extends MainView {
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
+                    AppointmentManager.getDoctorList();
                     System.out.println("Enter doctor ID (DXXX): ");
                     String doctorID = Helper.readStaffID();
                     if (StaffManager.searchStaffById(doctorID).isEmpty()) {
@@ -243,14 +243,16 @@ public class PatientView extends MainView {
     /**
      * Prompts the user to enter a new phone number or email based on the provided
      * attribute code.
+     * 
      * @param attributeCode The code corresponding to the attribute to be updated (1
-     * for phone number, 2 for email).
+     *                      for phone number, 2 for email).
      * @return The new value for the chosen attribute.
      */
     public String chooseUpdateAttribute(int attributeCode) {
         switch (attributeCode) {
             case 1:
                 System.out.println("Enter new phone number: ");
+                System.out.println("Phone number should begin with 65 and be a valid Singapore number");
                 return Helper.readString();
             case 2:
                 System.out.println("Enter new email: ");
@@ -263,8 +265,9 @@ public class PatientView extends MainView {
     /**
      * Displays the scheduled appointments for a specific hospital and allows the
      * user to choose between upcoming or all appointments.
+     * 
      * @param hospitalID The unique ID of the hospital whose appointments are to be
-     * viewed.
+     *                   viewed.
      */
     public void viewScheduledAppointments(String hospitalID) {
         Helper.clearScreen();
@@ -294,10 +297,11 @@ public class PatientView extends MainView {
     /**
      * Reschedules an existing appointment by providing available time slots for the
      * specified doctor on a new date.
-     * @param hospitalID The unique ID of the hospital where the appointment is
-     * scheduled.
+     * 
+     * @param hospitalID    The unique ID of the hospital where the appointment is
+     *                      scheduled.
      * @param appointmentID The unique ID of the appointment to be rescheduled.
-     * @param newDateInput The new date for the appointment in 'yyyy-MM-dd' format.
+     * @param newDateInput  The new date for the appointment in 'yyyy-MM-dd' format.
      */
     private void rescheduleAppointment(String hospitalID, String appointmentID, String newDateInput) {
         if (AppointmentManager.viewScheduledAppointments(hospitalID, 1)) {
@@ -349,11 +353,12 @@ public class PatientView extends MainView {
      * Schedules a new appointment for a patient with a specified doctor on a
      * selected date. Displays available time slots for the doctor and allows the
      * user to choose one.
-     * @param patientID The unique ID of the patient scheduling the appointment.
-     * @param doctorID The unique ID of the doctor with whom the appointment is
-     * to be scheduled.
+     * 
+     * @param patientID    The unique ID of the patient scheduling the appointment.
+     * @param doctorID     The unique ID of the doctor with whom the appointment is
+     *                     to be scheduled.
      * @param newDateInput The desired date for the appointment in 'yyyy-MM-dd'
-     * format.
+     *                     format.
      * @return true if the appointment was successfully scheduled, false otherwise.
      */
     public boolean scheduleAppointment(String patientID, String doctorID, String newDateInput) {
