@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 /**
  * Helper class for supporting functions.
+ * 
  * @author Kee, Seann
  * @version 1.0
  * @since 2024-10-22
@@ -31,6 +32,7 @@ public class Helper {
 
     /**
      * Reads an integer value from the terminal.
+     * 
      * @return The entered integer.
      */
     public static int readInt() {
@@ -50,6 +52,7 @@ public class Helper {
     /**
      * Function to validate email provided.
      * It checks whether the email provided meets the email valid format.
+     * 
      * @param email The email to validate.
      * @return {@code true} if the email is valid, otherwise {@code false}.
      */
@@ -70,7 +73,7 @@ public class Helper {
     public static boolean PhoneNumValidator(String phoneNumber) {
         if (phoneNumber.length() != 10) {
             return false;
-        } else if (phoneNumber.charAt(0) != '6' && phoneNumber.charAt(1) != '5') {
+        } else if (phoneNumber.charAt(0) != '6' || phoneNumber.charAt(1) != '5') {
             return false;
         }
         return true;
@@ -174,7 +177,8 @@ public class Helper {
     }
 
     /**
-     * Reads a valid Staff ID (Formats: PXXX, DXXX, AXXX) or allows the user to go back.
+     * Reads a valid Staff ID (Formats: PXXX, DXXX, AXXX) or allows the user to go
+     * back.
      * 
      * @return A valid staff ID or an empty string if the user enters "back".
      */
@@ -257,7 +261,8 @@ public class Helper {
     }
 
     /**
-     * Prompts the user for confirmation, typically used for confirming data removal.
+     * Prompts the user for confirmation, typically used for confirming data
+     * removal.
      * 
      * @param message The confirmation message to display.
      * @return {@code true} if the user inputs 'yes', otherwise {@code false}.
@@ -270,6 +275,7 @@ public class Helper {
 
     /**
      * Generates a unique ID for a HashMap key.
+     * 
      * @param <K>      The key type of the HashMap.
      * @param <V>      The value type of the HashMap.
      * @param database The HashMap to generate the ID for.
@@ -294,6 +300,7 @@ public class Helper {
 
     /**
      * Sets the date to either the current date or a user-input date.
+     * 
      * @param now {@code true} to return the current time, otherwise {@code false}
      *            to prompt the user for a new time.
      * @return Date in the format "yyyy-MM-dd HH:mm".
@@ -321,6 +328,7 @@ public class Helper {
 
     /**
      * Sets the date to either the current date or a user-input date without time.
+     * 
      * @return Date in the format "yyyy-MM-dd".
      */
     public static String setDateOnly() {
@@ -345,6 +353,7 @@ public class Helper {
 
     /**
      * Validates if the date is in the future.
+     * 
      * @param date Date to validate.
      * @return {@code true} if the date is in the future, otherwise {@code false}.
      */
@@ -354,6 +363,7 @@ public class Helper {
 
     /**
      * Parses a string date into a {@link LocalDateTime} object.
+     * 
      * @param date   Date in string format.
      * @param format {@link DateTimeFormatter} for formatting the date.
      * @return {@link LocalDateTime} object after parsing.
@@ -364,6 +374,7 @@ public class Helper {
 
     /**
      * Parses a string date into a {@link LocalDate} object.
+     * 
      * @param date   Date in string format.
      * @param format {@link DateTimeFormatter} for formatting the date.
      * @return {@link LocalDate} object after parsing.
@@ -374,6 +385,7 @@ public class Helper {
 
     /**
      * Gets the current date and time.
+     * 
      * @return Current date and time in the format "yyyy-MM-dd HH:mm".
      */
     public static String getTimeNow() {
@@ -384,6 +396,7 @@ public class Helper {
 
     /**
      * Validates if the given date is in the future.
+     * 
      * @param date   Date in string format.
      * @param format {@link DateTimeFormatter} for formatting the date.
      * @return {@code true} if the date is valid (in the future), otherwise
@@ -398,6 +411,7 @@ public class Helper {
     /**
      * Checks if the time difference between the given date and current time
      * exceeds 1 hour.
+     * 
      * @param date Date in string format.
      * @return {@code true} if the time difference exceeds 1 hour, otherwise
      *         {@code false}.
@@ -419,6 +433,7 @@ public class Helper {
 
     /**
      * Calculates the days elapsed between two dates.
+     * 
      * @param fromDate From date in string format.
      * @param toDate   To date in string format.
      * @return Days difference between the two dates.
@@ -433,6 +448,7 @@ public class Helper {
 
     /**
      * Checks if fromDate is earlier than toDate.
+     * 
      * @param fromDate From date in string format.
      * @param toDate   To date in string format.
      * @return {@code true} if fromDate is earlier than toDate, otherwise
@@ -447,6 +463,7 @@ public class Helper {
 
     /**
      * Checks if the date is a weekend.
+     * 
      * @param dateToCheck Date to check in string format.
      * @return {@code true} if the date is a weekend, otherwise {@code false}.
      */
@@ -483,5 +500,5 @@ public class Helper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }    
+    }
 }

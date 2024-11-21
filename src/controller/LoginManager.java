@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import src.database.Database;
 import src.database.FileType;
+import src.helper.Helper;
 import src.model.Patient;
 import src.model.Staff;
 import src.model.User;
@@ -15,6 +16,7 @@ import src.model.User;
  * and the user will be granted role-specific access to the system.
  * Users can also change their password if necessary, subject to specific
  * criteria.
+ * 
  * @author Benjamin Kam, Kee
  * @version 1.0
  * @since 2024-11-20
@@ -27,8 +29,9 @@ public class LoginManager {
 
     /**
      * Logs in a user based on the provided hospital ID and password.
+     * 
      * @param hospitalID the ID of the user
-     * @param password the password of the user
+     * @param password   the password of the user
      * @return the role of the user if login is successful, or "unsuccessful" if
      *         credentials are incorrect
      */
@@ -59,6 +62,7 @@ public class LoginManager {
 
     /**
      * Searches for a user by hospital ID.
+     * 
      * @param hospitalID the ID of the user to search for
      * @return a list of users matching the provided hospital ID
      */
@@ -78,6 +82,7 @@ public class LoginManager {
 
     /**
      * Checks the role of the user based on their hospital ID.
+     * 
      * @param hospitalId the hospital ID to check the role for
      * @return the role of the user (doctor, admin, pharmacist, patient, or
      *         unsuccessful)
@@ -106,6 +111,7 @@ public class LoginManager {
      * Allows a user to create a new password for their account.
      * The new password must meet specific criteria such as length,
      * containing lowercase, uppercase letters, digits, and special characters.
+     * 
      * @param hospitalId the ID of the user changing their password
      */
     public static void createNewPassword(String hospitalId) {
@@ -141,11 +147,14 @@ public class LoginManager {
             if (tries != 3) {
                 tries = 0;
                 while (item && tries < 5) {
+                    System.out.println(String.format("%-40s", "").replace(" ", "-"));
                     if (tries == 0) {
                         System.out.println("Enter the new password: ");
                     } else {
-                        System.out.println("Invalid password. Enter new password: " + (5 - tries) + " tries left.");
+                        System.out.println("Invalid password." + (5 - tries) + " tries left. Enter new password: ");
                     }
+                    System.out.println(
+                            "Password should contain\n- at least 10 characters long\n- at least 1 lowercase and 1 uppercase character\n- at least 1 number\n- at least 2 special characters");
                     pw = scanner.nextLine();
 
                     valid = 0;
@@ -191,19 +200,23 @@ public class LoginManager {
 
                     if (tries == 5) {
                         System.out.println("Too many attempts. Returning..");
+                        Helper.pressAnyKeyToContinue();
                     }
                 }
             } else {
                 System.out.println("Too many attempts. Returning..");
+                Helper.pressAnyKeyToContinue();
             }
 
         } else {
-            System.out.println("The hospitalId that you provided is invalid");
+            System.out.println("The hospitalId that you provided is invalid. Returning..");
+            Helper.pressAnyKeyToContinue();
         }
     }
 
     /**
      * Finds the role of a user based on their hospital ID length.
+     * 
      * @param hospitalId the ID of the user
      * @return the role of the user (STAFF, PATIENTS, or unsuccessful)
      */

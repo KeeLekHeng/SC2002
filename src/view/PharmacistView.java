@@ -5,9 +5,13 @@ import src.controller.PrescriptionManager;
 import src.helper.Helper;
 
 /**
- * The PharmacistView class represents the view layer for the pharmacist in the hospital management system.
- * This class extends the MainView class and provides functionality for pharmacists to interact with the system.
- * It allows the pharmacist to view and manage appointment records, prescriptions, and inventory.
+ * The PharmacistView class represents the view layer for the pharmacist in the
+ * hospital management system.
+ * This class extends the MainView class and provides functionality for
+ * pharmacists to interact with the system.
+ * It allows the pharmacist to view and manage appointment records,
+ * prescriptions, and inventory.
+ * 
  * @author Seann
  * @version 1.0
  * @since 2024-11-20
@@ -17,16 +21,19 @@ public class PharmacistView extends MainView {
     PrescriptionManager prescriptionManager = new PrescriptionManager();
 
     /**
-     * Constructor for the PharmacistView class. Initializes the view for the pharmacist.
+     * Constructor for the PharmacistView class. Initializes the view for the
+     * pharmacist.
      */
-    public PharmacistView () {
+    public PharmacistView() {
         super();
     }
 
     /**
      * Prints the main menu for the pharmacist to choose actions.
-     * The menu includes options like viewing appointment outcomes, updating prescriptions,
-     * viewing medication inventory, submitting replenishment requests, changing the password, and logging out.
+     * The menu includes options like viewing appointment outcomes, updating
+     * prescriptions,
+     * viewing medication inventory, submitting replenishment requests, changing the
+     * password, and logging out.
      */
     @Override
     public void printMenu() {
@@ -42,8 +49,11 @@ public class PharmacistView extends MainView {
     }
 
     /**
-     * Provides functionality for the pharmacist to view and manage various options in the system,
-     * such as viewing appointment outcomes, updating prescriptions, and handling inventory and requests.
+     * Provides functionality for the pharmacist to view and manage various options
+     * in the system,
+     * such as viewing appointment outcomes, updating prescriptions, and handling
+     * inventory and requests.
+     * 
      * @param hospitalID The hospital ID used for interacting with the system.
      */
     @Override
@@ -55,7 +65,7 @@ public class PharmacistView extends MainView {
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
-                    PrescriptionManager prescriptionManager = new PrescriptionManager(); 
+                    PrescriptionManager prescriptionManager = new PrescriptionManager();
                     if (!PrescriptionManager.viewRecentAppointmentOutcomeRecord()) {
                         System.out.println("There is no recent pending appointment outcome records");
                     }
@@ -74,8 +84,16 @@ public class PharmacistView extends MainView {
                 case 4:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Submit Replenishment Request");
-                    System.out.println("Enter the medication name: ");
-                    String medicationName = Helper.readString();
+                    String medicationName;
+                    while (true) {
+                        System.out.println("Enter the medication name: ");
+                        medicationName = Helper.readString();
+                        if (medicationName.equals("ibuprofen") || medicationName.equals("paracetamol")
+                                || medicationName.equals("amoxicillin")) {
+                            break;
+                        }
+                        System.out.println("Invalid medication name. Try again");
+                    }
                     System.out.println("Enter the quantity: ");
                     int quantity = Helper.readInt(1, 100);
                     PrescriptionManager.submitReplenishRequest(hospitalID, medicationName, quantity);
@@ -94,14 +112,16 @@ public class PharmacistView extends MainView {
     }
 
     /**
-     * Updates the status of a prescription. The pharmacist can dispense or skip updating a prescription.
+     * Updates the status of a prescription. The pharmacist can dispense or skip
+     * updating a prescription.
+     * 
      * @param prescriptionID The ID of the prescription to be updated.
      */
     public void updatePrescriptionStatus() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Update Prescription Status");
-        
-        if(!PrescriptionManager.printAllPrescriptions()){
+
+        if (!PrescriptionManager.printAllPrescriptions()) {
             return;
         }
         System.out.print("Enter the prescription ID (type 'back to return to main menu'): ");
