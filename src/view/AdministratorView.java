@@ -353,9 +353,6 @@ public class AdministratorView extends MainView {
     public void approveReplenishmentRequest() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
-        List<ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
-        if (replenishRequests.isEmpty()) {
-        
         List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
         if(replenishRequests == null) {
             System.out.println("No replenish requests currently.");
@@ -378,7 +375,7 @@ public class AdministratorView extends MainView {
                     InventoryManager.updateReplenishRequests(requestID, opt);
                     break;
                 case 3:
-                    break;
+                    return;
             }
         }
         System.out.println("All request processed");
@@ -411,7 +408,7 @@ public class AdministratorView extends MainView {
                     boolean found;
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
-                    System.out.println("Enter Medication ID: ");
+                    PrescriptionManager.viewMedicationInventory();
                     String medicationID = Helper.readMedicineID();
                     if (InventoryManager.searchMedicineByID(medicationID) == null) {
                         System.out.println("Medication does not exist!");

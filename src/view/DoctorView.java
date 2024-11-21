@@ -64,8 +64,10 @@ public class DoctorView extends MainView {
                 case 1:
                     Helper.clearScreen();
                     AppointmentManager.viewPatientsUnderCare(hospitalID);
-                    System.out.println("Enter patient ID: ");
                     String patientID = Helper.readPatientID();
+                    if(patientID.equals("")){
+                        break;
+                    }
                     Patient patient = PatientManager.searchPatientByID(patientID);
                     if (patient == null) {
                         System.out.println("Patient does not exist!");
@@ -78,9 +80,10 @@ public class DoctorView extends MainView {
                 case 2:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Update Patient Medical Records");
-                    System.out.println("Enter appointment ID");
                     String appointmentID = Helper.readAppointmentID();
-
+                    if(appointmentID.equals("")){
+                        break;
+                    }
                     if (AppointmentManager.searchAppointmentByID(appointmentID) == null) {
                         System.out.println("Appointment does not exist!");
                         Helper.pressAnyKeyToContinue();
@@ -94,12 +97,12 @@ public class DoctorView extends MainView {
                     List<PrescribeMedication> prescriptions = new ArrayList<>();
                     while (true) {
                         System.out.println("Enter medication name (or 'done' to finish): ");
-                        String medicationName = Helper.readString();
+                        String medicationName = Helper.readString().trim();
                         if (medicationName.equalsIgnoreCase("done")) {
                             break;
                         }
                         System.out.println("Enter prescription amount (or type 'done' to cancel): ");
-                        String amountInput = Helper.readString();
+                        String amountInput = Helper.readString().trim();
                         if (amountInput.equalsIgnoreCase("done")) {
                             System.out.println("Prescription for this medication canceled.");
                             continue;
