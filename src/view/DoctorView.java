@@ -1,5 +1,6 @@
 package src.view;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,16 +8,32 @@ import src.controller.AppointmentManager;
 import src.controller.LoginManager;
 import src.controller.PatientManager;
 import src.helper.Helper;
+import src.model.AppointmentSlot;
 import src.model.Patient;
 import src.model.PrescribeMedication;
 import src.model.TimeSlot;
 
+/**
+ * DoctorView class represents the view for doctor-specific functionalities in the hospital management system.
+ * It allows the doctor to manage patient medical records, schedule appointments, update patient information,
+ * and handle appointment requests, among other tasks.
+ * @author Seann
+ * @version 1.0
+ * @since 2024-11-20
+ */
+public class DoctorView extends MainView {
 
-public class DoctorView extends MainView{
-    public DoctorView () {
+    /**
+     * Constructs a DoctorView object, initializing the view with the main menu.
+     */
+    public DoctorView() {
         super();
     }
 
+    /**
+     * Displays the main menu for the doctor with options to view and update patient records, manage appointments,
+     * change password, and log out.
+     */
     @Override
     public void printMenu() {
         Helper.clearScreen();
@@ -33,6 +50,10 @@ public class DoctorView extends MainView{
         System.out.println("(9) Logout ");
     }
 
+    /**
+     * Handles the user input and allows the doctor to perform actions based on the selected menu option.
+     * @param hospitalID The unique identifier for the hospital.
+     */
     @Override
     public void viewApp(String hospitalID) {
         int opt;
@@ -41,29 +62,25 @@ public class DoctorView extends MainView{
             opt = Helper.readInt(1, 9);
             switch (opt) {
                 case 1:
-                    //View patient medical record
                     Helper.clearScreen();
                     System.out.println("Enter patient ID: ");
                     String patientID = Helper.readString();
                     Patient patient = PatientManager.searchPatientByID(patientID);
-                    if(patient==null){
+                    if (patient == null) {
                         System.out.println("Patient does not exist!");
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
                     PatientManager.viewPatientRecords(patient);
-                    Helper.pressAnyKeyToContinue()
-                    ;
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 2:
-                    //Update patient medical record
-                    //recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications)
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Update Patient Medical Records");
                     System.out.println("Enter appointment ID (AXXXX): ");
                     String appointmentID = Helper.readString();
 
-                    if(AppointmentManager.searchAppointmentByID(appointmentID) == null){
+                    if (AppointmentManager.searchAppointmentByID(appointmentID) == null) {
                         System.out.println("Appointment does not exist!");
                         Helper.pressAnyKeyToContinue();
                         break;
@@ -72,18 +89,17 @@ public class DoctorView extends MainView{
                     String diagnosis = Helper.readString();
                     System.out.println("Enter patient's treatment: ");
                     String treatment = Helper.readString();
-                    //prescribe medication
                     System.out.println("Enter list of medications to prescribe (type 'done' to finish): ");
                     List<PrescribeMedication> prescriptions = new ArrayList<>();
-                    while(true){
+                    while (true) {
                         System.out.println("Enter medication name (or 'done' to finish): ");
                         String medicationName = Helper.readString();
-                        if(medicationName.equalsIgnoreCase("done")){
+                        if (medicationName.equalsIgnoreCase("done")) {
                             break;
                         }
                         System.out.println("Enter prescription amount (or type 'done' to cancel): ");
                         String amountInput = Helper.readString();
-                        if(amountInput.equalsIgnoreCase("done")){
+                        if (amountInput.equalsIgnoreCase("done")) {
                             System.out.println("Prescription for this medication canceled.");
                             continue;
                         }
@@ -95,57 +111,39 @@ public class DoctorView extends MainView{
                         }
                     }
                     AppointmentManager.recordAppointmentOutcome(appointmentID, hospitalID, treatment, diagnosis, prescriptions);
-                    ;
                     break;
                 case 3:
-                    //View personal schedule
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Personal Schedule");
                     PatientView patientView = new PatientView();
                     patientView.viewScheduledAppointments(hospitalID);
                     Helper.pressAnyKeyToContinue();
-                    ;
                     break;
                 case 4:
-                    //Set availability for appointments
+                    // Set unavailability for a doctor
                     Helper.clearScreen();
-                    printBreadCrumbs("Main Menu > Set Availability for Appointments");
-                    System.out.println("\"On what date and time would you like to block availability? (Format: 'yyyy-MM-dd HH:MM' )\")");
-                    System.out.println("Type 'back' to return to main menu");
-                    String newDateInput = Helper.setDate(false);            
-                    if(newDateInput.equalsIgnoreCase("back")){
-                        return;
-                    }       
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    LocalDateTime newDateTime = Helper.getDate(newDateInput, format);
-                    TimeSlot newTimeSlot = new TimeSlot(newDateTime);       
-                    if(AppointmentManager.setAvailability(hospitalID, newTimeSlot)){
-                        System.out.println("Availability set successfully!");
-                    } else {
-                        System.out.println("Availability set failed!");
-                    }   
+                    printBreadCrumbs("Main Menu > Set Unavailability for Appointments");
+                    handleDoctorUnavailability(hospitalID);
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 5:
-                    //Accept or decline appointment requests
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Accept or Decline Appointment Requests");
 
-                    //print pending appointment requests
-                    if(!AppointmentManager.viewPendingAppointmentRequeest(hospitalID)){
+                    if (!AppointmentManager.viewPendingAppointmentRequeest(hospitalID)) {
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
                     System.out.println("Enter appointment ID to update request: ");
                     String appointmentID2 = Helper.readString();
-                    if(AppointmentManager.searchAppointmentByID(appointmentID2)==null){
+                    if (AppointmentManager.searchAppointmentByID(appointmentID2) == null) {
                         System.out.println("Appointment does not exist!");
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
                     System.out.println("Accept or Decline? (1: Accept, 2: Decline)");
                     int decision = Helper.readInt(1, 2);
-                    if(AppointmentManager.updateAppointmentRequest(appointmentID2, hospitalID, decision)){
+                    if (AppointmentManager.updateAppointmentRequest(appointmentID2, hospitalID, decision)) {
                         System.out.println("Appointment request updated successfully!");
                     } else {
                         System.out.println("Appointment request update failed!");
@@ -153,14 +151,12 @@ public class DoctorView extends MainView{
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 6:
-                    //View upcoming appointments
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View Upcoming Appointments");
                     AppointmentManager.viewScheduledAppointments(hospitalID, 1);
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 7:
-                    //Record appointment outcome
                     System.out.println("Enter appointment ID to record outcome (AXXXX): ");
                     String outcomeID = Helper.readString();
                     System.out.println("Enter type of service: ");
@@ -175,7 +171,7 @@ public class DoctorView extends MainView{
                         String medicationName = Helper.readString();
                     
                         if (medicationName.equalsIgnoreCase("done")) {
-                            break; // Exit the loop when the user types "done"
+                            break; 
                         }
                     
                         System.out.println("Enter prescription amount (or type 'done' to cancel): ");
@@ -183,10 +179,9 @@ public class DoctorView extends MainView{
                     
                         if (amountInput.equalsIgnoreCase("done")) {
                             System.out.println("Prescription for this medication canceled.");
-                            continue; // Skip to the next medication
+                            continue; 
                         }
                     
-                        // Validate the amount input
                         try {
                             int amount = Integer.parseInt(amountInput);
                             medications.add(new PrescribeMedication(medicationName, amount));
@@ -197,13 +192,50 @@ public class DoctorView extends MainView{
                     AppointmentManager.recordAppointmentOutcome(outcomeID, hospitalID, outcomeService, outcomeNotes, medications);
                     break;
                 case 8:                
-                    //Change password
                     LoginManager.createNewPassword(hospitalID);
                     break;
                 case 9:
-                    //Logout
                     break;
             }
         } while (opt != 9);
+    }
+
+    private void handleDoctorUnavailability(String doctorID) {
+        
+        System.out.println("Enter the date for which you want to block availability (Format: 'yyyy-MM-dd'):");
+        String newDateInput = Helper.setDateOnly();
+        if (newDateInput.isEmpty()) {
+            System.out.println("Invalid date entered. Returning to main menu...");
+            return;
+        }
+    
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate selectedDate = Helper.getDateOnly(newDateInput, dateFormat);
+    
+        List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(selectedDate, doctorID);
+        if (availableSlots.isEmpty()) {
+            System.out.println("No available slots found for the selected date.");
+            return;
+        }
+
+        System.out.println("Available Slots:");
+        for (int i = 0; i < availableSlots.size(); i++) {
+            System.out.println((i + 1) + ". " + availableSlots.get(i).getTimeSlot().getFormattedTime());
+        }
+    
+        System.out.println("Enter the number corresponding to the Time Slot you want to block:");
+        int slotChoice = Helper.readInt() - 1;
+    
+        if (slotChoice < 0 || slotChoice >= availableSlots.size()) {
+            System.out.println("Invalid choice. Returning to main menu...");
+            return;
+        }
+    
+        TimeSlot selectedSlot = availableSlots.get(slotChoice).getTimeSlot();
+        if (AppointmentManager.setAvailability(doctorID, selectedSlot)) {
+            System.out.println("The selected slot has been marked as unavailable.");
+        } else {
+            System.out.println("Failed to block the selected slot. Please try again.");
+        }
     }
 }
