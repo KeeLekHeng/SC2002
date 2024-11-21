@@ -418,7 +418,7 @@ public class Helper {
     }
 
     /**
-     * Calculates the days elapsed between two dates.
+     * Calculates the days elapsed betwfeen two dates.
      * @param fromDate From date in string format.
      * @param toDate   To date in string format.
      * @return Days difference between the two dates.
