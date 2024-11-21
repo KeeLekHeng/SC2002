@@ -588,18 +588,14 @@ public class AppointmentManager {
 
 
     /**
- * Prints all confirmed appointment requests for a specific doctor.
- * 
- * This method retrieves all appointments from the database that are associated
- * with the specified doctor's ID and have a status of "CONFIRMED". It then 
- * displays the details of these appointments in a formatted manner. If there 
- * are no confirmed appointments, a message indicating that is displayed.
- * @param doctorID the unique identifier of the doctor for whom the confirmed 
- *                 appointment requests are to be printed
- * @since 2024-11-21
- * @author JiaWei
- * @version 1.0
- */
+     * Prints all confirmed appointment requests for a specific doctor.
+     * This method retrieves all appointments from the database that are associated
+     * with the specified doctor's ID and have a status of "CONFIRMED". It then 
+     * displays the details of these appointments in a formatted manner. If there 
+     * are no confirmed appointments, a message indicating that is displayed.
+     * @param doctorID the unique identifier of the doctor for whom the confirmed 
+     *                 appointment requests are to be printed
+     */
     public static void printConfirmedAppointmentRequest(String doctorID){
         ArrayList<Appointment> pendingAppointmentsList = new ArrayList<Appointment>();
         for (Appointment app : Database.APPOINTMENT.values()) {
@@ -624,9 +620,6 @@ public class AppointmentManager {
      * patient ID, doctor ID, doctor's name, appointment status, time slot, 
      * and any available outcome record.
      * @param appointment The appointment object containing the details to print.
-     * @since 2024-11-21
-     * @author JiaWei
-     * @version 1.0
      */
     public static void printAppointmentDetails(Appointment appointment) {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
@@ -652,9 +645,6 @@ public class AppointmentManager {
      * Prints the outcome record of an appointment, including the record uploaded time,
      * type of service, consultation notes, and details of prescribed medications.
      * @param appointment The appointment object whose outcome record is to be printed.
-     * @since 2024-11-21
-     * @author JiaWei
-     * @version 1.0
      */
     public static void printAppointmentOutcomeRecord(Appointment appointment) {
         AppOutcomeRecord outcomeRecord = appointment.getAppOutcomeRecord();
