@@ -1,7 +1,4 @@
-//view appointment outcome record is bugged
-
 package src.view;
-
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
 import src.helper.Helper;

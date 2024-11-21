@@ -1,5 +1,6 @@
 package src.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import src.database.Database;
@@ -275,7 +276,8 @@ public class PatientManager {
             System.out.println("Previous Medical Records:");
             for (Appointment app : appointmentList) {
                 AppOutcomeRecord outcome = app.getAppOutcomeRecord();
-                System.out.println(String.format("%-20s: %s", "Date", outcome.getEndDateTime()));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                System.out.println(String.format("%-20s: %s", "Date", outcome.getEndDateTime().format(formatter)));
                 System.out.println(String.format("%-20s: %s", "Diagnoses", outcome.getConsultationNotes()));
                 System.out.println(String.format("%-20s: %s", "Treatments", outcome.getTypeOfService()));
 
