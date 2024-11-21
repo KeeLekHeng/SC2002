@@ -398,6 +398,31 @@ public class AppointmentManager {
         }
     }
 
+    public static void viewPatientsUnderCare(String doctorID) {
+        List<String> patientsUnderCare = new ArrayList<>();
+        
+        for (Appointment appointment : Database.APPOINTMENT.values()) {
+            if (appointment.getDoctorID().equals(doctorID)) {
+                if (!patientsUnderCare.contains(appointment.getPatientID())) {
+                    patientsUnderCare.add(appointment.getPatientID());
+                }
+            }
+        }
+        if (patientsUnderCare.isEmpty()) {
+            System.out.println("You currently have no patients under your care.");
+        } else {
+            System.out.println("Patients under your care:");
+            for (String patientID : patientsUnderCare) {
+                Patient patient = Database.PATIENTS.get(patientID);
+                if (patient != null) {
+                    System.out.println("Patient ID: " + patient.getId() + " | Patient Name: " + patient.getName());
+                } else {
+                    System.out.println("Patient ID: " + patientID + " | Patient details not found.");
+                }
+            }
+        }
+    }
+    
 
     public static boolean updateAppointmentRequest(String appointmentID, String staffID, int attributeCode){
         if(validateAppointmentOwnership(appointmentID, staffID)){
@@ -439,14 +464,13 @@ public class AppointmentManager {
     }
     
     public static Appointment searchAppointmentByID(String appointmentID) {
-            // Check if the appointmentID exists in the database
             if (Database.APPOINTMENT.containsKey(appointmentID)) {
                 return Database.APPOINTMENT.get(appointmentID);
             } else {
-                // Return null if appointment is not found
                 return null;
             }
         }
+        
     //need to make a list of Prescribed Medication before passing it into this function
     public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
         
@@ -532,7 +556,6 @@ public class AppointmentManager {
             for (PrescribeMedication med : medications) {
                 System.out.println(String.format("  %-20s: %s", "Medication Name", med.getMedicationName()));
                 System.out.println(String.format("  %-20s: %d", "Amount", med.getPrescriptionAmount()));
-                System.out.println(String.format("%-40s", "").replace(" ", "-"));
             }
         }
     

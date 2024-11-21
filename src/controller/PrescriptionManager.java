@@ -12,6 +12,7 @@ import src.model.Appointment;
 import src.model.Medication;
 import src.model.PrescribeMedication;
 import src.model.ReplenishRequest;
+import src.model.enums.AppointmentStatus;
 import src.model.enums.PrescribeStatus;
 
 public class PrescriptionManager {
@@ -194,6 +195,48 @@ public class PrescriptionManager {
     public static void viewMedicationInventory(){
         InventoryManager.printAllMedication();
     }
+
+    public static boolean printAllPrescriptions() {
+        boolean hasPendingPrescriptions = false;  
+        
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        System.out.println("Printing all prescriptions that have not been dispensed:");
+        System.out.println(String.format("%-40s", "").replace(" ", "-"));
+    
+
+        for (Appointment appointment : Database.APPOINTMENT.values()) {
+            if (appointment.getAppointmentStatus() != AppointmentStatus.COMPLETED) {
+                AppOutcomeRecord outcomeRecord = appointment.getAppOutcomeRecord();
+                if (outcomeRecord != null && outcomeRecord.getPrescriptionID() != null) {
+                    String prescriptionID = outcomeRecord.getPrescriptionID();
+                    List<PrescribeMedication> medications = outcomeRecord.getPrescribeMedications();
+
+                    if (outcomeRecord.getPrescribeStatus() != PrescribeStatus.DISPENSED) {
+                        hasPendingPrescriptions = true;  
+  
+                        System.out.println(String.format("%-20s: %s", "Prescription ID", prescriptionID));
+    
+                        for (PrescribeMedication medication : medications) {
+                            System.out.println(String.format("%-20s: %s", "Medication Name", medication.getMedicationName()));
+                            System.out.println(String.format("%-20s: %d", "Amount", medication.getPrescriptionAmount()));
+                            System.out.println(String.format("%-40s", "").replace(" ", "-"));
+                        }
+                    }
+                }
+            }
+        }
+    
+        if (!hasPendingPrescriptions) {
+            System.out.println("No upcoming prescription requests");
+            return false;
+        }
+ 
+        if (hasPendingPrescriptions) {
+            System.out.println(String.format("%-40s", "").replace(" ", "-"));
+        }
+        return true;
+    }
+
 
   
     public static void printPrescriptionRequest(AppOutcomeRecord outcomeRecord){
