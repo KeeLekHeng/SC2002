@@ -120,6 +120,7 @@ public class PatientView extends MainView {
                 case 4:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
+                    AppointmentManager.getDoctorList();
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
                     System.out.println("Type 'back' to return to main menu");     
                     doctorID = Helper.readStaffID();
