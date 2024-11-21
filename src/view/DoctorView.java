@@ -209,6 +209,10 @@ public class DoctorView extends MainView {
         } while (opt != 9);
     }
 
+    /**
+     * Handles the process of marking a doctor's availability as unavailable for a specific date and time slot.
+     * @param doctorID The unique identifier for the doctor.
+     */
     private void handleDoctorUnavailability(String doctorID) {
         
         System.out.println("Enter the date for which you want to block availability (Format: 'yyyy-MM-dd'):");

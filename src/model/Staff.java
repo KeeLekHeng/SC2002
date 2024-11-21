@@ -6,7 +6,6 @@ import src.model.enums.Gender;
 /**
  * Represents a staff member in the system, extending from User.
  * A staff member has additional attributes such as name, age, and gender.
- * 
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -32,15 +31,14 @@ public class Staff extends User {
 
     /**
      * Constructs a new Staff with the specified attributes.
-     * 
-     * @param id               Unique identifier of the staff member.
-     * @param password         Password for the staff member.
-     * @param role             Role of the staff member in the system.
-     * @param name             Name of the staff member.
-     * @param gender           Gender of the staff member.
-     * @param age              Age of the staff member.
-     * @param rating           Rating of the staff member.
-     * @param ratingCount      Rating count of the staff member.
+     * @param id Unique identifier of the staff member.
+     * @param password Password for the staff member.
+     * @param role Role of the staff member in the system.
+     * @param name Name of the staff member.
+     * @param gender Gender of the staff member.
+     * @param age Age of the staff member.
+     * @param rating Rating of the staff member.
+     * @param ratingCount Rating count of the staff member.
      * @param EmploymentStatus Employment status of the staff member.
      */
     public Staff(String id, String password, Role role, String name, Gender gender, int age, String EmploymentStatus,
@@ -56,7 +54,6 @@ public class Staff extends User {
 
     /**
      * Gets the rating count of the staff member.
-     * 
      * @return the rating count of the staff member.
      */
     public int getRatingCount() {
@@ -65,7 +62,6 @@ public class Staff extends User {
 
     /**
      * Resets the rating count of the staff member.
-     * 
      * @param ratingCount New rating count for the staff member.
      */
     public void resetRatingCount() {
@@ -74,7 +70,6 @@ public class Staff extends User {
 
     /**
      * Increments the rating count of the staff member.
-     * 
      * @param ratingCount Increments rating count for the staff member.
      */
     public void incrementRatingCount() {
@@ -83,7 +78,6 @@ public class Staff extends User {
 
     /**
      * Gets the rating of the staff member.
-     * 
      * @return the rating of the staff member.
      */
     public double getRating() {
@@ -92,7 +86,6 @@ public class Staff extends User {
 
     /**
      * Sets the rating of the staff member.
-     * 
      * @param rating New rating for the staff member.
      */
     public void setRating(double rating) {
@@ -101,7 +94,6 @@ public class Staff extends User {
 
     /**
      * Gets the name of the staff member.
-     * 
      * @return the name of the staff member.
      */
     public String getName() {
@@ -110,7 +102,6 @@ public class Staff extends User {
 
     /**
      * Sets the name of the staff member.
-     * 
      * @param name New name for the staff member.
      */
     public void setName(String name) {
@@ -119,7 +110,6 @@ public class Staff extends User {
 
     /**
      * Gets the age of the staff member.
-     * 
      * @return the age of the staff member.
      */
     public int getAge() {
@@ -128,7 +118,6 @@ public class Staff extends User {
 
     /**
      * Sets the age of the staff member.
-     * 
      * @param age New age for the staff member.
      */
     public void setAge(int age) {
@@ -137,7 +126,6 @@ public class Staff extends User {
 
     /**
      * Gets the gender of the staff member.
-     * 
      * @return the gender of the staff member.
      */
     public Gender getGender() {
@@ -146,7 +134,6 @@ public class Staff extends User {
 
     /**
      * Sets the gender of the staff member.
-     * 
      * @param gender New gender for the staff member.
      */
     public void setGender(Gender gender) {
@@ -155,7 +142,6 @@ public class Staff extends User {
 
     /**
      * Sets the role of the staff member.
-     * 
      * @param role New role for the staff member.
      */
     public void setRole(Role role) {
@@ -164,8 +150,7 @@ public class Staff extends User {
 
     /**
      * Sets the employment status of the staff member.
-     * 
-     * @param role New employment status for the staff member.
+     * @param status New employment status for the staff member.
      */
     public void setEmploymentStatus(String status) {
         this.EmploymentStatus = status;
@@ -173,7 +158,6 @@ public class Staff extends User {
 
     /**
      * Gets the employment status of the staff member.
-     * 
      * @return the employment status of the staff member.
      */
     public String getEmploymentStatus() {

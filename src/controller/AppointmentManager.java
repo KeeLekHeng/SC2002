@@ -1,16 +1,10 @@
 package src.controller;
 
-// import java.sql.DatabaseMetaData;
-// import java.util.Arrays;
-// import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-// import java.util.Map;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
 import src.database.Database;
 import src.database.FileType;
 import src.helper.Helper;
@@ -18,19 +12,32 @@ import src.model.AppOutcomeRecord;
 import src.model.Appointment;
 import src.model.AppointmentSlot;
 import src.model.Patient;
-// import src.model.Patient;
 import src.model.PrescribeMedication;
 import src.model.Staff;
 import src.model.TimeSlot;
 import src.model.enums.AppointmentStatus;
 import src.model.enums.PrescribeStatus;
 
+/**
+ * AppointmentManager is a controller class responsible for managing appointment operations.
+ * It allows the user to schedule, view, and cancel appointments, check the availability of doctors, 
+ * and validate appointment ownership.
+ * @author Benjamin, Kee
+ * @version 1.0
+ * @since 2024-11-20
+ */
 public class AppointmentManager {
 
+    /**
+     * Constructor for AppointmentManager.
+     */
     public AppointmentManager() {
 
     }
 
+    /**
+     * Fetch the list of employed doctors from the database and print out their details.
+     */
     public static void getDoctorList() {
         List<Staff> doctorList = new ArrayList<Staff>();
         for (Staff staff : Database.STAFF.values()) {
@@ -55,7 +62,11 @@ public class AppointmentManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
-    // timeSlots in a day
+    /**
+     * Generate available time slots for appointments based on the given date.
+     * @param date The date for which time slots need to be generated.
+     * @return A list of available time slots.
+     */
     public static List<TimeSlot> generateTimeSlots(LocalDate date) {
         final int startHour = 9;
         final int endHour = 17;
@@ -74,6 +85,12 @@ public class AppointmentManager {
         return timeSlots;
     }
 
+    /**
+     * Get the available appointment slots for a specific doctor on a given date.
+     * @param newDateTime The date to check available slots.
+     * @param doctorID    The ID of the doctor.
+     * @return A list of available appointment slots.
+     */
     public static List<AppointmentSlot> getAvailableSlotsByDoctor(LocalDate newDateTime, String doctorID) {
         List<AppointmentSlot> availableSlots = new ArrayList<AppointmentSlot>();
 
@@ -85,10 +102,15 @@ public class AppointmentManager {
         return availableSlots;
     }
 
+    /**
+     * Check if a specific appointment slot is available for the given doctor.
+     * @param timeSlot The time slot to check.
+     * @param doctorID The ID of the doctor.
+     * @return true if the slot is available, false otherwise.
+     */
     public static boolean isAppointmentSlotAvailable(TimeSlot timeSlot, String doctorID) {
         List<Appointment> slots = new ArrayList<Appointment>();
 
-        // all scheduled appointments of doctor
         for (Appointment appointment : Database.APPOINTMENT.values()) {
             if (appointment.getDoctorID().equals(doctorID)) {
                 slots.add(appointment);
@@ -104,14 +126,17 @@ public class AppointmentManager {
         return true;
     }
 
+    /**
+     * Validate the ownership of an appointment based on the given appointment ID and hospital ID.
+     * @param appointmentID The ID of the appointment to validate.
+     * @param hospitalID    The hospital ID of the user (either patient or doctor).
+     * @return true if the user owns the appointment, false otherwise.
+     */
     public static boolean validateAppointmentOwnership(String appointmentID, String hospitalID) {
-        // check if got appointment then
 
         if (Database.APPOINTMENT.containsKey(appointmentID)) {
             Appointment appointment = Database.APPOINTMENT.get(appointmentID);
             TimeSlot timeSlot = appointment.getTimeSlot();
-
-            // Validate Patient or Doctor
             if (hospitalID.startsWith("P") && hospitalID.substring(1).matches("\\d{4}")) {
                 if (!appointment.getPatientID().equals(hospitalID)) {
                     System.out.println("You have no appointment scheduled for" + timeSlot.getFormattedDate() + "at"
@@ -129,14 +154,15 @@ public class AppointmentManager {
                 return false;
             }
         }
-        // all goes well
         return true;
     }
 
-    // FOR PATIENTS
-
-    // what if type wrongly not in that form (NEED TO ENSURE DATE ENTERED IS
-    // CORRECT, IF NOT USE HELPER FUNCTION TO HELP U VALIDATE)
+    /**
+     * View the available appointment slots for a patient with a specific doctor on a specific date.
+     * @param patientID The patient ID.
+     * @param doctorID  The doctor ID.
+     * @param date      The date to check for available slots.
+     */
     public static void viewAvailableAppointmentSlots(String patientID, String doctorID, LocalDate date) {
 
         List<TimeSlot> timeSlots = AppointmentManager.generateTimeSlots(date);
@@ -153,11 +179,15 @@ public class AppointmentManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
-    // TimeSlot is both date and time (refer to timeslot to see how to get formatted
-    // time) I used doctorID and timeslot seperately ### I returning appointmentID
+    /**
+     * Schedule an appointment for a patient with a specific doctor at a specified time slot.
+     * @param patientID The ID of the patient scheduling the appointment.
+     * @param doctorID  The ID of the doctor for the appointment.
+     * @param timeSlot  The time slot for the appointment.
+     * @return true if the appointment was successfully scheduled, false otherwise.
+     */
     public static boolean scheduleAppointment(String patientID, String doctorID, TimeSlot timeSlot) {
 
-        // check if available for that doctor
         if (!isAppointmentSlotAvailable(timeSlot, doctorID)) {
             System.out.println("Time slot " + timeSlot.getFormattedTime() + " on " + timeSlot.getFormattedDate()
                     + " is not available.");
@@ -176,10 +206,14 @@ public class AppointmentManager {
         return true;
     }
 
-    // jsut need appointment and patient id
+    /**
+     * Cancel an appointment for a patient based on the given appointment ID and patient ID.
+     * @param appointmentID The ID of the appointment to cancel.
+     * @param patientID     The ID of the patient who is canceling the appointment.
+     * @return true if the appointment was successfully canceled, false otherwise.
+     */
     public static boolean cancelAppointment(String appointmentID, String patientID) {
 
-        // check if got appointment then or not and u are the patient
         if (!validateAppointmentOwnership(appointmentID, patientID)) {
             System.out.println("You do not have an appointment with this AppointmentID:" + appointmentID);
             return false;
@@ -202,13 +236,14 @@ public class AppointmentManager {
         }
     }
 
+
     /**
      * Fetch appointment Outcome Records for patients based on the provided code.
-     *
      * @param code          1 for fetching by appointment ID, 2 for fetching all
      *                      past appointments for a patient.
      * @param patientID     The patient ID (required if code is 2).
      * @param appointmentID The appointment ID (required if code is 1).
+     * @return true if the appointment(s) were found and printed successfully, false otherwise.
      */
     public static boolean fetchAppointmentOutcomeRecords(int code, String patientID, String appointmentID) {
         switch (code) {
@@ -218,7 +253,6 @@ public class AppointmentManager {
                     return false;
                 }
 
-                // Fetch appointment by ID
                 Appointment appointment = Database.APPOINTMENT.get(appointmentID);
                 if (appointment != null) {
                     System.out.println("Appointment Details:");
@@ -229,7 +263,6 @@ public class AppointmentManager {
                     return false;
                 }
             case 2:
-                // Fetch all appointments for a specific patient
                 List<Appointment> pastAppointments = new ArrayList<>();
                 if (Database.APPOINTMENT.isEmpty()) {
                     System.out.println("No past appointments found for patient ID " + patientID);
@@ -259,7 +292,12 @@ public class AppointmentManager {
         }
     }
 
-    // do a if for 3 roles. attribute code [1. for upcoming, 2. for all]
+    /**
+     * View scheduled appointments for a specific hospital (patient or doctor).
+     * @param hospitalID The hospital ID (patient or doctor ID).
+     * @param attributeCode The type of appointments to fetch (1 for scheduled, 2 for all available).
+     * @return true if appointments were found and printed, false otherwise.
+     */
     public static boolean viewScheduledAppointments(String hospitalID, int attributeCode) {
         List<Appointment> appointmentList = new ArrayList<Appointment>();
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -269,7 +307,6 @@ public class AppointmentManager {
             return false;
         }
 
-        // patient or Doctor or Admin
         switch (attributeCode) {
             case 1:
                 for (Appointment appointment : Database.APPOINTMENT.values()) {
@@ -330,7 +367,13 @@ public class AppointmentManager {
         }
     }
 
-    // want implement like cant reschedule a day before appointment??
+    /**
+     * Reschedule an existing appointment to a new time slot.
+     * @param appointmentID The ID of the appointment to be rescheduled.
+     * @param patientID The ID of the patient who owns the appointment.
+     * @param newTimeSlot The new time slot for the appointment.
+     * @return true if the appointment was rescheduled successfully, false otherwise.
+     */
     public static boolean rescheduleAppointment(String appointmentID, String patientID, TimeSlot newTimeSlot) {
 
         if (!validateAppointmentOwnership(appointmentID, patientID)) {
@@ -343,7 +386,6 @@ public class AppointmentManager {
             return false;
         }
 
-        // Check whether the new time slot is available
         if (isAppointmentSlotAvailable(newTimeSlot, appointment.getDoctorID())) {
             if (!cancelAppointment(appointmentID, patientID)) {
                 return false;
@@ -363,17 +405,18 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Fetch the past appointment outcome records for a specific patient.
+     * @param patientID The ID of the patient whose past appointments will be fetched.
+     */
     public static void viewPastAppointmentOutcomeRecords(String patientID) {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
-        // Iterate through all the appointments in the database
         for (Appointment appointment : Database.APPOINTMENT.values()) {
             if (appointment.getPatientID().equals(patientID)) {
 
                 if (appointment.getAppOutcomeRecord() != null &&
                         appointment.getTimeSlot().getDateTime().isBefore(currentDateTime)) {
-
-                    // Print the appointment details including the outcome record
                     System.out.println("Past Appointment ID: " + appointment.getAppointmentID());
                     printAppointmentOutcomeRecord(appointment);
                 } else {
@@ -383,6 +426,11 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * View pending appointment requests for a doctor.
+     * @param doctorID The ID of the doctor whose pending appointments are to be viewed.
+     * @return True if there are pending appointment requests, false otherwise.
+     */
     public static boolean viewPendingAppointmentRequeest(String doctorID) {
         ArrayList<Appointment> pendingAppointmentsList = new ArrayList<Appointment>();
 
@@ -403,11 +451,16 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Update the status of an appointment request.
+     * @param appointmentID The appointment ID whose request is to be updated.
+     * @param staffID       The staff ID who is updating the appointment.
+     * @param attributeCode The code specifying the update: 1 for confirmation, 2 for cancellation.
+     * @return True if the appointment was successfully updated, false otherwise.
+     */
     public static boolean updateAppointmentRequest(String appointmentID, String staffID, int attributeCode) {
         if (validateAppointmentOwnership(appointmentID, staffID)) {
             Appointment appointment = Database.APPOINTMENT.get(appointmentID);
-
-            // 1 for approve, 2 for reject
             switch (attributeCode) {
                 case 1:
                     appointment.setAppointmentStatus(AppointmentStatus.CONFIRMED);
@@ -426,35 +479,47 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Set a doctor's availability for a specific time slot.
+     * @param doctorID The ID of the doctor marking availability.
+     * @param timeSlot The time slot the doctor is marking as available or unavailable.
+     * @return True if the availability was successfully set, false otherwise.
+     */
     public static boolean setAvailability(String doctorID, TimeSlot timeSlot) {
-
         if (!isAppointmentSlotAvailable(timeSlot, doctorID)) {
-            System.out.println("There is a Pending or Confirmed Appointment at" + timeSlot.getFormattedDateTime());
+            System.out.println("There is a Pending or Confirmed Appointment at " + timeSlot.getFormattedDateTime());
             return false;
         }
         String appointmentID = "UNAVAILABLE-" + doctorID + "-" + timeSlot.getFormattedDateTime();
         Appointment unavailableAppointment = new Appointment(appointmentID, doctorID, null, timeSlot);
         unavailableAppointment.setAppointmentStatus(AppointmentStatus.UNAVAILABLE);
 
-        System.out
-                .println("Doctor " + doctorID + " has marked " + timeSlot.getFormattedDateTime() + " as unavailable.");
+        System.out.println("Doctor " + doctorID + " has marked " + timeSlot.getFormattedDateTime() + " as unavailable.");
         Database.APPOINTMENT.put(appointmentID, unavailableAppointment);
         Database.saveFileIntoDatabase(FileType.APPOINTMENTS);
         return true;
     }
 
+    /**
+     * Search for an appointment by its ID.
+     * @param appointmentID The ID of the appointment to be searched.
+     * @return The Appointment object if found, null otherwise.
+     */
     public static Appointment searchAppointmentByID(String appointmentID) {
-        // Check if the appointmentID exists in the database
         if (Database.APPOINTMENT.containsKey(appointmentID)) {
             return Database.APPOINTMENT.get(appointmentID);
         } else {
-            // Return null if appointment is not found
             return null;
         }
     }
+
+    /**
+     * View the list of patients under a specific doctor's care.
+     * @param doctorID The ID of the doctor whose patients are to be viewed.
+     */
     public static void viewPatientsUnderCare(String doctorID) {
         List<String> patientsUnderCare = new ArrayList<>();
-        
+
         for (Appointment appointment : Database.APPOINTMENT.values()) {
             if (appointment.getDoctorID().equals(doctorID)) {
                 if (!patientsUnderCare.contains(appointment.getPatientID())) {
@@ -477,11 +542,25 @@ public class AppointmentManager {
         }
     }
 
+<<<<<<< HEAD
     //need to make a list of Prescribed Medication before passing it into this function
     public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
         
         //check if is doctor's appointment
         if(!validateAppointmentOwnership(appointmentID, doctorID)){
+=======
+    /**
+     * Record the outcome of an appointment, including service type, consultation notes, and prescribed medications.
+     * @param appointmentID The ID of the appointment.
+     * @param doctorID      The ID of the doctor.
+     * @param typeOfService The type of service provided during the appointment.
+     * @param consultationNotes The consultation notes recorded by the doctor.
+     * @param medications The list of medications prescribed during the appointment.
+     * @return True if the appointment outcome was successfully recorded, false otherwise.
+     */
+    public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications) {
+        if (!validateAppointmentOwnership(appointmentID, doctorID)) {
+>>>>>>> 5700ef6ec26f06bbc8bd145ebe8f8df1282aaf2f
             return false;
         }
 
@@ -492,8 +571,6 @@ public class AppointmentManager {
         outcomeRecord.setTypeOfService(typeOfService);
 
         if (!medications.isEmpty()) {
-
-            // Making prescription ID
             int pid = Helper.generateUniqueId(Database.APPOINTMENT);
             String prescriptionID = String.format("P%05d", pid);
 
@@ -517,6 +594,15 @@ public class AppointmentManager {
         return true;
     }
 
+    /**
+     * Prints the details of a given appointment including the appointment ID,
+     * patient ID, doctor ID, doctor's name, appointment status, time slot, 
+     * and any available outcome record.
+     * @param appointment The appointment object containing the details to print.
+     * @since 2024-11-21
+     * @author JiaWei
+     * @version 1.0
+     */
     public static void printAppointmentDetails(Appointment appointment) {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
         System.out.println(String.format("%-20s: %s", "Appointment ID", appointment.getAppointmentID()));
@@ -527,8 +613,6 @@ public class AppointmentManager {
         System.out.println(String.format("%-20s: %s", "Appointment Status", appointment.getAppointmentStatus()));
         System.out.println(String.format("%-20s: %s", "Time Slot", appointment.getTimeSlot().getFormattedDateTime()));
 
-        // If appointment has an outcome record, call the printAppointmentOutcomeRecord
-        // method
         if (appointment.getAppOutcomeRecord() != null) {
             System.out.println(String.format("%-20s: %s", "Outcome Record", "Present"));
             printAppointmentOutcomeRecord(appointment);
@@ -539,8 +623,15 @@ public class AppointmentManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
+    /**
+     * Prints the outcome record of an appointment, including the record uploaded time,
+     * type of service, consultation notes, and details of prescribed medications.
+     * @param appointment The appointment object whose outcome record is to be printed.
+     * @since 2024-11-21
+     * @author JiaWei
+     * @version 1.0
+     */
     public static void printAppointmentOutcomeRecord(Appointment appointment) {
-        // Check if appointment has an outcome record
         AppOutcomeRecord outcomeRecord = appointment.getAppOutcomeRecord();
         if (outcomeRecord == null) {
             return;
@@ -551,7 +642,6 @@ public class AppointmentManager {
         System.out.println(String.format("%-20s: %s", "Type of Service", outcomeRecord.getTypeOfService()));
         System.out.println(String.format("%-20s: %s", "Consultation Notes", outcomeRecord.getConsultationNotes()));
 
-        // Print Prescribed Medications
         List<PrescribeMedication> medications = outcomeRecord.getPrescribeMedications();
         if (medications.isEmpty()) {
             System.out.println("  No medications prescribed.");
@@ -564,8 +654,6 @@ public class AppointmentManager {
                 System.out.println(String.format("  %-20s: %d", "Amount", med.getPrescriptionAmount()));
             }
         }
-
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
-
 }
