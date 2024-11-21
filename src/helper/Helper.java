@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * Helper class for supporting functions.
  * @author Kee, Seann
  * @version 1.0
- * @since 2024/10/22
+ * @since 2024-10-22
  */
 public class Helper {
     /**
@@ -31,7 +31,6 @@ public class Helper {
 
     /**
      * Reads an integer value from the terminal.
-     * 
      * @return The entered integer.
      */
     public static int readInt() {
@@ -50,9 +49,7 @@ public class Helper {
 
     /**
      * Function to validate email provided.
-     * 
      * It checks whether the email provided meets the email valid format.
-     * 
      * @param email The email to validate.
      * @return {@code true} if the email is valid, otherwise {@code false}.
      */
