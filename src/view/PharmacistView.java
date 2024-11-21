@@ -2,6 +2,7 @@
 
 package src.view;
 
+import src.controller.InventoryManager;
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
 import src.helper.Helper;
@@ -75,6 +76,7 @@ public class PharmacistView extends MainView {
                 case 4:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Submit Replenishment Request");
+                    InventoryManager.printMedicationStockLevels();
                     System.out.println("Enter the medication name: ");
                     String medicationName = Helper.readString();
                     System.out.println("Enter the quantity: ");
