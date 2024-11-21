@@ -34,21 +34,21 @@ This is our group assignment for SC2002 (Object Oriented Programming).
 > How to run our project
 1. In your command line change directory into src  
 ```
-path
+cd /Users/maeganliew/Desktop/Hospital/src
 ```  
 2. Compile the java files using command line
 ```
-path
+javac -d bin src/controller/*.java src/database/*.java src/helper/*.java src/model/*.java src/view/*.java src/HospitalApp.java
 ```  
 3. Run the java file using command line
 ```
-code to run
+java './src/HospitalApp.java'
 ```
 
 # Java docs
-Create javadocs - make sure you are at ?  
+Create javadocs - make sure you are at "Hospital" directory
 ```
-?javadoc path
+javadoc -d ./javadocs/ ./src/controller/*.java ./src/database/*.java ./src/helper/*.java ./src/model/*.java ./src/view/*.java ./src/HospitalApp.java -encoding ISO-8859-1
 ```  
 Launch the index.html under ./javadoc/index.html  
 
