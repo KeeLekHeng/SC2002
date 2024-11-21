@@ -476,20 +476,6 @@ public class AppointmentManager {
             }
         }
     }
-
-    // need to make a list of Prescribed Medication before passing it into this
-    // function
-    public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService,
-            String consultationNotes, List<PrescribeMedication> medications) {
-
-        // check if is doctor's appointment
-        if (!validateAppointmentOwnership(appointmentID, doctorID)) {
-            if (Database.APPOINTMENT.containsKey(appointmentID)) {
-                return Database.APPOINTMENT.get(appointmentID);
-            } else {
-                return null;
-            }
-        }
         
     //need to make a list of Prescribed Medication before passing it into this function
     public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
