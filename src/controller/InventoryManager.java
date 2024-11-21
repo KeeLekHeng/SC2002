@@ -119,39 +119,46 @@ public class InventoryManager {
     }
 
     //approve or reject (ID or Reuqest)
-    public static boolean updateReplenishRequests(String requestID, int attributeCode){
-
-        ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);     
-        Medication medicationToUpdate = null;
+    public static boolean updateReplenishRequests(String requestID, int attributeCode) {
+        ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);
+    
+        if (requestToUpdate == null) {
+            System.out.println("Request with ID " + requestID + " not found.");
+            return false; 
+        }
+    
         String medicineID = requestToUpdate.getMedicineID();
-        int amount;
-
+        Medication medicationToUpdate = Database.MEDICATION.get(medicineID);
+    
         switch (attributeCode) {
-            case 1:     
-                //accept and add stock
-                medicationToUpdate = Database.MEDICATION.get(medicineID);
-                amount = requestToUpdate.getMedicationAmount();
+            case 1:
+                if (medicationToUpdate == null) {
+                    System.out.println("Medication with ID " + medicineID + " not found.");
+                    return false;
+                }  
+                int amount = requestToUpdate.getMedicationAmount();
                 medicationToUpdate.addStock(amount);
                 requestToUpdate.setRequestStatus(RequestStatus.ACCEPTED);
                 break;
             case 2:
-                //reject request
+                
                 requestToUpdate.setRequestStatus(RequestStatus.DECLINED);
                 break;
             case 3:
                 break;
             default:
-                break;
+                System.out.println("Invalid attribute code: " + attributeCode);
+                return false;
         }
-
-        //save to both REQUESTS and MEDICINES to Database
+    
         Database.MEDICATION.put(medicineID, medicationToUpdate);
         Database.REQUESTS.put(requestID, requestToUpdate);
         Database.saveFileIntoDatabase(FileType.REQUESTS);
         Database.saveFileIntoDatabase(FileType.MEDICATION);
+    
         return true;
-        
     }
+    
 
     
 

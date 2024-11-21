@@ -1,6 +1,7 @@
 package src.model;
 
 import java.io.Serializable;
+import java.util.Map;
 import src.database.Database;
 import src.model.enums.RequestStatus;
 
@@ -57,8 +58,15 @@ public class ReplenishRequest implements Serializable {
      * @return The ID of the medication, or null if not found.
      */
     private String fetchMedicineID(String medicationName) {
-        Medication medication = Database.MEDICATION.get(medicationName.toLowerCase());
-        return (medication != null) ? medication.getMedicineID() : null;
+        for (Map.Entry<String, Medication> entry : Database.MEDICATION.entrySet()) {
+            Medication medication = entry.getValue();
+            
+            // Check if the medication is not null and the name matches
+            if (medication != null && medication.getName().equalsIgnoreCase(medicationName)) {
+                return entry.getKey();  // Return the medicine ID (the key)
+            }
+        }
+        return null;  // Return null if not found
     }
 
     /**
