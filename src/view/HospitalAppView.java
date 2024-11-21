@@ -9,6 +9,7 @@ import src.helper.*;
  * hospital system and accessing different views based on the user's role.
  * It handles the user login process and directs users to the appropriate
  * role-based view.
+ * 
  * @author Seann
  * @version 1.0
  * @since 2024-11-20
@@ -31,6 +32,7 @@ public class HospitalAppView extends MainView {
      * credentials.
      * If successful, the user's role is stored and used to provide the correct
      * view.
+     * 
      * @return the hospital ID of the logged-in user.
      */
     public String userLogin() {
@@ -43,6 +45,7 @@ public class HospitalAppView extends MainView {
         int tries = 0;
         String password = "";
         System.out.println("Please enter your hospital ID and password to login");
+        Helper.readString();
         while (!isLoginSuccessful && tries < 5) {
             System.out.println("Hospital ID: ");
             hospitalID = Helper.readString();
@@ -101,6 +104,7 @@ public class HospitalAppView extends MainView {
     /**
      * Displays the hospital app view for the logged-in user.
      * Directs the user to the appropriate role-based view.
+     * 
      * @param hospitalID the ID of the hospital.
      */
     @Override

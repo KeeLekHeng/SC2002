@@ -3,13 +3,14 @@ package src.view;
 import java.util.ArrayList;
 import java.util.List;
 import src.controller.AppointmentManager;
-import src.controller.InventoryManager;
-import src.controller.LoginManager;
-import src.controller.PrescriptionManager;
-import src.controller.StaffManager;
-import src.database.Database;
-import src.helper.*;
-import src.model.ReplenishRequest;
+import src.controller.InventoryManager;//
+import src.controller.LoginManager;//
+import src.controller.PatientManager;
+import src.controller.PrescriptionManager;//
+import src.controller.StaffManager;//
+import src.database.Database;//
+import src.helper.*;//
+import src.model.ReplenishRequest;//
 import src.model.Staff;
 import src.model.enums.*;
 
@@ -17,6 +18,7 @@ import src.model.enums.*;
  * This class represents the administrator view, extending the main view.
  * It provides methods for administrators to manage staff, appointments,
  * medication inventory, and other related operations.
+ * 
  * @author Seann
  * @version 1.0
  * @since 2024-11-20
@@ -87,20 +89,21 @@ public class AdministratorView extends MainView {
      */
     public void viewAndManageStaff(String hospitalID) {
         Helper.clearScreen();
-        printBreadCrumbs("Main Menu > View and Manage Hospital Staff");
+        printBreadCrumbs("Main Menu > View and Manage Hospital Individuals");
         System.out.println("What would you like to do ?");
         System.out.println("(1) View Staff Details");
         System.out.println("(2) Create Staff");
         System.out.println("(3) Update Staff Details");
         System.out.println("(4) Remove Staff");
-        System.out.println("(5) Initialize Dummy Staff");
-        System.out.println("(6) Initialize Dummy Patients");
-        System.out.println("(7) Initialize Dummy Medications");
-        System.out.println("(8) Clear Database");
-        System.out.println("(9) Back");
+        System.out.println("(5) Create Patient");
+        System.out.println("(6) Initialize Dummy Staff");
+        System.out.println("(7) Initialize Dummy Patients");
+        System.out.println("(8) Initialize Dummy Medications");
+        System.out.println("(9) Clear Database");
+        System.out.println("(10) Back");
         int subOpt;
         do {
-            subOpt = Helper.readInt(1, 9);
+            subOpt = Helper.readInt(1, 10);
             switch (subOpt) {
                 case 1:
                     Helper.clearScreen();
@@ -134,6 +137,7 @@ public class AdministratorView extends MainView {
                         case 5:
                             StaffManager.viewStaff(choice);
                             Helper.pressAnyKeyToContinue();
+                            return;
                         case 6:
                             StaffManager.viewStaff(choice);
                             Helper.pressAnyKeyToContinue();
@@ -257,6 +261,72 @@ public class AdministratorView extends MainView {
                     return;
                 case 5:
                     Helper.clearScreen();
+
+                    Gender patientGender;
+                    BloodType patientBloodType;
+                    String phoneNumber;
+                    String email;
+
+                    printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Create Patient");
+                    System.out.println("Enter full name: ");
+                    String patientName = Helper.readString();
+                    System.out.println("Enter your date of birth in this format (yyyy-mm-dd): ");
+                    String patientdob = Helper.readString();
+                    while (true) {
+                        System.out.println("Enter your gender (M/F)");
+                        String readPatientGender = Helper.readString();
+                        if (readPatientGender.equals("M")) {
+                            patientGender = Gender.MALE;
+                            break;
+                        } else if (readPatientGender.equals("F")) {
+                            patientGender = Gender.FEMALE;
+                            break;
+                        } else {
+                            System.out.println("Not a valid gender. Please retry with a valid gender");
+                        }
+                    }
+                    while (true) {
+                        System.out.println("Enter phone number: ");
+                        phoneNumber = Helper.readString();
+                        if (Helper.PhoneNumValidator(phoneNumber)) {
+                            break;
+                        }
+                        System.out.println("Invalid phone number. Please retry with a valid number");
+                    }
+                    while (true) {
+                        System.out.println("Enter email: ");
+                        email = Helper.readString();
+                        if (Helper.EmailValidator(email)) {
+                            break;
+                        }
+                        System.out.println("Invalid phone number. Please retry with a valid number");
+                    }
+                    while (true) {
+                        System.out.println("Enter your bloodType (A, B, O, AB)");
+                        String readPatientBloodType = Helper.readString();
+                        if (readPatientBloodType.equals("A")) {
+                            patientBloodType = BloodType.A;
+                            break;
+                        } else if (readPatientBloodType.equals("B")) {
+                            patientBloodType = BloodType.B;
+                            break;
+                        } else if (readPatientBloodType.equals("O")) {
+                            patientBloodType = BloodType.O;
+                            break;
+                        } else if (readPatientBloodType.equals("AB")) {
+                            patientBloodType = BloodType.AB;
+                            break;
+                        }
+                        System.out.println("Not a valid blood type. Please retry with a valid blood type");
+                    }
+
+                    PatientManager.createPatient(patientName, patientdob, patientGender, phoneNumber, email,
+                            patientBloodType);
+                    Helper.pressAnyKeyToContinue();
+                    return;
+
+                case 6:
+                    Helper.clearScreen();
                     if (initializeStaff()) {
                         System.out.println("Dummy Staff Initialized");
                     } else {
@@ -264,7 +334,7 @@ public class AdministratorView extends MainView {
                     }
                     Helper.pressAnyKeyToContinue();
                     return;
-                case 6:
+                case 7:
                     Helper.clearScreen();
                     if (initializeDummyPatients()) {
                         System.out.println("Dummy Patients Initialized");
@@ -273,28 +343,30 @@ public class AdministratorView extends MainView {
                     }
                     Helper.pressAnyKeyToContinue();
                     return;
-                case 7:
+                case 8:
                     Helper.clearScreen();
                     Database.initializeDummyMedication();
                     System.out.println("Dummy Medications Initialized");
                     Helper.pressAnyKeyToContinue();
                     return;
-                case 8:
+                case 9:
                     Helper.clearScreen();
                     Database.clearDatabase();
                     Database.initializeStartingAdmin();
                     System.out.println("Database Cleared and Starting Admin initialized ");
                     Helper.pressAnyKeyToContinue();
                     return;
-                case 9:
+                case 10:
                     break;
             }
-        } while (subOpt != 9);
+        } while (subOpt != 10);
     }
 
     /**
      * Initializes dummy staff data in the database.
-     * @return true if dummy staff data is successfully initialized, false otherwise.
+     * 
+     * @return true if dummy staff data is successfully initialized, false
+     *         otherwise.
      */
     private boolean initializeStaff() {
         return Database.initializeDummyStaff();
@@ -302,7 +374,9 @@ public class AdministratorView extends MainView {
 
     /**
      * Initializes dummy patient data in the database.
-     * @return true if dummy patient data is successfully initialized, false otherwise.
+     * 
+     * @return true if dummy patient data is successfully initialized, false
+     *         otherwise.
      */
     private boolean initializeDummyPatients() {
         return Database.initializeDummyPatients();
@@ -310,7 +384,9 @@ public class AdministratorView extends MainView {
 
     /**
      * Prompts the user to select a gender and returns the selection.
-     * @return true if a valid gender is selected, false if the selection is invalid.
+     * 
+     * @return true if a valid gender is selected, false if the selection is
+     *         invalid.
      */
     private boolean selectGender() {
         System.out.println("Select Gender:");
@@ -329,6 +405,7 @@ public class AdministratorView extends MainView {
 
     /**
      * Prompts the user to select a role and returns the selection.
+     * 
      * @return true if a valid role is selected, false if the selection is invalid.
      */
     private boolean selectRole() {
@@ -349,13 +426,14 @@ public class AdministratorView extends MainView {
 
     /**
      * Approves or rejects replenishment requests.
-     * Loops through the pending replenish requests and processes user input for approval or rejection.
+     * Loops through the pending replenish requests and processes user input for
+     * approval or rejection.
      */
     public void approveReplenishmentRequest() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
-        List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
-        if(replenishRequests == null) {
+        List<ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
+        if (replenishRequests == null) {
             System.out.println("No replenish requests currently.");
             Helper.pressAnyKeyToContinue();
             return;
@@ -410,6 +488,7 @@ public class AdministratorView extends MainView {
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
                     PrescriptionManager.viewMedicationInventory();
+                    System.out.println("Enter Medication ID: ");
                     String medicationID = Helper.readMedicineID();
                     if (InventoryManager.searchMedicineByID(medicationID) == null) {
                         System.out.println("Medication does not exist!");
@@ -488,6 +567,7 @@ public class AdministratorView extends MainView {
     /**
      * Views appointment details based on the provided hospital ID.
      * Allows the user to view upcoming or all appointments.
+     * 
      * @param hospitalID the ID of the hospital to view appointments for
      */
     public void viewAppointmentDetails(String hospitalID) {
