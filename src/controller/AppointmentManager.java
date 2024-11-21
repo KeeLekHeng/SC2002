@@ -10,6 +10,7 @@ import java.util.Map;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import src.database.Database;
 import src.database.FileType;
@@ -514,9 +515,9 @@ public class AppointmentManager {
         if (outcomeRecord == null) {
             return;
         }
-    
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
-        System.out.println(String.format("%-20s: %s", "Record Uploaded Time", outcomeRecord.getEndDateTime()));
+        System.out.println(String.format("%-20s: %s", "Record Uploaded Time", outcomeRecord.getEndDateTime().format(formatter)));
         System.out.println(String.format("%-20s: %s", "Type of Service", outcomeRecord.getTypeOfService()));
         System.out.println(String.format("%-20s: %s", "Consultation Notes", outcomeRecord.getConsultationNotes()));
     
