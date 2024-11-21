@@ -1,6 +1,6 @@
 package src.view;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import src.controller.AppointmentManager;
 import src.controller.LoginManager;
 import src.controller.PatientManager;
 import src.helper.Helper;
+import src.model.AppointmentSlot;
 import src.model.Patient;
 import src.model.PrescribeMedication;
 import src.model.TimeSlot;
@@ -119,22 +120,10 @@ public class DoctorView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 4:
+                    // Set unavailability for a doctor
                     Helper.clearScreen();
-                    printBreadCrumbs("Main Menu > Set Availability for Appointments");
-                    System.out.println("On what date and time would you like to block availability? (Format: 'yyyy-MM-dd HH:MM' )");
-                    System.out.println("Type 'back' to return to main menu");
-                    String newDateInput = Helper.setDate(false);            
-                    if (newDateInput.equalsIgnoreCase("back")) {
-                        return;
-                    }       
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    LocalDateTime newDateTime = Helper.getDate(newDateInput, format);
-                    TimeSlot newTimeSlot = new TimeSlot(newDateTime);       
-                    if (AppointmentManager.setAvailability(hospitalID, newTimeSlot)) {
-                        System.out.println("Availability set successfully!");
-                    } else {
-                        System.out.println("Availability set failed!");
-                    }   
+                    printBreadCrumbs("Main Menu > Set Unavailability for Appointments");
+                    handleDoctorUnavailability(hospitalID);
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 5:
@@ -209,5 +198,44 @@ public class DoctorView extends MainView {
                     break;
             }
         } while (opt != 9);
+    }
+
+    private void handleDoctorUnavailability(String doctorID) {
+        
+        System.out.println("Enter the date for which you want to block availability (Format: 'yyyy-MM-dd'):");
+        String newDateInput = Helper.setDateOnly();
+        if (newDateInput.isEmpty()) {
+            System.out.println("Invalid date entered. Returning to main menu...");
+            return;
+        }
+    
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate selectedDate = Helper.getDateOnly(newDateInput, dateFormat);
+    
+        List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(selectedDate, doctorID);
+        if (availableSlots.isEmpty()) {
+            System.out.println("No available slots found for the selected date.");
+            return;
+        }
+
+        System.out.println("Available Slots:");
+        for (int i = 0; i < availableSlots.size(); i++) {
+            System.out.println((i + 1) + ". " + availableSlots.get(i).getTimeSlot().getFormattedTime());
+        }
+    
+        System.out.println("Enter the number corresponding to the Time Slot you want to block:");
+        int slotChoice = Helper.readInt() - 1;
+    
+        if (slotChoice < 0 || slotChoice >= availableSlots.size()) {
+            System.out.println("Invalid choice. Returning to main menu...");
+            return;
+        }
+    
+        TimeSlot selectedSlot = availableSlots.get(slotChoice).getTimeSlot();
+        if (AppointmentManager.setAvailability(doctorID, selectedSlot)) {
+            System.out.println("The selected slot has been marked as unavailable.");
+        } else {
+            System.out.println("Failed to block the selected slot. Please try again.");
+        }
     }
 }

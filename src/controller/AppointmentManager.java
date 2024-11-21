@@ -271,7 +271,7 @@ public class AppointmentManager {
                 } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
                     if (appointment.getDoctorID() != null &&  
                     appointment.getTimeSlot().getDateTime().isAfter(currentDateTime) &&
-                    appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE &&
+                    appointment.getAppointmentStatus() == AppointmentStatus.CONFIRMED &&
                     appointment.getDoctorID().equals(hospitalID)){
                         appointmentList.add(appointment);
                     }
@@ -294,7 +294,7 @@ public class AppointmentManager {
                     }
                 } else if (hospitalID.startsWith("D") && hospitalID.substring(1).matches("\\d{3}")){
                     if (appointment.getDoctorID() != null&&
-                        appointment.getAppointmentStatus() != AppointmentStatus.UNAVAILABLE &&
+                        appointment.getAppointmentStatus() == AppointmentStatus.CONFIRMED  &&
                         appointment.getDoctorID().equals(hospitalID)){
                         appointmentList.add(appointment);
                     }

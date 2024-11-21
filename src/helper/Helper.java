@@ -1,6 +1,5 @@
 package src.helper;
 
-import java.util.regex.Pattern;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Helper class for supporting functions.
@@ -82,7 +82,7 @@ public class Helper {
     public static boolean PhoneNumValidator(String phoneNumber) {
         if (phoneNumber.length() != 10) {
             return false;
-        } else if (phoneNumber.charAt(0) != 6 && phoneNumber.charAt(1) != 5) {
+        } else if (phoneNumber.charAt(0) != '6' && phoneNumber.charAt(1) != '5') {
             return false;
         }
         return true;
