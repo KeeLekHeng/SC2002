@@ -299,7 +299,7 @@ public class PatientManager {
     public static void initializeDummyPatients() {
         PatientManager.createPatient("Kee Lek Heng", "2005-07-28", Gender.MALE, "6585445065", "keel0004@e.ntu.edu.sg",
                 BloodType.A);
-        PatientManager.createPatient("Doe John", "1995-12-12", Gender.MALE, "658565065", "endy@e.ntu.edu.sg",
+        PatientManager.createPatient("Doe John", "1995-12-12", Gender.MALE, "6585650654", "endy@e.ntu.edu.sg",
                 BloodType.B);
     }
 }
