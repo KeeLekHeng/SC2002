@@ -1,5 +1,6 @@
 package src.view;
 
+import src.controller.InventoryManager;
 import src.controller.LoginManager;
 import src.controller.PrescriptionManager;
 import src.helper.Helper;
@@ -124,14 +125,12 @@ public class PharmacistView extends MainView {
         if (!PrescriptionManager.printAllPrescriptions()) {
             return;
         }
-        System.out.print("Enter the prescription ID (type 'back to return to main menu'): ");
         String prescriptionID = Helper.readPrescriptionID();
         if (prescriptionID.equals("back")) {
             return;
         }
         if (PrescriptionManager.searchPrescriptionById(prescriptionID) == null) {
             System.out.println("Prescription not found.");
-            Helper.pressAnyKeyToContinue();
             return;
         }
         System.out.println("Select an action:");
