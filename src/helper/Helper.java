@@ -1,5 +1,6 @@
 package src.helper;
 
+import java.util.regex.Pattern;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,7 +10,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 /**
  * Helper class for supporting functions.

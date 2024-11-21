@@ -1,6 +1,5 @@
 package src.controller;
 
-import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.Comparator;
 import src.database.Database;
