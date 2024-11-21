@@ -37,6 +37,8 @@ public class StaffManager {
         String employmentStatus = "EMPLOYED";
         String hospitalId = "";
         String pw = "password";
+        int rating = 0;
+        int ratingCount = 0;
         switch (role) {
             case DOCTOR: {
                 hospitalId = String.format("D%03d", gid);
@@ -54,7 +56,7 @@ public class StaffManager {
                 throw new IllegalArgumentException("Invalid role specified: " + role);
         }
 
-        Staff newStaff = new Staff(hospitalId, pw, role, name, gender, age, employmentStatus);
+        Staff newStaff = new Staff(hospitalId, pw, role, name, gender, age, employmentStatus, rating, ratingCount);
 
         Database.STAFF.put(hospitalId, newStaff);
         Database.saveFileIntoDatabase(FileType.STAFF);
@@ -117,6 +119,13 @@ public class StaffManager {
                     staffToUpdate.setAge(newValue);
                     Database.STAFF.put(staff.getId(), staffToUpdate);
                     break;
+                case 100:
+                    int ratingCount = staffToUpdate.getRatingCount();
+                    double previousRating = staffToUpdate.getRating() * ratingCount;
+                    staffToUpdate.incrementRatingCount();
+                    double newRating = (previousRating + newValue) / staffToUpdate.getRatingCount();
+                    staffToUpdate.setRating(newRating);
+                    Database.STAFF.put(staff.getId(), staffToUpdate);
                 default:
                     break;
             }

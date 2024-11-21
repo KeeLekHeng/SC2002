@@ -13,6 +13,12 @@ import src.model.enums.Gender;
  */
 public class Staff extends User {
 
+    /* Rating count of the staff member */
+    public int ratingCount;
+
+    /* Rating of the staff member */
+    public double rating;
+
     /** Name of the staff member. */
     public String name;
 
@@ -27,19 +33,70 @@ public class Staff extends User {
     /**
      * Constructs a new Staff with the specified attributes.
      * 
-     * @param id       Unique identifier of the staff member.
-     * @param password Password for the staff member.
-     * @param role     Role of the staff member in the system.
-     * @param name     Name of the staff member.
-     * @param gender   Gender of the staff member.
-     * @param age      Age of the staff member.
+     * @param id               Unique identifier of the staff member.
+     * @param password         Password for the staff member.
+     * @param role             Role of the staff member in the system.
+     * @param name             Name of the staff member.
+     * @param gender           Gender of the staff member.
+     * @param age              Age of the staff member.
+     * @param rating           Rating of the staff member.
+     * @param ratingCount      Rating count of the staff member.
+     * @param EmploymentStatus Employment status of the staff member.
      */
-    public Staff(String id, String password, Role role, String name, Gender gender, int age, String EmploymentStatus) {
+    public Staff(String id, String password, Role role, String name, Gender gender, int age, String EmploymentStatus,
+            double rating, int ratingCount) {
         super(id, password, role);
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.EmploymentStatus = EmploymentStatus;
+        this.rating = 0;
+        this.ratingCount = 0;
+    }
+
+    /**
+     * Gets the rating count of the staff member.
+     * 
+     * @return the rating count of the staff member.
+     */
+    public int getRatingCount() {
+        return this.ratingCount;
+    }
+
+    /**
+     * Resets the rating count of the staff member.
+     * 
+     * @param ratingCount New rating count for the staff member.
+     */
+    public void resetRatingCount() {
+        this.ratingCount = 0;
+    }
+
+    /**
+     * Increments the rating count of the staff member.
+     * 
+     * @param ratingCount Increments rating count for the staff member.
+     */
+    public void incrementRatingCount() {
+        this.ratingCount++;
+    }
+
+    /**
+     * Gets the rating of the staff member.
+     * 
+     * @return the rating of the staff member.
+     */
+    public double getRating() {
+        return this.rating;
+    }
+
+    /**
+     * Sets the rating of the staff member.
+     * 
+     * @param rating New rating for the staff member.
+     */
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     /**
@@ -105,10 +162,20 @@ public class Staff extends User {
         this.role = role;
     }
 
+    /**
+     * Sets the employment status of the staff member.
+     * 
+     * @param role New employment status for the staff member.
+     */
     public void setEmploymentStatus(String status) {
         this.EmploymentStatus = status;
     }
 
+    /**
+     * Gets the employment status of the staff member.
+     * 
+     * @return the employment status of the staff member.
+     */
     public String getEmploymentStatus() {
         return this.EmploymentStatus;
     }

@@ -143,62 +143,67 @@ public class LoginManager {
                 tries++;
                 System.out.println("Incorrect password provided. " + (3 - tries) + " tries left.");
             }
-            tries = 0;
-
-            while (item && tries < 5) {
-                if (tries == 0) {
-                    System.out.println("Enter the new password: ");
-                } else {
-                    System.out.println("Invalid password. Enter new password: " + (5 - tries) + " tries left.");
-                }
-                pw = scanner.nextLine();
-
-                valid = 0;
-                lowercase = 0;
-                uppercase = 0;
-                hasDigit = 0;
-                symbolCount = 0;
-                if (pw.length() > 10) {
-                    valid++;
-                }
-                for (char ch : pw.toCharArray()) {
-                    if (lowercase < 1 && Character.isLowerCase(ch)) {
-                        lowercase++;
-                        valid++;
-                    } else if (uppercase < 1 && Character.isUpperCase(ch)) {
-                        uppercase++;
-                        valid++;
-                    } else if (hasDigit < 1 && Character.isDigit(ch)) {
-                        hasDigit++;
-                        valid++;
-                    } else if (!Character.isLetterOrDigit(ch)) {
-                        symbolCount++;
+            if (tries != 3) {
+                tries = 0;
+                while (item && tries < 5) {
+                    if (tries == 0) {
+                        System.out.println("Enter the new password: ");
+                    } else {
+                        System.out.println("Invalid password. Enter new password: " + (5 - tries) + " tries left.");
                     }
-                }
-                if (symbolCount >= 2) {
-                    valid++;
-                }
-                // uppercase + lowercase + hasDigit + hasSymbol = 4
-                if (valid == 5) {
-                    if ("STAFF".equals(role)) {
-                        Staff staff = Database.STAFF.get(hospitalId);
-                        staff.setPassword(pw);
-                        Database.STAFF.put(staff.getId(), staff);
-                    } else if ("PATIENTS".equals(role)) {
-                        Patient patient = Database.PATIENTS.get(hospitalId);
-                        patient.setPassword(pw);
-                        Database.PATIENTS.put(patient.getId(), patient);
+                    pw = scanner.nextLine();
+
+                    valid = 0;
+                    lowercase = 0;
+                    uppercase = 0;
+                    hasDigit = 0;
+                    symbolCount = 0;
+                    if (pw.length() > 10) {
+                        valid++;
                     }
-                    item = false;
-                    Database.saveFileIntoDatabase(FileType.STAFF);
-                }
-                tries++;
+                    for (char ch : pw.toCharArray()) {
+                        if (lowercase < 1 && Character.isLowerCase(ch)) {
+                            lowercase++;
+                            valid++;
+                        } else if (uppercase < 1 && Character.isUpperCase(ch)) {
+                            uppercase++;
+                            valid++;
+                        } else if (hasDigit < 1 && Character.isDigit(ch)) {
+                            hasDigit++;
+                            valid++;
+                        } else if (!Character.isLetterOrDigit(ch)) {
+                            symbolCount++;
+                        }
+                    }
+                    if (symbolCount >= 2) {
+                        valid++;
+                    }
+                    // uppercase + lowercase + hasDigit + hasSymbol = 4
+                    if (valid == 5) {
+                        if ("STAFF".equals(role)) {
+                            Staff staff = Database.STAFF.get(hospitalId);
+                            staff.setPassword(pw);
+                            Database.STAFF.put(staff.getId(), staff);
+                        } else if ("PATIENTS".equals(role)) {
+                            Patient patient = Database.PATIENTS.get(hospitalId);
+                            patient.setPassword(pw);
+                            Database.PATIENTS.put(patient.getId(), patient);
+                        }
+                        System.out.println("Password updated successfully. Returning..");
+                        item = false;
+                        Database.saveFileIntoDatabase(FileType.STAFF);
+                    }
+                    tries++;
 
-                if (tries == 5) {
-                    System.out.println("Too many attempts. Returning..");
-                }
+                    if (tries == 5) {
+                        System.out.println("Too many attempts. Returning..");
+                    }
 
+                }
+            } else {
+                System.out.println("Too many attempts. Returning..");
             }
+
         } else {
             System.out.println("The hospitalId that you provided is invalid");
         }
