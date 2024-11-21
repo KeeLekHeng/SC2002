@@ -44,7 +44,7 @@ public class HospitalAppView extends MainView {
             password = Helper.readString();
 
             // Validate login credentials
-            currentUserRole = LoginManager.LoginUser(hospitalID, password); // currentuserrole = Doctor
+            currentUserRole = LoginManager.LoginUser(hospitalID, password);
             if (currentUserRole.equals("unsuccessful")) {
                 System.out.println("Invalid username or password. Please try again.");
             } else {
