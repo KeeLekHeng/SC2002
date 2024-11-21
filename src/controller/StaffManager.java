@@ -10,12 +10,8 @@ import src.model.enums.Gender;
 import src.model.enums.Role;
 
 /**
- * StaffManager is a controller class that acts as a "middleman"
- * allows the user to print staff info
- * allows the user manipulate staff info by updating, creating and removing
- * staff data
- * 
- * @author Benjamin Kam, Kee
+ * StaffManager is a controller class that acts as a "middleman" allows the user to print staff info allows the user manipulate staff info by updating, creating and removing staff data
+ * @author Benjamin, Kee
  * @version 1.0
  * @since 2024-11-20
  */
@@ -25,12 +21,10 @@ public class StaffManager {
 
     /**
      * Creates a new staff entry and adds it to the database.
-     * 
-     * @param name   The name of the staff.
+     * @param name The name of the staff.
      * @param gender The gender of the staff.
-     * @param age    The age of the staff.
-     * @param role   The role of the staff (e.g., DOCTOR, ADMINISTRATOR,
-     *               PHARMACIST).
+     * @param age The age of the staff.
+     * @param role The role of the staff (e.g., DOCTOR, ADMINISTRATOR, PHARMACIST).
      */
     public static void createStaff(String name, Gender gender, int age, Role role) {
         int gid = Helper.generateUniqueId(Database.STAFF);
@@ -67,11 +61,9 @@ public class StaffManager {
 
     /**
      * Updates a staff attribute by the provided hospital ID and attribute code.
-     * 
-     * @param hospitalId    The hospital ID of the staff to update.
-     * @param attributeCode The attribute code to identify which attribute to
-     *                      update.
-     * @param newValue      The new value for the attribute.
+     * @param hospitalId The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to update.
+     * @param newValue The new value for the attribute.
      * @return {@code true} if the update was successful, otherwise {@code false}.
      */
     public static boolean updateStaff(String hospitalId, int attributeCode, String newValue) {
@@ -100,11 +92,9 @@ public class StaffManager {
 
     /**
      * Updates the staff age by the provided hospital ID and attribute code.
-     * 
-     * @param hospitalId    The hospital ID of the staff to update.
-     * @param attributeCode The attribute code to identify which attribute to
-     *                      update.
-     * @param newValue      The new age value for the staff.
+     * @param hospitalId The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to update.
+     * @param newValue The new age value for the staff.
      * @return {@code true} if the update was successful, otherwise {@code false}.
      */
     public static boolean updateStaff(String hospitalId, int attributeCode, int newValue) {
@@ -137,11 +127,9 @@ public class StaffManager {
 
     /**
      * Updates the staff gender by the provided hospital ID and attribute code.
-     * 
-     * @param hospitalId    The hospital ID of the staff to update.
-     * @param attributeCode The attribute code to identify which attribute to
-     *                      update.
-     * @param gender        The new gender value for the staff.
+     * @param hospitalId The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to update.
+     * @param gender The new gender value for the staff.
      * @return {@code true} if the update was successful, otherwise {@code false}.
      */
     public static boolean updateStaff(String hospitalId, int attributeCode, Gender gender) {
@@ -166,11 +154,9 @@ public class StaffManager {
 
     /**
      * Updates the staff role by the provided hospital ID and attribute code.
-     * 
-     * @param hospitalId    The hospital ID of the staff to update.
-     * @param attributeCode The attribute code to identify which attribute to
-     *                      update.
-     * @param role          The new role value for the staff.
+     * @param hospitalId The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to update.
+     * @param role The new role value for the staff.
      * @return {@code true} if the update was successful, otherwise {@code false}.
      */
     public static boolean updateStaff(String hospitalId, int attributeCode, Role role) {
@@ -195,12 +181,9 @@ public class StaffManager {
     }
 
     /**
-     * Removes the staff by the provided hospital ID and updates their employment
-     * status.
-     * 
+     * Removes the staff by the provided hospital ID and updates their employment status.
      * @param hospitalId The hospital ID of the staff to remove.
-     * @return {@code true} if the staff was successfully removed, otherwise
-     *         {@code false}.
+     * @return {@code true} if the staff was successfully removed, otherwise {@code false}.
      */
     public static boolean removeStaff(String hospitalId) {
         ArrayList<Staff> removeList = searchStaffById(hospitalId);
@@ -222,11 +205,7 @@ public class StaffManager {
 
     /**
      * Displays the staff sorted by the selected attribute.
-     * 
-     * @param choice The choice of sorting:
-     *               1 for sorting by age,
-     *               2 for sorting by gender,
-     *               3 for sorting by role.
+     * @param choice The choice of sorting: 1 for sorting by age, 2 for sorting by gender, 3 for sorting by role.
      */
     public static void viewStaff(int choice) {
         ArrayList<Staff> viewList = new ArrayList<Staff>();
@@ -243,21 +222,21 @@ public class StaffManager {
                 viewList.sort(Comparator.comparing(Staff::getName));
                 System.out.println("Staff sorted by name:");
                 break;
-            case 3: // Sort by age
+            case 3: 
                 viewList.sort(Comparator.comparingInt(Staff::getAge));
                 System.out.println("Staff sorted by age:");
                 break;
 
-            case 4: // Sort by gender
+            case 4: 
                 viewList.sort(Comparator.comparing(Staff::getGender));
                 System.out.println("Staff sorted by gender:");
                 break;
 
-            case 5: // Sort by role
+            case 5: 
                 viewList.sort(Comparator.comparing(Staff::getRole));
                 System.out.println("Staff sorted by role:");
                 break;
-            case 6: // Sort by EmploymentStatus
+            case 6: 
                 viewList.sort(Comparator.comparing(Staff::getEmploymentStatus));
                 System.out.println("Staff sorted by employment status:");
                 break;
@@ -274,9 +253,7 @@ public class StaffManager {
 
     /**
      * Prints all staff information, sorted by ID or name.
-     * 
-     * @param byId If {@code true}, staff are sorted by ID; otherwise, they are
-     *             sorted by name.
+     * @param byId If {@code true}, staff are sorted by ID; otherwise, they are sorted by name.
      */
     public static void printAllStaff(boolean byId) {
         ArrayList<Staff> sortedList = new ArrayList<Staff>();
@@ -300,7 +277,6 @@ public class StaffManager {
 
     /**
      * Searches for staff by their hospital ID.
-     * 
      * @param hospitalId The hospital ID of the staff to be searched.
      * @return A list containing the staff found, or an empty list if not found.
      */
@@ -315,7 +291,6 @@ public class StaffManager {
 
     /**
      * Searches for staff by a keyword in their name.
-     * 
      * @param keyword The keyword to search for in the staff names.
      * @return A list of staff whose names contain the keyword (case-insensitive).
      */
@@ -332,7 +307,6 @@ public class StaffManager {
 
     /**
      * Prints the details of a staff member.
-     * 
      * @param staff The staff member whose details are to be printed.
      */
     public static void printStaffDetails(Staff staff) {
@@ -347,7 +321,6 @@ public class StaffManager {
 
     /**
      * Prints the details of a staff member by their hospital ID.
-     * 
      * @param hospitalId The hospital ID of the staff to be printed.
      */
     public static void printStaffDetails(String hospitalId) {
