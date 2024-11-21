@@ -6,7 +6,7 @@ import src.model.enums.Role;
 
 /**
  * Represents a patient in the system, extending the User class.
- * A patient has additional attributes such as doctor, personal details, and blood type.
+ * A patient has additional attributes such as doctor ID, personal details, and blood type.
  * @author JiaWei
  * @version 1.0
  * @since 2024-11-13
@@ -42,19 +42,19 @@ public class Patient extends User {
 
     /**
      * Constructs a new Patient with the specified attributes.
-     * @param patientID The unique identifier of the patient.
-     * @param doctorID The ID of the patient's doctor.
-     * @param password The password for the patient.
-     * @param role The role of the patient in the system.
-     * @param name The name of the patient.
-     * @param dob The date of birth of the patient.
-     * @param gender The gender of the patient.
+     * @param patientID   The unique identifier of the patient.
+     * @param doctorID    The ID of the patient's doctor.
+     * @param password    The password for the patient.
+     * @param role        The role of the patient in the system.
+     * @param name        The name of the patient.
+     * @param dob         The date of birth of the patient.
+     * @param gender      The gender of the patient.
      * @param phonenumber The phone number of the patient.
-     * @param email The email of the patient.
-     * @param bloodType The blood type of the patient.
+     * @param email       The email of the patient.
+     * @param bloodType   The blood type of the patient.
      */
     public Patient(String patientID, String doctorID, String password, Role role, String name, String dob,
-            Gender gender, String phonenumber, String email, BloodType bloodType) {
+                   Gender gender, String phonenumber, String email, BloodType bloodType) {
         super(patientID, password, role);
 
         this.doctorID = doctorID;
