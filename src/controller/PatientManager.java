@@ -256,7 +256,7 @@ public class PatientManager {
         System.out.println(String.format("%-20s: %s", "Blood Type", patient.getBloodType().toString()));
         System.out.println(String.format("%-20s: %s", "Phone Number", patient.getPhonenumber()));
         System.out.println(String.format("%-20s: %s", "Email", patient.getEmail()));
-        printPastMedicalRecord();
+        printPastOutcomeRecord();
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
@@ -264,7 +264,7 @@ public class PatientManager {
      * Prints past medical records of the patient.
      * If there are no records, it prints "None".
      */
-    public static void printPastMedicalRecord() {
+    public static void printPastOutcomeRecord() {
         ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
         for (Appointment app : Database.APPOINTMENT.values()) {
             if (app.getAppointmentStatus() == AppointmentStatus.COMPLETED && app.getAppOutcomeRecord() != null) {
@@ -273,7 +273,7 @@ public class PatientManager {
         }
 
         if (!appointmentList.isEmpty()) {
-            System.out.println("Previous Medical Records:");
+            System.out.println("Previous Outcome Records:");
             for (Appointment app : appointmentList) {
                 AppOutcomeRecord outcome = app.getAppOutcomeRecord();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -294,6 +294,8 @@ public class PatientManager {
         }
 
     }
+
+    // public static void
 
     /**
      * Initializes dummy patient records for testing purposes.

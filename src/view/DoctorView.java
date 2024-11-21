@@ -63,8 +63,9 @@ public class DoctorView extends MainView {
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
+                    AppointmentManager.viewPatientsUnderCare(hospitalID);
                     System.out.println("Enter patient ID: ");
-                    String patientID = Helper.readString();
+                    String patientID = Helper.readPatientID();
                     Patient patient = PatientManager.searchPatientByID(patientID);
                     if (patient == null) {
                         System.out.println("Patient does not exist!");
@@ -77,8 +78,8 @@ public class DoctorView extends MainView {
                 case 2:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Update Patient Medical Records");
-                    System.out.println("Enter appointment ID (AXXXX): ");
-                    String appointmentID = Helper.readString();
+                    System.out.println("Enter appointment ID");
+                    String appointmentID = Helper.readAppointmentID();
 
                     if (AppointmentManager.searchAppointmentByID(appointmentID) == null) {
                         System.out.println("Appointment does not exist!");
@@ -157,13 +158,19 @@ public class DoctorView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 7:
-                    System.out.println("Enter appointment ID to record outcome (AXXXX): ");
-                    String outcomeID = Helper.readString();
+                    System.out.println("Enter appointment ID to record outcome");
+                    String outcomeID = Helper.readAppointmentID();
+
+                    if(!AppointmentManager.validateAppointmentOwnership(outcomeID, hospitalID)){
+                        Helper.pressAnyKeyToContinue();
+                        break;
+                    }
+
                     System.out.println("Enter type of service: ");
                     String outcomeService = Helper.readString();
                     System.out.println("Enter consultation notes: ");
                     String outcomeNotes = Helper.readString();
-                    System.out.println("Enter list of medications to prescribe (type 'done' to finish): ");
+                    System.out.println("Enter list of medications to prescribe");
                     List<PrescribeMedication> medications = new ArrayList<>();
 
                     while (true) {
@@ -190,9 +197,11 @@ public class DoctorView extends MainView {
                         }
                     }
                     AppointmentManager.recordAppointmentOutcome(outcomeID, hospitalID, outcomeService, outcomeNotes, medications);
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 8:                
                     LoginManager.createNewPassword(hospitalID);
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 9:
                     break;

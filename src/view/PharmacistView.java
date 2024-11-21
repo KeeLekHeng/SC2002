@@ -62,6 +62,7 @@ public class PharmacistView extends MainView {
                 case 2:
                     Helper.clearScreen();
                     updatePrescriptionStatus();
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 3:
                     Helper.clearScreen();
@@ -81,6 +82,7 @@ public class PharmacistView extends MainView {
                 case 5:
                     Helper.clearScreen();
                     LoginManager.createNewPassword(hospitalID);
+                    Helper.pressAnyKeyToContinue();
                     break;
                 case 6:
                     Helper.clearScreen();
@@ -96,8 +98,12 @@ public class PharmacistView extends MainView {
     public void updatePrescriptionStatus() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Update Prescription Status");
+        
+        if(!PrescriptionManager.printAllPrescriptions()){
+            return;
+        }
         System.out.print("Enter the prescription ID (type 'back to return to main menu'): ");
-        String prescriptionID = Helper.readString();
+        String prescriptionID = Helper.readPrescriptionID();
         if (prescriptionID.equals("back")) {
             return;
         }
@@ -117,7 +123,6 @@ public class PharmacistView extends MainView {
                 System.out.println("Prescription dispensed successfully.");
             } else {
                 System.out.println("Error: Prescription could not be updated.");
-                Helper.pressAnyKeyToContinue();
             }
         } else if (action == 2) {
             prescriptionManager.updatePrescriptionStatus(prescriptionID, 2);

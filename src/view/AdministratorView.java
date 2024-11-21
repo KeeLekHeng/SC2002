@@ -367,9 +367,9 @@ public class AdministratorView extends MainView {
     public void approveReplenishmentRequest() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
-        //loop below
+        
         List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
-        if(replenishRequests.isEmpty()) {
+        if(replenishRequests == null) {
             System.out.println("No replenish requests currently.");
             Helper.pressAnyKeyToContinue();
             return;

@@ -85,18 +85,19 @@ public class HospitalAppView extends MainView {
                 System.out.println("Logged in as: " + currentUserRole);
             }
         }
-         if(password.equals("password")){
-         Helper.clearScreen();
-         printBreadCrumbs("Security Alert");
-         System.out.
-         println("Your password is the default password. Please change your password for security reasons."
-         );
-         System.out.println("You will be redirected to create new password.");
-         Helper.pressAnyKeyToContinue();
-         Helper.clearScreen();
-         printBreadCrumbs("Create New Password");
-         LoginManager.createNewPassword(hospitalID);
-         }
+        
+        //  if(password.equals("password")){
+        //  Helper.clearScreen();
+        //  printBreadCrumbs("Security Alert");
+        //  System.out.
+        //  println("Your password is the default password. Please change your password for security reasons."
+        //  );
+        //  System.out.println("You will be redirected to create new password.");
+        //  Helper.pressAnyKeyToContinue();
+        //  Helper.clearScreen();
+        //  printBreadCrumbs("Create New Password");
+        //  LoginManager.createNewPassword(hospitalID);
+        //  }
          
         Helper.clearScreen();
         return hospitalID;
