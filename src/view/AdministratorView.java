@@ -367,8 +367,10 @@ public class AdministratorView extends MainView {
     public void approveReplenishmentRequest() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
-        List<ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
-        if (replenishRequests == null) {
+        //loop below
+        List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
+        if(replenishRequests.isEmpty()) {
+            System.out.println("No replenish requests currently.");
             Helper.pressAnyKeyToContinue();
             return;
         }
@@ -390,9 +392,9 @@ public class AdministratorView extends MainView {
                 case 3:
                     break;
             }
-            System.out.println("All request processed");
-            Helper.pressAnyKeyToContinue();
-        }
+        } 
+        System.out.println("All request processed");
+        Helper.pressAnyKeyToContinue();
     }
 
     /**
