@@ -7,14 +7,15 @@ import src.database.FileType;
 import src.model.Patient;
 import src.model.Staff;
 import src.model.User;
-import src.view.MainView;
 
 /**
  * LoginManager allows the user to log in to the hospital system.
  * Users are required to input their hospital ID and password.
  * The login credentials are validated against the database,
  * and the user will be granted role-specific access to the system.
- * Users can also change their password if necessary, subject to specific criteria.
+ * Users can also change their password if necessary, subject to specific
+ * criteria.
+ * 
  * @author Benjamin Kam, Kee
  * @version 1.0
  * @since 2024-11-20
@@ -27,9 +28,11 @@ public class LoginManager {
 
     /**
      * Logs in a user based on the provided hospital ID and password.
+     * 
      * @param hospitalID the ID of the user
-     * @param password the password of the user
-     * @return the role of the user if login is successful, or "unsuccessful" if credentials are incorrect
+     * @param password   the password of the user
+     * @return the role of the user if login is successful, or "unsuccessful" if
+     *         credentials are incorrect
      */
     public static String LoginUser(String hospitalID, String password) {
         String pw;
@@ -38,14 +41,14 @@ public class LoginManager {
             if (Database.STAFF.containsKey(hospitalID)) {
                 Staff staff = Database.STAFF.get(hospitalID);
                 pw = staff.getPassword();
-                if (password.equals(pw)) { 
+                if (password.equals(pw)) {
                     String item = checkRoleAndReturn(hospitalID);
                     return item;
                 }
             } else if (Database.PATIENTS.containsKey(hospitalID)) {
                 Patient patient = Database.PATIENTS.get(hospitalID);
                 pw = patient.getPassword();
-                if (password.equals(pw)) { 
+                if (password.equals(pw)) {
                     String item = checkRoleAndReturn(hospitalID);
                     return item;
                 }
@@ -58,6 +61,7 @@ public class LoginManager {
 
     /**
      * Searches for a user by hospital ID.
+     * 
      * @param hospitalID the ID of the user to search for
      * @return a list of users matching the provided hospital ID
      */
@@ -77,8 +81,10 @@ public class LoginManager {
 
     /**
      * Checks the role of the user based on their hospital ID.
+     * 
      * @param hospitalId the hospital ID to check the role for
-     * @return the role of the user (doctor, admin, pharmacist, patient, or unsuccessful)
+     * @return the role of the user (doctor, admin, pharmacist, patient, or
+     *         unsuccessful)
      */
     public static String checkRoleAndReturn(String hospitalId) {
         char ch = hospitalId.charAt(0);
@@ -104,6 +110,7 @@ public class LoginManager {
      * Allows a user to create a new password for their account.
      * The new password must meet specific criteria such as length,
      * containing lowercase, uppercase letters, digits, and special characters.
+     * 
      * @param hospitalId the ID of the user changing their password
      */
     public static void createNewPassword(String hospitalId) {
@@ -134,11 +141,16 @@ public class LoginManager {
                     }
                 }
                 tries++;
+                System.out.println("Incorrect password provided. " + (3 - tries) + " tries left.");
             }
             tries = 0;
 
             while (item && tries < 5) {
-                System.out.println("Enter the new password: ");
+                if (tries == 0) {
+                    System.out.println("Enter the new password: ");
+                } else {
+                    System.out.println("Invalid password. Enter new password: " + (5 - tries) + " tries left.");
+                }
                 pw = scanner.nextLine();
 
                 valid = 0;
@@ -166,7 +178,7 @@ public class LoginManager {
                 if (symbolCount >= 2) {
                     valid++;
                 }
-                System.out.println(valid);
+                // uppercase + lowercase + hasDigit + hasSymbol = 4
                 if (valid == 5) {
                     if ("STAFF".equals(role)) {
                         Staff staff = Database.STAFF.get(hospitalId);
@@ -185,6 +197,7 @@ public class LoginManager {
                 if (tries == 5) {
                     System.out.println("Too many attempts. Returning..");
                 }
+
             }
         } else {
             System.out.println("The hospitalId that you provided is invalid");
@@ -193,6 +206,7 @@ public class LoginManager {
 
     /**
      * Finds the role of a user based on their hospital ID length.
+     * 
      * @param hospitalId the ID of the user
      * @return the role of the user (STAFF, PATIENTS, or unsuccessful)
      */

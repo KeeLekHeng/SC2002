@@ -19,6 +19,7 @@ import src.model.enums.Role;
  * including creating new patient records and updating existing patient details.
  * It provides functionality to create patients, update patient attributes, and
  * view patient records.
+ * 
  * @author Benjamin Kam, Kee
  * @version 1.0
  * @since 2024-11-20
@@ -30,12 +31,13 @@ public class PatientManager {
 
     /**
      * Creates a new patient and adds it to the database.
-     * @param name The name of the patient.
-     * @param dob The date of birth of the patient.
-     * @param gender The gender of the patient.
+     * 
+     * @param name        The name of the patient.
+     * @param dob         The date of birth of the patient.
+     * @param gender      The gender of the patient.
      * @param phoneNumber The phone number of the patient.
-     * @param email The email address of the patient.
-     * @param bloodType The blood type of the patient.
+     * @param email       The email address of the patient.
+     * @param bloodType   The blood type of the patient.
      */
     public static void createPatient(String name, String dob, Gender gender, String phoneNumber, String email,
             BloodType bloodType) {
@@ -44,21 +46,30 @@ public class PatientManager {
         String password = "password";
         Role role = Role.PATIENT;
         String doctorID = null;
-        Patient newPatient = new Patient(patientID, doctorID, password, role, name, dob, gender, phoneNumber, email,
-                bloodType);
 
-        Database.PATIENTS.put(patientID, newPatient);
-        Database.saveFileIntoDatabase(FileType.PATIENTS);
-        System.out.println("Patient Created! Patient Details: ");
-        viewPatientRecords(newPatient);
+        if (Helper.EmailValidator(email) && Helper.PhoneNumValidator(phoneNumber)) {
+            Patient newPatient = new Patient(patientID, doctorID, password, role, name, dob, gender, phoneNumber, email,
+                    bloodType);
+
+            // Saving to database
+            Database.PATIENTS.put(patientID, newPatient);
+            Database.saveFileIntoDatabase(FileType.PATIENTS);
+            System.out.println("Patient Created! Patient Details: ");
+            viewPatientRecords(newPatient);
+        } else {
+            System.out.println("Email or Phone Number is invalid. Please try again.");
+        }
     }
 
     /**
      * Updates the details of an existing patient.
-     * @param patientID The ID of the patient whose details are to be updated.
-     * @param attributeCode The attribute to be updated (1 for phone number, 2 for email, 3 for doctor ID, 4 for name).
-     * @param newvalue The new value for the attribute to be updated.
-     * @return true if the update was successful, false if the patient was not found.
+     * 
+     * @param patientID     The ID of the patient whose details are to be updated.
+     * @param attributeCode The attribute to be updated (1 for phone number, 2 for
+     *                      email, 3 for doctor ID, 4 for name).
+     * @param newvalue      The new value for the attribute to be updated.
+     * @return true if the update was successful, false if the patient was not
+     *         found.
      */
     public static boolean updatePatientDetails(String patientID, int attributeCode, String newvalue) {
         Patient patientToUpdate = searchPatientByID(patientID);
@@ -69,10 +80,16 @@ public class PatientManager {
 
         switch (attributeCode) {
             case 1:
-                patientToUpdate.setPhonenumber(newvalue);
+                patientToUpdate = Database.PATIENTS.get(patientID);
+                if (Helper.PhoneNumValidator(newvalue)) {
+                    patientToUpdate.setPhonenumber(newvalue);
+                }
                 break;
             case 2:
-                patientToUpdate.setEmail(newvalue);
+                patientToUpdate = Database.PATIENTS.get(patientID);
+                if (Helper.EmailValidator(newvalue)) {
+                    patientToUpdate.setEmail(newvalue);
+                }
                 break;
             case 3:
                 patientToUpdate.setDoctorID(newvalue);
@@ -89,10 +106,12 @@ public class PatientManager {
 
     /**
      * Updates the gender of an existing patient.
-     * @param patientID The ID of the patient whose gender is to be updated.
+     * 
+     * @param patientID     The ID of the patient whose gender is to be updated.
      * @param attributeCode The attribute code (5 for gender).
-     * @param gender The new gender to be assigned to the patient.
-     * @return true if the update was successful, false if the patient was not found.
+     * @param gender        The new gender to be assigned to the patient.
+     * @return true if the update was successful, false if the patient was not
+     *         found.
      */
     public static boolean updatePatientDetails(String patientID, int attributeCode, Gender gender) {
         Patient patientToUpdate = searchPatientByID(patientID);
@@ -113,10 +132,12 @@ public class PatientManager {
 
     /**
      * Updates the blood type of an existing patient.
-     * @param patientID The ID of the patient whose blood type is to be updated.
+     * 
+     * @param patientID     The ID of the patient whose blood type is to be updated.
      * @param attributeCode The attribute code (6 for blood type).
-     * @param bloodType The new blood type to be assigned to the patient.
-     * @return true if the update was successful, false if the patient was not found.
+     * @param bloodType     The new blood type to be assigned to the patient.
+     * @return true if the update was successful, false if the patient was not
+     *         found.
      */
     public static boolean updatePatientDetails(String patientID, int attributeCode, BloodType bloodType) {
         Patient patientToUpdate = searchPatientByID(patientID);
@@ -138,6 +159,7 @@ public class PatientManager {
     /**
      * Prints details of all patients in the database, sorted by either Patient ID
      * or Name.
+     * 
      * @param byID if true, sort by Patient ID; if false, sort by Name.
      */
     public static void printAllPatients(boolean byID) {
@@ -165,11 +187,12 @@ public class PatientManager {
         System.out.println(String.format("%-40s", "").replace(" ", "="));
     }
 
-
     /**
-     * Displays an overview of patients under a specific doctor, sorted by either Patient ID
+     * Displays an overview of patients under a specific doctor, sorted by either
+     * Patient ID
      * or Name.
-     * @param byID if true, sort by Patient ID; if false, sort by Name.
+     * 
+     * @param byID     if true, sort by Patient ID; if false, sort by Name.
      * @param doctorId the ID of the doctor to filter patients by.
      */
     public static void showPatientOverview(boolean byID, String doctorId) {
@@ -195,6 +218,7 @@ public class PatientManager {
 
     /**
      * Validates if a given patient ID exists in the database.
+     * 
      * @param patientID the ID of the patient to validate.
      * @return true if the patient ID exists; false otherwise.
      */
@@ -204,6 +228,7 @@ public class PatientManager {
 
     /**
      * Searches for a patient by their ID in the database.
+     * 
      * @param patientID the ID of the patient to search for.
      * @return the Patient object if found; null otherwise.
      */
@@ -217,6 +242,7 @@ public class PatientManager {
 
     /**
      * Prints the complete details of the given patient.
+     * 
      * @param patient {@link Patient} object to print
      */
     public static void viewPatientRecords(Patient patient) {
@@ -256,7 +282,8 @@ public class PatientManager {
                 for (PrescribeMedication prescribeMedication : outcome.getPrescribeMedications()) {
                     System.out.println(
                             String.format("%-20s: %s", "Medication Name", prescribeMedication.getMedicationName()));
-                    System.out.println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
+                    System.out
+                            .println(String.format("%-20s: %s", "Amount", prescribeMedication.getPrescriptionAmount()));
                     System.out.println(String.format("%-40s", "").replace(" ", "-"));
                 }
             }
