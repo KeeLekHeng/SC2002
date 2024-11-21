@@ -245,7 +245,7 @@ public class Database {
         return true;
     }
 
-    /**
+     /**
      * Initializes the starting admin if the database is empty.
      * @return {@code true} if starting admin is initialized, otherwise {@code false}.
      */

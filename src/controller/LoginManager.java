@@ -15,7 +15,6 @@ import src.model.User;
  * and the user will be granted role-specific access to the system.
  * Users can also change their password if necessary, subject to specific
  * criteria.
- * 
  * @author Benjamin Kam, Kee
  * @version 1.0
  * @since 2024-11-20
@@ -28,9 +27,8 @@ public class LoginManager {
 
     /**
      * Logs in a user based on the provided hospital ID and password.
-     * 
      * @param hospitalID the ID of the user
-     * @param password   the password of the user
+     * @param password the password of the user
      * @return the role of the user if login is successful, or "unsuccessful" if
      *         credentials are incorrect
      */
@@ -61,7 +59,6 @@ public class LoginManager {
 
     /**
      * Searches for a user by hospital ID.
-     * 
      * @param hospitalID the ID of the user to search for
      * @return a list of users matching the provided hospital ID
      */
@@ -81,7 +78,6 @@ public class LoginManager {
 
     /**
      * Checks the role of the user based on their hospital ID.
-     * 
      * @param hospitalId the hospital ID to check the role for
      * @return the role of the user (doctor, admin, pharmacist, patient, or
      *         unsuccessful)
@@ -110,7 +106,6 @@ public class LoginManager {
      * Allows a user to create a new password for their account.
      * The new password must meet specific criteria such as length,
      * containing lowercase, uppercase letters, digits, and special characters.
-     * 
      * @param hospitalId the ID of the user changing their password
      */
     public static void createNewPassword(String hospitalId) {
@@ -178,7 +173,6 @@ public class LoginManager {
                     if (symbolCount >= 2) {
                         valid++;
                     }
-                    // uppercase + lowercase + hasDigit + hasSymbol = 4
                     if (valid == 5) {
                         if ("STAFF".equals(role)) {
                             Staff staff = Database.STAFF.get(hospitalId);
@@ -198,7 +192,6 @@ public class LoginManager {
                     if (tries == 5) {
                         System.out.println("Too many attempts. Returning..");
                     }
-
                 }
             } else {
                 System.out.println("Too many attempts. Returning..");
@@ -211,7 +204,6 @@ public class LoginManager {
 
     /**
      * Finds the role of a user based on their hospital ID length.
-     * 
      * @param hospitalId the ID of the user
      * @return the role of the user (STAFF, PATIENTS, or unsuccessful)
      */

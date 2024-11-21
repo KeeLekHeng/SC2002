@@ -13,10 +13,9 @@ import java.util.regex.Pattern;
 
 /**
  * Helper class for supporting functions.
- * 
  * @author Kee, Seann
  * @version 1.0
- * @since 2024/10/22
+ * @since 2024-10-22
  */
 public class Helper {
     /**
@@ -32,7 +31,6 @@ public class Helper {
 
     /**
      * Reads an integer value from the terminal.
-     * 
      * @return The entered integer.
      */
     public static int readInt() {
@@ -49,35 +47,25 @@ public class Helper {
         }
     }
 
-    /*
-     * Function to validate email provided
-     * 
-     * It checks whether the the email provided meets the email valid format
-     * If the email is invalid, then false will be returned
-     * Otherwise, true will be returned for a valid email
+    /**
+     * Function to validate email provided.
+     * It checks whether the email provided meets the email valid format.
+     * @param email The email to validate.
+     * @return {@code true} if the email is valid, otherwise {@code false}.
      */
     public static boolean EmailValidator(String email) {
-        // Define the regex pattern for a valid email address
         final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-
-        // Compile the regex and match the email
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
-        boolean isValid = email != null && pattern.matcher(email).matches();
-
-        // Return the result
-        if (isValid) {
-            return true;
-        } else {
-            return false;
-        }
+        return email != null && pattern.matcher(email).matches();
     }
 
-    /*
-     * Function to validate phone number provided
+    /**
+     * Function to validate phone number provided.
      * 
-     * It checks whether the phone number provided meets the accepted criteria
-     * If the phone number is invalid, then false will be returned
-     * Otherwise, true will be returned for a valid phone number
+     * It checks whether the phone number provided meets the accepted criteria.
+     * 
+     * @param phoneNumber The phone number to validate.
+     * @return {@code true} if the phone number is valid, otherwise {@code false}.
      */
     public static boolean PhoneNumValidator(String phoneNumber) {
         if (phoneNumber.length() != 10) {
@@ -91,8 +79,8 @@ public class Helper {
     /**
      * Reads an integer value within a specified range.
      * 
-     * @param min minimum valid value.
-     * @param max maximum valid value.
+     * @param min Minimum valid value.
+     * @param max Maximum valid value.
      * @return The entered integer.
      */
     public static int readInt(int min, int max) {
@@ -144,16 +132,9 @@ public class Helper {
     }
 
     /**
-     * <<<<<<< HEAD
-     * Reads a valid Appointment ID in the format "AXXXXX" or allows the user to go
-     * back.
+     * Reads a valid Appointment ID (Format: AXXXXX) or allows the user to go back.
      * 
-     * @return A valid appointment ID or null if the user enters "back".
-     *         =======
-     *         Reads a valid Appointment ID (Format: AXXXXX) or allows the user to
-     *         go back.
      * @return A valid appointment ID or an empty string if the user enters "back".
-     *         >>>>>>> a9fc1015e9899781f542b932d369f9d5f7111d64
      */
     public static String readAppointmentID() {
         String appointmentID;
@@ -172,15 +153,9 @@ public class Helper {
     }
 
     /**
-     * <<<<<<< HEAD
-     * Reads a valid Patient ID in the format "PXXXX" or allows the user to go back.
+     * Reads a valid Patient ID (Format: PXXXX) or allows the user to go back.
      * 
-     * @return A valid patient ID or null if the user enters "back".
-     *         =======
-     *         Reads a valid Patient ID (Format: PXXXX) or allows the user to go
-     *         back.
      * @return A valid patient ID or an empty string if the user enters "back".
-     *         >>>>>>> a9fc1015e9899781f542b932d369f9d5f7111d64
      */
     public static String readPatientID() {
         String patientID;
@@ -199,16 +174,9 @@ public class Helper {
     }
 
     /**
-     * <<<<<<< HEAD
-     * Reads a valid Pharmacist, Doctor, or Admin ID in the format "PXXX", "DXXX",
-     * or "AXXX" or allows the user to go back.
+     * Reads a valid Staff ID (Formats: PXXX, DXXX, AXXX) or allows the user to go back.
      * 
-     * @return A valid staff ID or null if the user enters "back".
-     *         =======
-     *         Reads a valid Staff ID (Formats: PXXX, DXXX, AXXX) or allows the user
-     *         to go back.
      * @return A valid staff ID or an empty string if the user enters "back".
-     *         >>>>>>> a9fc1015e9899781f542b932d369f9d5f7111d64
      */
     public static String readStaffID() {
         String staffID;
@@ -226,16 +194,9 @@ public class Helper {
     }
 
     /**
-     * <<<<<<< HEAD
-     * Reads a valid Prescription ID in the format "PXXXXX" or allows the user to go
-     * back.
+     * Reads a valid Prescription ID (Format: PXXXXX) or allows the user to go back.
      * 
-     * @return A valid prescription ID or null if the user enters "back".
-     *         =======
-     *         Reads a valid Prescription ID (Format: PXXXXX) or allows the user to
-     *         go back.
      * @return A valid prescription ID or an empty string if the user enters "back".
-     *         >>>>>>> a9fc1015e9899781f542b932d369f9d5f7111d64
      */
     public static String readPrescriptionID() {
         String prescriptionID;
@@ -254,15 +215,9 @@ public class Helper {
     }
 
     /**
-     * <<<<<<< HEAD
-     * Reads a valid Request ID in the format "RXXXX" or allows the user to go back.
+     * Reads a valid Request ID (Format: RXXXX) or allows the user to go back.
      * 
-     * @return A valid request ID or null if the user enters "back".
-     *         =======
-     *         Reads a valid Request ID (Format: RXXXX) or allows the user to go
-     *         back.
      * @return A valid request ID or an empty string if the user enters "back".
-     *         >>>>>>> a9fc1015e9899781f542b932d369f9d5f7111d64
      */
     public static String readRequestID() {
         String requestID;
@@ -281,16 +236,9 @@ public class Helper {
     }
 
     /**
-     * <<<<<<< HEAD
-     * Reads a valid Medicine ID in the format "MXXXX" or allows the user to go
-     * back.
+     * Reads a valid Medicine ID (Format: MXXXX) or allows the user to go back.
      * 
-     * @return A valid medicine ID or null if the user enters "back".
-     *         =======
-     *         Reads a valid Medicine ID (Format: MXXXX) or allows the user to go
-     *         back.
      * @return A valid medicine ID or an empty string if the user enters "back".
-     *         >>>>>>> a9fc1015e9899781f542b932d369f9d5f7111d64
      */
     public static String readMedicineID() {
         String medicineID;
@@ -309,8 +257,7 @@ public class Helper {
     }
 
     /**
-     * Prompts the user for confirmation, typically used for confirming data
-     * removal.
+     * Prompts the user for confirmation, typically used for confirming data removal.
      * 
      * @param message The confirmation message to display.
      * @return {@code true} if the user inputs 'yes', otherwise {@code false}.
@@ -323,7 +270,6 @@ public class Helper {
 
     /**
      * Generates a unique ID for a HashMap key.
-     * 
      * @param <K>      The key type of the HashMap.
      * @param <V>      The value type of the HashMap.
      * @param database The HashMap to generate the ID for.
@@ -348,7 +294,6 @@ public class Helper {
 
     /**
      * Sets the date to either the current date or a user-input date.
-     * 
      * @param now {@code true} to return the current time, otherwise {@code false}
      *            to prompt the user for a new time.
      * @return Date in the format "yyyy-MM-dd HH:mm".
@@ -376,7 +321,6 @@ public class Helper {
 
     /**
      * Sets the date to either the current date or a user-input date without time.
-     * 
      * @return Date in the format "yyyy-MM-dd".
      */
     public static String setDateOnly() {
@@ -401,7 +345,6 @@ public class Helper {
 
     /**
      * Validates if the date is in the future.
-     * 
      * @param date Date to validate.
      * @return {@code true} if the date is in the future, otherwise {@code false}.
      */
@@ -411,7 +354,6 @@ public class Helper {
 
     /**
      * Parses a string date into a {@link LocalDateTime} object.
-     * 
      * @param date   Date in string format.
      * @param format {@link DateTimeFormatter} for formatting the date.
      * @return {@link LocalDateTime} object after parsing.
@@ -422,7 +364,6 @@ public class Helper {
 
     /**
      * Parses a string date into a {@link LocalDate} object.
-     * 
      * @param date   Date in string format.
      * @param format {@link DateTimeFormatter} for formatting the date.
      * @return {@link LocalDate} object after parsing.
@@ -433,7 +374,6 @@ public class Helper {
 
     /**
      * Gets the current date and time.
-     * 
      * @return Current date and time in the format "yyyy-MM-dd HH:mm".
      */
     public static String getTimeNow() {
@@ -444,7 +384,6 @@ public class Helper {
 
     /**
      * Validates if the given date is in the future.
-     * 
      * @param date   Date in string format.
      * @param format {@link DateTimeFormatter} for formatting the date.
      * @return {@code true} if the date is valid (in the future), otherwise
@@ -457,21 +396,11 @@ public class Helper {
     }
 
     /**
-     * <<<<<<< HEAD
-     * MAYBE CAN THROW AWAY
-     * Method to check if the time difference of the input date and current time
-     * exceeds 1 hour (Hotel check in / check out checking)
-     * 
-     * @param date Date in string
-     * @return {@code true} if the date does not exceed 1 hour. Otherwise,
-     *         {@code false}.
-     *         =======
-     *         Checks if the time difference between the given date and current time
-     *         exceeds 1 hour.
+     * Checks if the time difference between the given date and current time
+     * exceeds 1 hour.
      * @param date Date in string format.
      * @return {@code true} if the time difference exceeds 1 hour, otherwise
      *         {@code false}.
-     *         >>>>>>> a9fc1015e9899781f542b932d369f9d5f7111d64
      */
     public static boolean LocalDateTimediff(String date) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -490,7 +419,6 @@ public class Helper {
 
     /**
      * Calculates the days elapsed between two dates.
-     * 
      * @param fromDate From date in string format.
      * @param toDate   To date in string format.
      * @return Days difference between the two dates.
@@ -505,7 +433,6 @@ public class Helper {
 
     /**
      * Checks if fromDate is earlier than toDate.
-     * 
      * @param fromDate From date in string format.
      * @param toDate   To date in string format.
      * @return {@code true} if fromDate is earlier than toDate, otherwise
@@ -520,7 +447,6 @@ public class Helper {
 
     /**
      * Checks if the date is a weekend.
-     * 
      * @param dateToCheck Date to check in string format.
      * @return {@code true} if the date is a weekend, otherwise {@code false}.
      */
@@ -557,7 +483,5 @@ public class Helper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    
+    }    
 }

@@ -54,7 +54,8 @@ public class PharmacistView extends MainView {
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
-                    if (!prescriptionManager.viewRecentAppointmentOutcomeRecord()) {
+                    PrescriptionManager prescriptionManager = new PrescriptionManager(); 
+                    if (!PrescriptionManager.viewRecentAppointmentOutcomeRecord()) {
                         System.out.println("There is no recent pending appointment outcome records");
                     }
                     Helper.pressAnyKeyToContinue();
@@ -66,7 +67,7 @@ public class PharmacistView extends MainView {
                     break;
                 case 3:
                     Helper.clearScreen();
-                    prescriptionManager.viewMedicationInventory();
+                    PrescriptionManager.viewMedicationInventory();
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 4:
@@ -76,7 +77,7 @@ public class PharmacistView extends MainView {
                     String medicationName = Helper.readString();
                     System.out.println("Enter the quantity: ");
                     int quantity = Helper.readInt(1, 100);
-                    prescriptionManager.submitReplenishRequest(hospitalID, medicationName, quantity);
+                    PrescriptionManager.submitReplenishRequest(hospitalID, medicationName, quantity);
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 5:

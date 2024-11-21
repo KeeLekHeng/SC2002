@@ -122,7 +122,12 @@ public class InventoryManager {
         }
     }
 
-    //approve or reject (ID or Reuqest)
+    /**
+     * Updates the status of a replenish request.
+     * @param requestID the ID of the replenish request
+     * @param attributeCode the attribute code representing the status change
+     * @return true if the request is successfully updated, false if not found
+     */
     public static boolean updateReplenishRequests(String requestID, int attributeCode) {
         ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);
     
@@ -145,7 +150,6 @@ public class InventoryManager {
                 requestToUpdate.setRequestStatus(RequestStatus.ACCEPTED);
                 break;
             case 2:
-                
                 requestToUpdate.setRequestStatus(RequestStatus.DECLINED);
                 break;
             case 3:
@@ -162,10 +166,12 @@ public class InventoryManager {
     
         return true;
     }
-    
 
-    
-
+    /**
+     * Searches for a medication by its ID.
+     * @param medicineID the ID of the medication to search for
+     * @return the medication if found, null if not
+     */
     public static Medication searchMedicineByID(String medicineID){
         if (Database.MEDICATION.containsKey(medicineID)) {
             Medication searchedMedication = Database.MEDICATION.get(medicineID);  

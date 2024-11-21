@@ -48,7 +48,7 @@ public class ReplenishRequest implements Serializable {
         this.requestID = requestID;
         this.medicationName = medicationName;
         this.medicationAmount = medicationAmount;
-        this.medicineID = fetchMedicineID(medicationName); 
+        this.medicineID = fetchMedicineID(medicationName);
         this.requestStatus = RequestStatus.PENDING;
     }
 
@@ -60,13 +60,11 @@ public class ReplenishRequest implements Serializable {
     private String fetchMedicineID(String medicationName) {
         for (Map.Entry<String, Medication> entry : Database.MEDICATION.entrySet()) {
             Medication medication = entry.getValue();
-            
-            // Check if the medication is not null and the name matches
             if (medication != null && medication.getName().equalsIgnoreCase(medicationName)) {
-                return entry.getKey();  // Return the medicine ID (the key)
+                return entry.getKey();
             }
         }
-        return null;  // Return null if not found
+        return null;
     }
 
     /**
