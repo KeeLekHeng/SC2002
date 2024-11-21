@@ -80,6 +80,7 @@ public class DoctorView extends MainView {
                 case 2:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Update Patient Medical Records");
+                    AppointmentManager.printConfirmedAppointmentRequest(hospitalID);
                     String appointmentID = Helper.readAppointmentID();
                     if(appointmentID.equals("")){
                         break;

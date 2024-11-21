@@ -246,6 +246,7 @@ public class AdministratorView extends MainView {
                 case 4:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Remove Staff");
+                    StaffManager.viewStaff(1);
                     System.out.println("Enter Staff ID to Remove: ");
                     String removeID = Helper.readString();
                     if (StaffManager.removeStaff(removeID)) {
