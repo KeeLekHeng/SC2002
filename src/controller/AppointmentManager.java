@@ -10,6 +10,7 @@ import java.util.Map;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import src.database.Database;
 import src.database.FileType;
@@ -493,6 +494,7 @@ public class AppointmentManager {
         System.out.println(String.format("%-20s: %s", "Appointment ID", appointment.getAppointmentID()));
         System.out.println(String.format("%-20s: %s", "Patient ID", appointment.getPatientID()));
         System.out.println(String.format("%-20s: %s", "Doctor ID", appointment.getDoctorID()));
+        System.out.println(String.format("%-20s: %s", "Doctor's Name", Database.STAFF.get(appointment.getDoctorID()).getName()));
         System.out.println(String.format("%-20s: %s", "Appointment Status", appointment.getAppointmentStatus()));
         System.out.println(String.format("%-20s: %s", "Time Slot", appointment.getTimeSlot().getFormattedDateTime()));
     
@@ -513,9 +515,9 @@ public class AppointmentManager {
         if (outcomeRecord == null) {
             return;
         }
-    
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
-        System.out.println(String.format("%-20s: %s", "Record Uploaded Time", outcomeRecord.getEndDateTime()));
+        System.out.println(String.format("%-20s: %s", "Record Uploaded Time", outcomeRecord.getEndDateTime().format(formatter)));
         System.out.println(String.format("%-20s: %s", "Type of Service", outcomeRecord.getTypeOfService()));
         System.out.println(String.format("%-20s: %s", "Consultation Notes", outcomeRecord.getConsultationNotes()));
     

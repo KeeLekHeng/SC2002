@@ -1,71 +1,115 @@
 package src.view;
 
+import java.io.Console;
 import src.controller.LoginManager;
 import src.helper.*;
 
+/**
+ * The HospitalAppView class provides the user interface for logging in to the
+ * hospital system
+ * and accessing different views based on the user's role.
+ * It handles the user login process and directs users to the appropriate
+ * role-based view.
+ * 
+ * @author Seann
+ * @version 1.0
+ * @since 2024-11-20
+ */
 public class HospitalAppView extends MainView {
     private String currentUserRole = "";
     String hospitalID = "";
 
+    /**
+     * Constructs a new instance of the HospitalAppView.
+     * Calls the superclass constructor to initialize the view.
+     */
     public HospitalAppView() {
         super();
     }
 
+    /**
+     * Manages the login process for the user.
+     * Prompts the user for hospital ID and password, and validates login
+     * credentials.
+     * If successful, the user's role is stored and used to provide the correct
+     * view.
+     * 
+     * @return the hospital ID of the logged-in user.
+     */
     public String userLogin() {
+        // Initialize console
+        Console console = System.console();
         Helper.clearScreen();
         printBreadCrumbs("User Login");
         boolean isLoginSuccessful = false;
-        String password = "";
         String role = "";
+        int tries = 0;
 
         System.out.println("Please enter your hospital ID and password to login");
-        while (!isLoginSuccessful) {
+        Helper.readString();
+        while (!isLoginSuccessful && tries < 5) {
             System.out.println("Hospital ID: ");
             hospitalID = Helper.readString();
 
-            // Check for fake login
             if (hospitalID.equalsIgnoreCase("fake")) {
                 System.out.println("Enter preset fake role (admin/patient/doctor/pharmacist): ");
-                role = Helper.readString().toLowerCase(); // Get fake role directly
+                role = Helper.readString().toLowerCase();
                 if (role.equals("admin") || role.equals("patient") || role.equals("doctor")
                         || role.equals("pharmacist")) {
-                    isLoginSuccessful = true; // Fake login successful
+                    isLoginSuccessful = true;
                     currentUserRole = role;
                     System.out.println("Logged in as: " + currentUserRole);
-                    break; // Exit the loop for fake login
+                    break;
                 } else {
                     System.out.println("Invalid fake role. Valid options: admin, patient, doctor, pharmacist.");
-                    continue; // Retry for fake login
+                    continue;
                 }
             }
 
             // Prompt for real login
-            System.out.println("Password: ");
-            password = Helper.readString();
+            char[] passwordArray = console.readPassword("Password: ");
+            String password = new String(passwordArray);
 
             // Validate login credentials
-            currentUserRole = LoginManager.LoginUser(hospitalID, password); // currentuserrole = Doctor
+            currentUserRole = LoginManager.LoginUser(hospitalID, password);
             if (currentUserRole.equals("unsuccessful")) {
-                System.out.println("Invalid username or password. Please try again.");
+                tries++;
+                if (tries == 5) {
+                    System.out.println("Max attempts exceeded. ");
+                    break;
+                }
+                System.out.println(
+                        "Invalid username or password. " + (5 - tries) + " attempts remaining. Please try again.");
+
             } else {
-                isLoginSuccessful = true; // Real login successful
+                isLoginSuccessful = true;
                 System.out.println("Logged in as: " + currentUserRole);
             }
         }
-        /*if(password.equals("password")){
-            Helper.clearScreen();
-            printBreadCrumbs("Security Alert");
-            System.out.println("Your password is the default password. Please change your password for security reasons.");
-            System.out.println("You will be redirected to create new password.");
-            Helper.pressAnyKeyToContinue();
-            Helper.clearScreen();
-            printBreadCrumbs("Create New Password");
-            LoginManager.createNewPassword(hospitalID);
-        }*/
+        /*
+         * if(password.equals("password")){
+         * Helper.clearScreen();
+         * printBreadCrumbs("Security Alert");
+         * System.out.
+         * println("Your password is the default password. Please change your password for security reasons."
+         * );
+         * System.out.println("You will be redirected to create new password.");
+         * Helper.pressAnyKeyToContinue();
+         * Helper.clearScreen();
+         * printBreadCrumbs("Create New Password");
+         * LoginManager.createNewPassword(hospitalID);
+         * }
+         */
         Helper.clearScreen();
         return hospitalID;
     }
 
+    /**
+     * Displays the hospital app view for the logged-in user.
+     * Directs the user to the appropriate role-based view.
+     * 
+     * @param hospitalID the ID of the hospital.
+     */
     @Override
     public void viewApp(String hospitalID) {
         Helper.clearScreen();
@@ -73,6 +117,11 @@ public class HospitalAppView extends MainView {
         printMenu();
     }
 
+    /**
+     * Prints the main menu for the hospital app based on the current user's role.
+     * Directs the user to their respective view: admin, patient, doctor, or
+     * pharmacist.
+     */
     @Override
     public void printMenu() {
         switch (currentUserRole) {
