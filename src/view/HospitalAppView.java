@@ -6,11 +6,9 @@ import src.helper.*;
 
 /**
  * The HospitalAppView class provides the user interface for logging in to the
- * hospital system
- * and accessing different views based on the user's role.
+ * hospital system and accessing different views based on the user's role.
  * It handles the user login process and directs users to the appropriate
  * role-based view.
- * 
  * @author Seann
  * @version 1.0
  * @since 2024-11-20
@@ -33,7 +31,6 @@ public class HospitalAppView extends MainView {
      * credentials.
      * If successful, the user's role is stored and used to provide the correct
      * view.
-     * 
      * @return the hospital ID of the logged-in user.
      */
     public String userLogin() {
@@ -65,11 +62,9 @@ public class HospitalAppView extends MainView {
                 }
             }
 
-            // Prompt for real login
             char[] passwordArray = console.readPassword("Password: ");
             String password = new String(passwordArray);
 
-            // Validate login credentials
             currentUserRole = LoginManager.LoginUser(hospitalID, password);
             if (currentUserRole.equals("unsuccessful")) {
                 tries++;
@@ -85,19 +80,6 @@ public class HospitalAppView extends MainView {
                 System.out.println("Logged in as: " + currentUserRole);
             }
         }
-        
-        //  if(password.equals("password")){
-        //  Helper.clearScreen();
-        //  printBreadCrumbs("Security Alert");
-        //  System.out.
-        //  println("Your password is the default password. Please change your password for security reasons."
-        //  );
-        //  System.out.println("You will be redirected to create new password.");
-        //  Helper.pressAnyKeyToContinue();
-        //  Helper.clearScreen();
-        //  printBreadCrumbs("Create New Password");
-        //  LoginManager.createNewPassword(hospitalID);
-        //  }
         Helper.clearScreen();
         return hospitalID;
     }
@@ -105,7 +87,6 @@ public class HospitalAppView extends MainView {
     /**
      * Displays the hospital app view for the logged-in user.
      * Directs the user to the appropriate role-based view.
-     * 
      * @param hospitalID the ID of the hospital.
      */
     @Override

@@ -1,8 +1,3 @@
-//notes
-//approve replenishment request is buggy
-//view staff only show correct ID
-//database not showing
-
 package src.view;
 
 import java.util.ArrayList;
@@ -22,7 +17,6 @@ import src.model.enums.*;
  * This class represents the administrator view, extending the main view.
  * It provides methods for administrators to manage staff, appointments,
  * medication inventory, and other related operations.
- * 
  * @author Seann
  * @version 1.0
  * @since 2024-11-20
@@ -299,9 +293,7 @@ public class AdministratorView extends MainView {
 
     /**
      * Initializes dummy staff data in the database.
-     * 
-     * @return true if dummy staff data is successfully initialized, false
-     *         otherwise.
+     * @return true if dummy staff data is successfully initialized, false otherwise.
      */
     private boolean initializeStaff() {
         return Database.initializeDummyStaff();
@@ -309,9 +301,7 @@ public class AdministratorView extends MainView {
 
     /**
      * Initializes dummy patient data in the database.
-     * 
-     * @return true if dummy patient data is successfully initialized, false
-     *         otherwise.
+     * @return true if dummy patient data is successfully initialized, false otherwise.
      */
     private boolean initializeDummyPatients() {
         return Database.initializeDummyPatients();
@@ -319,9 +309,7 @@ public class AdministratorView extends MainView {
 
     /**
      * Prompts the user to select a gender and returns the selection.
-     * 
-     * @return true if a valid gender is selected, false if the selection is
-     *         invalid.
+     * @return true if a valid gender is selected, false if the selection is invalid.
      */
     private boolean selectGender() {
         System.out.println("Select Gender:");
@@ -340,7 +328,6 @@ public class AdministratorView extends MainView {
 
     /**
      * Prompts the user to select a role and returns the selection.
-     * 
      * @return true if a valid role is selected, false if the selection is invalid.
      */
     private boolean selectRole() {
@@ -361,15 +348,13 @@ public class AdministratorView extends MainView {
 
     /**
      * Approves or rejects replenishment requests.
-     * Loops through the pending replenish requests and processes user input for
-     * approval or rejection.
+     * Loops through the pending replenish requests and processes user input for approval or rejection.
      */
     public void approveReplenishmentRequest() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
-        //loop below
-        List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
-        if(replenishRequests.isEmpty()) {
+        List<ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
+        if (replenishRequests.isEmpty()) {
             System.out.println("No replenish requests currently.");
             Helper.pressAnyKeyToContinue();
             return;
@@ -392,7 +377,7 @@ public class AdministratorView extends MainView {
                 case 3:
                     break;
             }
-        } 
+        }
         System.out.println("All request processed");
         Helper.pressAnyKeyToContinue();
     }
@@ -502,7 +487,6 @@ public class AdministratorView extends MainView {
     /**
      * Views appointment details based on the provided hospital ID.
      * Allows the user to view upcoming or all appointments.
-     * 
      * @param hospitalID the ID of the hospital to view appointments for
      */
     public void viewAppointmentDetails(String hospitalID) {

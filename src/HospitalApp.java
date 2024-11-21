@@ -8,7 +8,7 @@ import src.view.HospitalAppView;
  * Main entry point for the Hospital Management System (HMS) application.
  * Handles the login flow, displays the HMS title screen, 
  * and ensures data persistence before exiting.
- * @author Sean
+ * @author Seann
  * @version 1.0
  * @since 2024-11-20
  */
