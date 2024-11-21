@@ -2,6 +2,7 @@ package src.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+// import java.util.ArrayList;
 import java.util.List;
 import src.controller.AppointmentManager;
 import src.controller.LoginManager;
@@ -11,18 +12,23 @@ import src.helper.Helper;
 import src.model.Appointment;
 import src.model.AppointmentSlot;
 import src.model.Patient;
+// import src.model.Staff;
 import src.model.TimeSlot;
 
 /**
- * The PatientView class is responsible for providing the user interface for patient-related actions
- * such as viewing medical records, scheduling and rescheduling appointments, updating personal information, and more.
- * It extends the MainView class and implements its abstract methods to interact with the user.
+ * The PatientView class is responsible for providing the user interface for
+ * patient-related actions
+ * such as viewing medical records, scheduling and rescheduling appointments,
+ * updating personal information, and more.
+ * It extends the MainView class and implements its abstract methods to interact
+ * with the user.
+ * 
  * @author Seann
  * @version 1.0
  * @since 2024-11-20
  */
 public class PatientView extends MainView {
-    
+
     /**
      * Constructor for PatientView.
      */
@@ -44,18 +50,19 @@ public class PatientView extends MainView {
         System.out.println("(6) Cancel an Appointment");
         System.out.println("(7) View Scheduled Appointments");
         System.out.println("(8) View Past Appointment Outcome Records ");
-        System.out.println("(9) Change Password");
-        System.out.println("(10) Logout ");
+        System.out.println("(9) Rate Doctors");
+        System.out.println("(10) Change Password");
+        System.out.println("(11) Logout ");
     }
-
-
 
     @Override
     /**
      * Handles the patient's main menu operations, such as viewing medical records,
-     * updating personal information, scheduling appointments, and managing past 
+     * updating personal information, scheduling appointments, and managing past
      * appointment records.
-     * @param hospitalID The unique ID of the hospital for which the operations are carried out.
+     * 
+     * @param hospitalID The unique ID of the hospital for which the operations are
+     *                   carried out.
      * @since 2024-11-20
      */
     public void viewApp(String hospitalID) {
@@ -64,7 +71,7 @@ public class PatientView extends MainView {
             Helper.clearScreen();
             printBreadCrumbs("Main Menu");
             printMenu();
-            opt = Helper.readInt(1, 10);
+            opt = Helper.readInt(1, 11);
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
@@ -120,12 +127,13 @@ public class PatientView extends MainView {
                 case 4:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Schedule an Appointment");
+                    AppointmentManager.getDoctorList();
                     System.out.println("Enter the DoctorID of the doctor you wish to meet (DXXX):");
-                    System.out.println("Type 'back' to return to main menu");     
+                    System.out.println("Type 'back' to return to main menu");
                     doctorID = Helper.readStaffID();
-                    if(doctorID.equalsIgnoreCase("back")){
+                    if (doctorID.equalsIgnoreCase("back")) {
                         return;
-                    }  
+                    }
                     if (StaffManager.searchStaffById(doctorID).isEmpty()) {
                         System.out.println("Doctor not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -138,28 +146,28 @@ public class PatientView extends MainView {
                         Helper.pressAnyKeyToContinue();
                         break;
                     }
-                    
+
                     scheduleAppointment(hospitalID, doctorID, newDateInput);
                     Helper.pressAnyKeyToContinue();
-    
+
                     break;
-    
+
                 case 5:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Reschedule an Appointment");
-    
-                    if(!AppointmentManager.viewScheduledAppointments(hospitalID, 1)){
+
+                    if (!AppointmentManager.viewScheduledAppointments(hospitalID, 1)) {
                         return;
                     }
-    
+
                     System.out.println("Enter the Appointment ID to reschedule:");
-                    String appointmentID = Helper.readAppointmentID(); 
+                    String appointmentID = Helper.readAppointmentID();
                     if (AppointmentManager.searchAppointmentByID(appointmentID) == null) {
                         System.out.println("Appointment not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
                         return;
                     }
-    
+
                     System.out.println("What date would you like to schedule to?");
                     newDateInput = Helper.setDateOnly();
                     if (newDateInput.isEmpty()) {
@@ -170,16 +178,16 @@ public class PatientView extends MainView {
                     rescheduleAppointment(hospitalID, appointmentID, newDateInput);
                     Helper.pressAnyKeyToContinue();
                     break;
-                    
+
                 case 6:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > Cancel Appointment");
-                    if(!AppointmentManager.viewScheduledAppointments(hospitalID, 1)){
+                    if (!AppointmentManager.viewScheduledAppointments(hospitalID, 1)) {
                         break;
                     }
                     System.out.println("Enter the appointment ID to cancel: ");
                     appointmentID = Helper.readAppointmentID();
-                    
+
                     if (AppointmentManager.searchAppointmentByID(appointmentID) == null) {
                         System.out.println("Appointment not found. Returning to the main menu...");
                         Helper.pressAnyKeyToContinue();
@@ -213,20 +221,38 @@ public class PatientView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 9:
+                    Helper.clearScreen();
+                    printBreadCrumbs("Main Menu > Rating Doctors");
+                    // print out doctors here
+                    // StaffManager.filterbyDoctor();
+                    AppointmentManager.getDoctorList();
+                    System.out.println("Enter the staff ID of the doctor to be rated (DXXX):");
+                    String responseString = Helper.readString();
+                    System.out.println("Enter a rating out of 5 (5 : excellent | 1 : poor):");
+                    int responseInt = Helper.readInt(1, 5);
+
+                    StaffManager.updateStaff(responseString, 100, responseInt);
+                    System.out.println("Rating successful. Returning to the main menu...");
+
+                    break;
+
+                case 10:
                     LoginManager.createNewPassword(hospitalID);
                     break;
-                case 10:
+                case 11:
                     break;
                 default:
                     System.out.println("Invalid Choice");
             }
-        } while (opt != 10);
+        } while (opt != 11);
     }
-    
 
     /**
-     * Prompts the user to enter a new phone number or email based on the provided attribute code.
-     * @param attributeCode The code corresponding to the attribute to be updated (1 for phone number, 2 for email).
+     * Prompts the user to enter a new phone number or email based on the provided
+     * attribute code.
+     * 
+     * @param attributeCode The code corresponding to the attribute to be updated (1
+     *                      for phone number, 2 for email).
      * @return The new value for the chosen attribute.
      */
     public String chooseUpdateAttribute(int attributeCode) {
@@ -243,8 +269,11 @@ public class PatientView extends MainView {
     }
 
     /**
-     * Displays the scheduled appointments for a specific hospital and allows the user to choose between upcoming or all appointments.
-     * @param hospitalID The unique ID of the hospital whose appointments are to be viewed.
+     * Displays the scheduled appointments for a specific hospital and allows the
+     * user to choose between upcoming or all appointments.
+     * 
+     * @param hospitalID The unique ID of the hospital whose appointments are to be
+     *                   viewed.
      */
     public void viewScheduledAppointments(String hospitalID) {
         Helper.clearScreen();
@@ -272,14 +301,17 @@ public class PatientView extends MainView {
     }
 
     /**
-     * Reschedules an existing appointment by providing available time slots for the specified doctor on a new date.
-     * @param hospitalID The unique ID of the hospital where the appointment is scheduled.
+     * Reschedules an existing appointment by providing available time slots for the
+     * specified doctor on a new date.
+     * 
+     * @param hospitalID    The unique ID of the hospital where the appointment is
+     *                      scheduled.
      * @param appointmentID The unique ID of the appointment to be rescheduled.
-     * @param newDateInput The new date for the appointment in 'yyyy-MM-dd' format.
+     * @param newDateInput  The new date for the appointment in 'yyyy-MM-dd' format.
      */
     private void rescheduleAppointment(String hospitalID, String appointmentID, String newDateInput) {
         if (AppointmentManager.viewScheduledAppointments(hospitalID, 1)) {
-            
+
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate newDate = Helper.getDateOnly(newDateInput, format);
 
@@ -288,7 +320,8 @@ public class PatientView extends MainView {
             List<AppointmentSlot> availableSlots = AppointmentManager.getAvailableSlotsByDoctor(newDate, doctorID);
 
             if (availableSlots.isEmpty()) {
-                System.out.println("No available slots for the selected doctor on " + newDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                System.out.println("No available slots for the selected doctor on "
+                        + newDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 Helper.pressAnyKeyToContinue();
                 return;
             }
@@ -313,7 +346,7 @@ public class PatientView extends MainView {
                 System.out.println("Unable to reschedule appointment.");
             } else {
                 System.out.println("Appointment successfully rescheduled to " +
-                    selectedSlot.getFormattedDate() + " at " + selectedSlot.getFormattedTime());
+                        selectedSlot.getFormattedDate() + " at " + selectedSlot.getFormattedTime());
             }
 
         } else {
@@ -323,14 +356,19 @@ public class PatientView extends MainView {
     }
 
     /**
-     * Schedules a new appointment for a patient with a specified doctor on a selected date.
-     * Displays available time slots for the doctor and allows the user to choose one.
-     * @param patientID The unique ID of the patient scheduling the appointment.
-     * @param doctorID The unique ID of the doctor with whom the appointment is to be scheduled.
-     * @param newDateInput The desired date for the appointment in 'yyyy-MM-dd' format.
+     * Schedules a new appointment for a patient with a specified doctor on a
+     * selected date.
+     * Displays available time slots for the doctor and allows the user to choose
+     * one.
+     * 
+     * @param patientID    The unique ID of the patient scheduling the appointment.
+     * @param doctorID     The unique ID of the doctor with whom the appointment is
+     *                     to be scheduled.
+     * @param newDateInput The desired date for the appointment in 'yyyy-MM-dd'
+     *                     format.
      * @return true if the appointment was successfully scheduled, false otherwise.
      */
-    public boolean scheduleAppointment(String patientID, String doctorID,  String newDateInput) {
+    public boolean scheduleAppointment(String patientID, String doctorID, String newDateInput) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate newDate = Helper.getDateOnly(newDateInput, format);
 

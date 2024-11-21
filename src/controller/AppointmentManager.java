@@ -34,7 +34,8 @@ public class AppointmentManager {
         List<Staff> doctorList = new ArrayList<Staff>();
         for (Staff staff : Database.STAFF.values()) {
             String staffID = staff.getId();
-            if (staffID.startsWith("D") && staffID.substring(1).matches("\\d{3}")) {
+            if (staffID.startsWith("D") && staffID.substring(1).matches("\\d{3}")
+                    && staff.getEmploymentStatus().equals("EMPLOYED")) {
                 doctorList.add(staff);
             }
         }
@@ -43,7 +44,12 @@ public class AppointmentManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
         System.out.println("Our hospital has " + numberOfDoctors + " doctors. Doctors List:");
         for (Staff staff : doctorList) {
-            System.out.println("Name: " + staff.getName() + " , DoctorID: " + staff.getId());
+            if (staff.getRatingCount() == 0) {
+
+            }
+            System.out.println(
+                    "Name: " + staff.getName() + " | DoctorID: " + staff.getId() + " | Rating: "
+                            + ((staff.getRatingCount() == 0) ? "no ratings" : staff.getRating()));
         }
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }

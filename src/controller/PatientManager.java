@@ -293,6 +293,8 @@ public class PatientManager {
 
     }
 
+    // public static void
+
     /**
      * Initializes dummy patient records for testing purposes.
      */
