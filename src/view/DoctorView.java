@@ -162,9 +162,8 @@ public class DoctorView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 7:
-                    System.out.println("Enter appointment ID to record outcome");
+                    AppointmentManager.printConfirmedAppointmentRequest(hospitalID);
                     String outcomeID = Helper.readAppointmentID();
-
                     if(!AppointmentManager.validateAppointmentOwnership(outcomeID, hospitalID)){
                         Helper.pressAnyKeyToContinue();
                         break;
