@@ -15,13 +15,31 @@ import src.model.enums.BloodType;
 import src.model.enums.Gender;
 import src.model.enums.Role;
 
+/**
+ * PatientManager is a controller class responsible for managing patient data,
+ * including creating new patient records and updating existing patient details.
+ * It provides functionality to create patients, update patient attributes, and
+ * view patient records.
+ * 
+ * @author Benjamin Kam, Kee
+ * @version 1.0
+ * @since 2024-11-20
+ */
 public class PatientManager {
 
     public PatientManager() {
     }
 
-    // Assuming data format: Patient ID, Role, Name, Date of Birth, Gender, Blood
-    // Type, Contact Information
+    /**
+     * Creates a new patient and adds it to the database.
+     * 
+     * @param name        The name of the patient.
+     * @param dob         The date of birth of the patient.
+     * @param gender      The gender of the patient.
+     * @param phoneNumber The phone number of the patient.
+     * @param email       The email address of the patient.
+     * @param bloodType   The blood type of the patient.
+     */
     public static void createPatient(String name, String dob, Gender gender, String phoneNumber, String email,
             BloodType bloodType) {
         int gid = Helper.generateUniqueId(Database.PATIENTS);
@@ -44,6 +62,16 @@ public class PatientManager {
         }
     }
 
+    /**
+     * Updates the details of an existing patient.
+     * 
+     * @param patientID     The ID of the patient whose details are to be updated.
+     * @param attributeCode The attribute to be updated (1 for phone number, 2 for
+     *                      email, 3 for doctor ID, 4 for name).
+     * @param newvalue      The new value for the attribute to be updated.
+     * @return true if the update was successful, false if the patient was not
+     *         found.
+     */
     public static boolean updatePatientDetails(String patientID, int attributeCode, String newvalue) {
         Patient patientToUpdate = searchPatientByID(patientID);
         if (patientToUpdate == null) {
@@ -65,58 +93,66 @@ public class PatientManager {
                 }
                 break;
             case 3:
-                patientToUpdate = Database.PATIENTS.get(patientID);
                 patientToUpdate.setDoctorID(newvalue);
+                break;
             case 4:
-                patientToUpdate = Database.PATIENTS.get(patientID);
                 patientToUpdate.setName(newvalue);
+                break;
             default:
                 break;
         }
-
-        // Saving to database
         Database.saveFileIntoDatabase(FileType.PATIENTS);
         return true;
     }
 
+    /**
+     * Updates the gender of an existing patient.
+     * 
+     * @param patientID     The ID of the patient whose gender is to be updated.
+     * @param attributeCode The attribute code (5 for gender).
+     * @param gender        The new gender to be assigned to the patient.
+     * @return true if the update was successful, false if the patient was not
+     *         found.
+     */
     public static boolean updatePatientDetails(String patientID, int attributeCode, Gender gender) {
         Patient patientToUpdate = searchPatientByID(patientID);
         if (patientToUpdate == null) {
-            // Patient not found
             return false;
         }
 
         switch (attributeCode) {
             case 5:
-                patientToUpdate = Database.PATIENTS.get(patientID);
                 patientToUpdate.setGender(gender);
                 break;
             default:
                 break;
         }
-
-        // Saving to database
         Database.saveFileIntoDatabase(FileType.PATIENTS);
         return true;
     }
 
+    /**
+     * Updates the blood type of an existing patient.
+     * 
+     * @param patientID     The ID of the patient whose blood type is to be updated.
+     * @param attributeCode The attribute code (6 for blood type).
+     * @param bloodType     The new blood type to be assigned to the patient.
+     * @return true if the update was successful, false if the patient was not
+     *         found.
+     */
     public static boolean updatePatientDetails(String patientID, int attributeCode, BloodType bloodType) {
         Patient patientToUpdate = searchPatientByID(patientID);
         if (patientToUpdate == null) {
-            // Patient not found
             return false;
         }
 
         switch (attributeCode) {
             case 6:
-                patientToUpdate = Database.PATIENTS.get(patientID);
                 patientToUpdate.setBloodType(bloodType);
                 break;
             default:
                 break;
         }
-
-        // Saving to database
         Database.saveFileIntoDatabase(FileType.PATIENTS);
         return true;
     }
@@ -125,23 +161,18 @@ public class PatientManager {
      * Prints details of all patients in the database, sorted by either Patient ID
      * or Name.
      * 
-     * @param byID - if true, sort by Patient ID; if false, sort by Name.
+     * @param byID if true, sort by Patient ID; if false, sort by Name.
      */
     public static void printAllPatients(boolean byID) {
-        // Create a list to hold patients from the database
         ArrayList<Patient> patientsList = new ArrayList<>(Database.PATIENTS.values());
 
-        // Sort the list based on the sorting preference
         if (byID) {
-            // Sort by Patient ID (numerically)
             patientsList
                     .sort(Comparator.comparingInt(patient -> Integer.parseInt(patient.getPatientID().substring(1))));
         } else {
-            // Sort by Name alphabetically
             patientsList.sort(Comparator.comparing(Patient::getName));
         }
 
-        // Print all patients' details
         System.out.println(String.format("%-40s", "").replace(" ", "="));
         System.out.println(String.format("%-10s %-20s %-15s %-10s %-15s %-15s %-25s",
                 "Patient ID", "Name", "Date of Birth", "Gender",
@@ -154,16 +185,21 @@ public class PatientManager {
                     patient.getGender(), patient.getBloodType(),
                     patient.getPhonenumber(), patient.getEmail()));
         }
-
         System.out.println(String.format("%-40s", "").replace(" ", "="));
     }
 
+    /**
+     * Displays an overview of patients under a specific doctor, sorted by either
+     * Patient ID
+     * or Name.
+     * 
+     * @param byID     if true, sort by Patient ID; if false, sort by Name.
+     * @param doctorId the ID of the doctor to filter patients by.
+     */
     public static void showPatientOverview(boolean byID, String doctorId) {
         ArrayList<Patient> viewList = new ArrayList<>();
 
         for (Patient patient : Database.PATIENTS.values()) {
-            // Loops through viewList to check for duplicates
-            // Add patient into viewList if there's no duplicate and doctorId is correct
             if (patient.getDoctorID().equals(doctorId)) {
                 patient = Database.PATIENTS.get(patient.getPatientID());
                 viewList.add(patient);
@@ -181,22 +217,32 @@ public class PatientManager {
         }
     }
 
+    /**
+     * Validates if a given patient ID exists in the database.
+     * 
+     * @param patientID the ID of the patient to validate.
+     * @return true if the patient ID exists; false otherwise.
+     */
     public static boolean validatePatientID(String patientID) {
         return Database.PATIENTS.containsKey(patientID);
     }
 
+    /**
+     * Searches for a patient by their ID in the database.
+     * 
+     * @param patientID the ID of the patient to search for.
+     * @return the Patient object if found; null otherwise.
+     */
     public static Patient searchPatientByID(String patientID) {
-        // Check if the patientID exists in the database
         if (Database.PATIENTS.containsKey(patientID)) {
             return Database.PATIENTS.get(patientID);
         } else {
-            // Return null if patient is not found
             return null;
         }
     }
 
     /**
-     * Print the complete details of the patient
+     * Prints the complete details of the given patient.
      * 
      * @param patient {@link Patient} object to print
      */
@@ -214,6 +260,10 @@ public class PatientManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
+    /**
+     * Prints past medical records of the patient.
+     * If there are no records, it prints "None".
+     */
     public static void printPastMedicalRecord() {
         ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
         for (Appointment app : Database.APPOINTMENT.values()) {
@@ -245,7 +295,7 @@ public class PatientManager {
     }
 
     /**
-     * Initializer for dummy patients in the hospital.
+     * Initializes dummy patient records for testing purposes.
      */
     public static void initializeDummyPatients() {
         PatientManager.createPatient("Kee Lek Heng", "2005-07-28", Gender.MALE, "85445065", "keel0004@e.ntu.edu.sg",
@@ -253,5 +303,4 @@ public class PatientManager {
         PatientManager.createPatient("Doe John", "1995-12-12", Gender.MALE, "8565065", "endy@e.ntu.edu.sg",
                 BloodType.B);
     }
-
 }

@@ -8,61 +8,63 @@ import src.model.Patient;
 import src.model.Staff;
 import src.model.User;
 
-// For javadocs
-
 /**
- * LoginManager allows the user to Login to the hospital system
- * User is to input their hospitalID
- * and their password
- * The login credentials will be validated with the database
- * and the user will be given role-specific access to the system
+ * LoginManager allows the user to log in to the hospital system.
+ * Users are required to input their hospital ID and password.
+ * The login credentials are validated against the database,
+ * and the user will be granted role-specific access to the system.
+ * Users can also change their password if necessary, subject to specific
+ * criteria.
  * 
- * The user is also able to change their password if needed
- * The password must meet certain criterias to be parsed as the new password
- * 
- * @author Benjamin Kam
+ * @author Benjamin Kam, Kee
  * @version 1.0
- * @since 2024-11-8
+ * @since 2024-11-20
  */
-
 public class LoginManager {
     static Scanner scanner = new Scanner(System.in);
 
-    // Default constructor of LoginManager
     public LoginManager() {
     }
 
+    /**
+     * Logs in a user based on the provided hospital ID and password.
+     * 
+     * @param hospitalID the ID of the user
+     * @param password   the password of the user
+     * @return the role of the user if login is successful, or "unsuccessful" if
+     *         credentials are incorrect
+     */
     public static String LoginUser(String hospitalID, String password) {
         String pw;
 
-        // checks whether hospitalID is in any one of the databases
         if (Database.STAFF.containsKey(hospitalID) || Database.PATIENTS.containsKey(hospitalID)) {
-            // checks if hospitalID is in STAFF database and continue
             if (Database.STAFF.containsKey(hospitalID)) {
                 Staff staff = Database.STAFF.get(hospitalID);
                 pw = staff.getPassword();
-                if (password.equals(pw)) { // when input password is correct
-                    // check for role then return role
+                if (password.equals(pw)) {
                     String item = checkRoleAndReturn(hospitalID);
                     return item;
                 }
-                // checks if hospitalID is in PATIENT database and continue
             } else if (Database.PATIENTS.containsKey(hospitalID)) {
                 Patient patient = Database.PATIENTS.get(hospitalID);
                 pw = patient.getPassword();
-                if (password.equals(pw)) { // when input password is correct
-                    // check for role then return role
+                if (password.equals(pw)) {
                     String item = checkRoleAndReturn(hospitalID);
                     return item;
                 }
             }
         } else {
-            // hospitalId cannot be found in database
             return "unsuccessful";
         }
         return "unsuccessful";
     }
 
+    /**
+     * Searches for a user by hospital ID.
+     * 
+     * @param hospitalID the ID of the user to search for
+     * @return a list of users matching the provided hospital ID
+     */
     public static ArrayList<User> searchUserById(String hospitalID) {
         ArrayList<User> searchList = new ArrayList<User>();
         if (Database.PATIENTS.containsKey(hospitalID)) {
@@ -77,7 +79,13 @@ public class LoginManager {
         return searchList;
     }
 
-    // checks the role of provided hospitalId and returns role
+    /**
+     * Checks the role of the user based on their hospital ID.
+     * 
+     * @param hospitalId the hospital ID to check the role for
+     * @return the role of the user (doctor, admin, pharmacist, patient, or
+     *         unsuccessful)
+     */
     public static String checkRoleAndReturn(String hospitalId) {
         char ch = hospitalId.charAt(0);
 
@@ -98,24 +106,25 @@ public class LoginManager {
         }
     }
 
-    // creates new password for the user
+    /**
+     * Allows a user to create a new password for their account.
+     * The new password must meet specific criteria such as length,
+     * containing lowercase, uppercase letters, digits, and special characters.
+     * 
+     * @param hospitalId the ID of the user changing their password
+     */
     public static void createNewPassword(String hospitalId) {
         String pw;
         boolean item = true;
-        // valid bit that keeps the while loop running
         int valid = 0;
-        // attributes to check for validity of password
         int lowercase = 0;
         int uppercase = 0;
         int hasDigit = 0;
         int symbolCount = 0;
-        // finds role for database update
         String role = findRole(hospitalId);
 
         int tries = 0;
-        // only continues if the role has no error
         if (!(role == "unsucessful")) {
-            // user must know current password to change the password
             while (tries < 3) {
                 System.out.println("Enter your current password: ");
                 String attempt = scanner.nextLine();
@@ -149,30 +158,23 @@ public class LoginManager {
                 uppercase = 0;
                 hasDigit = 0;
                 symbolCount = 0;
-                // checks for valid password length
                 if (pw.length() > 10) {
                     valid++;
                 }
                 for (char ch : pw.toCharArray()) {
-                    // checks if there is a lowercase letter in the string, if there is at least
-                    // one, then the if statement will be ignored
                     if (lowercase < 1 && Character.isLowerCase(ch)) {
                         lowercase++;
                         valid++;
-                        // same as above but for uppercase letter
                     } else if (uppercase < 1 && Character.isUpperCase(ch)) {
                         uppercase++;
                         valid++;
-                        // same as above but for digit
                     } else if (hasDigit < 1 && Character.isDigit(ch)) {
                         hasDigit++;
                         valid++;
-                        // counts the number of digits in the string
                     } else if (!Character.isLetterOrDigit(ch)) {
                         symbolCount++;
                     }
                 }
-                // if > 2 digits in string, then valid bit increments
                 if (symbolCount >= 2) {
                     valid++;
                 }
@@ -202,7 +204,12 @@ public class LoginManager {
         }
     }
 
-    // function to find hospitalId's role
+    /**
+     * Finds the role of a user based on their hospital ID length.
+     * 
+     * @param hospitalId the ID of the user
+     * @return the role of the user (STAFF, PATIENTS, or unsuccessful)
+     */
     public static String findRole(String hospitalId) {
         int length = hospitalId.length();
         if (length == 4) {
@@ -211,6 +218,6 @@ public class LoginManager {
         if (length == 5) {
             return "PATIENTS";
         }
-        return "unsuccessful"; // error handling if hospitalId is faulty
+        return "unsuccessful";
     }
 }

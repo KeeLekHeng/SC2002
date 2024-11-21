@@ -2,11 +2,8 @@ package src.controller;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-
 import src.database.Database;
 import src.database.FileType;
-
-// For javadocs
 import src.helper.*;
 import src.model.Staff;
 import src.model.enums.Gender;
@@ -18,16 +15,23 @@ import src.model.enums.Role;
  * allows the user manipulate staff info by updating, creating and removing
  * staff data
  * 
- * @author Benjamin Kam
+ * @author Benjamin Kam, Kee
  * @version 1.0
- * @since 2024-11-8
+ * @since 2024-11-20
  */
-
 public class StaffManager {
-    // Default constructor for StaffManager
     public StaffManager() {
     }
 
+    /**
+     * Creates a new staff entry and adds it to the database.
+     * 
+     * @param name   The name of the staff.
+     * @param gender The gender of the staff.
+     * @param age    The age of the staff.
+     * @param role   The role of the staff (e.g., DOCTOR, ADMINISTRATOR,
+     *               PHARMACIST).
+     */
     public static void createStaff(String name, Gender gender, int age, Role role) {
         int gid = Helper.generateUniqueId(Database.STAFF);
         String employmentStatus = "EMPLOYED";
@@ -59,11 +63,18 @@ public class StaffManager {
         printStaffDetails(newStaff);
     }
 
-    // updates the staff name
+    /**
+     * Updates a staff attribute by the provided hospital ID and attribute code.
+     * 
+     * @param hospitalId    The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to
+     *                      update.
+     * @param newValue      The new value for the attribute.
+     * @return {@code true} if the update was successful, otherwise {@code false}.
+     */
     public static boolean updateStaff(String hospitalId, int attributeCode, String newValue) {
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
         if (updateList.isEmpty()) {
-            // guest not found
             return false;
         }
         for (Staff staff : updateList) {
@@ -81,16 +92,22 @@ public class StaffManager {
                     break;
             }
         }
-
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
 
-    // updates the staff age
+    /**
+     * Updates the staff age by the provided hospital ID and attribute code.
+     * 
+     * @param hospitalId    The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to
+     *                      update.
+     * @param newValue      The new age value for the staff.
+     * @return {@code true} if the update was successful, otherwise {@code false}.
+     */
     public static boolean updateStaff(String hospitalId, int attributeCode, int newValue) {
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
         if (updateList.size() == 0) {
-            // guest not found
             return false;
         }
         for (Staff staff : updateList) {
@@ -109,11 +126,18 @@ public class StaffManager {
         return true;
     }
 
-    // updates the staff gender
+    /**
+     * Updates the staff gender by the provided hospital ID and attribute code.
+     * 
+     * @param hospitalId    The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to
+     *                      update.
+     * @param gender        The new gender value for the staff.
+     * @return {@code true} if the update was successful, otherwise {@code false}.
+     */
     public static boolean updateStaff(String hospitalId, int attributeCode, Gender gender) {
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
         if (updateList.size() == 0) {
-            // guest not found
             return false;
         }
         for (Staff staff : updateList) {
@@ -127,16 +151,22 @@ public class StaffManager {
                     break;
             }
         }
-
         Database.saveFileIntoDatabase(FileType.STAFF);
         return true;
     }
 
-    // updates the staff role
+    /**
+     * Updates the staff role by the provided hospital ID and attribute code.
+     * 
+     * @param hospitalId    The hospital ID of the staff to update.
+     * @param attributeCode The attribute code to identify which attribute to
+     *                      update.
+     * @param role          The new role value for the staff.
+     * @return {@code true} if the update was successful, otherwise {@code false}.
+     */
     public static boolean updateStaff(String hospitalId, int attributeCode, Role role) {
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
         if (updateList.size() == 0) {
-            // guest not found
             return false;
         }
         for (Staff staff : updateList) {
@@ -155,11 +185,17 @@ public class StaffManager {
         return true;
     }
 
-    // remove staff from the database
+    /**
+     * Removes the staff by the provided hospital ID and updates their employment
+     * status.
+     * 
+     * @param hospitalId The hospital ID of the staff to remove.
+     * @return {@code true} if the staff was successfully removed, otherwise
+     *         {@code false}.
+     */
     public static boolean removeStaff(String hospitalId) {
         ArrayList<Staff> removeList = searchStaffById(hospitalId);
         if (removeList.isEmpty()) {
-            // guest not found
             return false;
         }
         for (Staff staff : removeList) {
@@ -175,15 +211,18 @@ public class StaffManager {
         return true;
     }
 
-    // to view and filter staff according to role, gender and age
-    // choice = 1 : filter by age
-    // choice = 2 : filter by gender
-    // cohice = 3 : filter by role
+    /**
+     * Displays the staff sorted by the selected attribute.
+     * 
+     * @param choice The choice of sorting:
+     *               1 for sorting by age,
+     *               2 for sorting by gender,
+     *               3 for sorting by role.
+     */
     public static void viewStaff(int choice) {
         ArrayList<Staff> viewList = new ArrayList<Staff>();
         boolean isInvalid = false;
 
-        // Copy staff from Database to viewList
         viewList.addAll(Database.STAFF.values());
 
         switch (choice) {
@@ -217,8 +256,6 @@ public class StaffManager {
                 System.out.println("Invalid choice.");
                 return;
         }
-
-        // Print the sorted list
         if (!isInvalid) {
             for (Staff staff : viewList) {
                 printStaffDetails(staff);
@@ -226,10 +263,14 @@ public class StaffManager {
         }
     }
 
+    /**
+     * Prints all staff information, sorted by ID or name.
+     * 
+     * @param byId If {@code true}, staff are sorted by ID; otherwise, they are
+     *             sorted by name.
+     */
     public static void printAllStaff(boolean byId) {
         ArrayList<Staff> sortedList = new ArrayList<Staff>();
-
-        // copy
         for (Staff staff : Database.STAFF.values()) {
             sortedList.add(staff);
         }
@@ -238,35 +279,22 @@ public class StaffManager {
             System.out.println("There is no staff in database");
             return;
         }
-        // if (byId) {
-        // for (int index = 1; index < sortedList.size(); index++) {
-        // Staff currentStaff = sortedList.get(index);
-        // int gid = Integer.parseInt(currentStaff.getId().substring(1));
-        // int position = index;
-        // while (position > 0 && gid < Integer.parseInt(sortedList.get(position -
-        // 1).getId().substring(1))) {
-        // sortedList.set(position, sortedList.get(position - 1));
-        // position--;
-        // }
-        // sortedList.set(position, currentStaff);
-        // }
-        // } else {
-        // // print by name
-        // Collections.sort(sortedList, Comparator.comparing(Staff::getName));
-        // }
-
         if (byId) {
             sortedList.sort(Comparator.comparingInt(staff -> Integer.parseInt(staff.getId().substring(1))));
         } else {
             sortedList.sort(Comparator.comparing(Staff::getName));
         }
-
-        // print
         for (Staff staff : sortedList) {
             System.out.println(staff.getId() + " = " + staff);
         }
     }
 
+    /**
+     * Searches for staff by their hospital ID.
+     * 
+     * @param hospitalId The hospital ID of the staff to be searched.
+     * @return A list containing the staff found, or an empty list if not found.
+     */
     public static ArrayList<Staff> searchStaffById(String hospitalId) {
         ArrayList<Staff> searchList = new ArrayList<Staff>();
         if (Database.STAFF.containsKey(hospitalId)) {
@@ -276,6 +304,12 @@ public class StaffManager {
         return searchList;
     }
 
+    /**
+     * Searches for staff by a keyword in their name.
+     * 
+     * @param keyword The keyword to search for in the staff names.
+     * @return A list of staff whose names contain the keyword (case-insensitive).
+     */
     public static ArrayList<Staff> searchStaffByKeyWord(String keyword) {
         ArrayList<Staff> searchList = new ArrayList<Staff>();
         for (Staff staff : Database.STAFF.values()) {
@@ -287,6 +321,11 @@ public class StaffManager {
         return searchList;
     }
 
+    /**
+     * Prints the details of a staff member.
+     * 
+     * @param staff The staff member whose details are to be printed.
+     */
     public static void printStaffDetails(Staff staff) {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
         System.out.println(String.format("%-20s: %s", "Guest ID", staff.getId()));
@@ -297,6 +336,11 @@ public class StaffManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 
+    /**
+     * Prints the details of a staff member by their hospital ID.
+     * 
+     * @param hospitalId The hospital ID of the staff to be printed.
+     */
     public static void printStaffDetails(String hospitalId) {
         Staff staff = Database.STAFF.get(hospitalId);
         if (staff != null) {
@@ -306,6 +350,9 @@ public class StaffManager {
         }
     }
 
+    /**
+     * Creates and adds dummy staff members to the database.
+     */
     public static void createDummyStaff() {
         createStaff("Dr. Alice Smith", Gender.FEMALE, 35, Role.DOCTOR);
         createStaff("Dr. Carol White", Gender.FEMALE, 45, Role.DOCTOR);
@@ -314,8 +361,10 @@ public class StaffManager {
         createStaff("Pharm. Frank Lee", Gender.MALE, 33, Role.PHARMACIST);
     }
 
+    /**
+     * Creates and adds a starting admin staff member to the database.
+     */
     public static void createStartingAdmin() {
         createStaff("Admin", Gender.MALE, 50, Role.ADMINISTRATOR);
     }
-
 }
