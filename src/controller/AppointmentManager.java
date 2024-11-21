@@ -17,6 +17,7 @@ import src.helper.Helper;
 import src.model.AppOutcomeRecord;
 import src.model.Appointment;
 import src.model.AppointmentSlot;
+import src.model.Patient;
 // import src.model.Patient;
 import src.model.PrescribeMedication;
 import src.model.Staff;
@@ -451,6 +452,30 @@ public class AppointmentManager {
             return null;
         }
     }
+    public static void viewPatientsUnderCare(String doctorID) {
+        List<String> patientsUnderCare = new ArrayList<>();
+        
+        for (Appointment appointment : Database.APPOINTMENT.values()) {
+            if (appointment.getDoctorID().equals(doctorID)) {
+                if (!patientsUnderCare.contains(appointment.getPatientID())) {
+                    patientsUnderCare.add(appointment.getPatientID());
+                }
+            }
+        }
+        if (patientsUnderCare.isEmpty()) {
+            System.out.println("You currently have no patients under your care.");
+        } else {
+            System.out.println("Patients under your care:");
+            for (String patientID : patientsUnderCare) {
+                Patient patient = Database.PATIENTS.get(patientID);
+                if (patient != null) {
+                    System.out.println("Patient ID: " + patient.getId() + " | Patient Name: " + patient.getName());
+                } else {
+                    System.out.println("Patient ID: " + patientID + " | Patient details not found.");
+                }
+            }
+        }
+    }
 
     // need to make a list of Prescribed Medication before passing it into this
     // function
@@ -459,6 +484,18 @@ public class AppointmentManager {
 
         // check if is doctor's appointment
         if (!validateAppointmentOwnership(appointmentID, doctorID)) {
+            if (Database.APPOINTMENT.containsKey(appointmentID)) {
+                return Database.APPOINTMENT.get(appointmentID);
+            } else {
+                return null;
+            }
+        }
+        
+    //need to make a list of Prescribed Medication before passing it into this function
+    public static boolean recordAppointmentOutcome(String appointmentID, String doctorID, String typeOfService, String consultationNotes, List<PrescribeMedication> medications){
+        
+        //check if is doctor's appointment
+        if(!validateAppointmentOwnership(appointmentID, doctorID)){
             return false;
         }
 
@@ -539,7 +576,6 @@ public class AppointmentManager {
             for (PrescribeMedication med : medications) {
                 System.out.println(String.format("  %-20s: %s", "Medication Name", med.getMedicationName()));
                 System.out.println(String.format("  %-20s: %d", "Amount", med.getPrescriptionAmount()));
-                System.out.println(String.format("%-40s", "").replace(" ", "-"));
             }
         }
 
