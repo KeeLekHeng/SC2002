@@ -3,15 +3,15 @@ package src.view;
 import java.util.ArrayList;
 import java.util.List;
 import src.controller.AppointmentManager;
-import src.controller.InventoryManager;
-import src.controller.LoginManager;
-import src.controller.PrescriptionManager;
-import src.controller.StaffManager;
-import src.database.Database;
-import src.helper.*;
-import src.model.ReplenishRequest;
+import src.controller.InventoryManager;//
+import src.controller.LoginManager;//
+import src.controller.PrescriptionManager;//
+import src.controller.StaffManager;//
+import src.database.Database;//
+import src.helper.*;//
+import src.model.ReplenishRequest;//
 import src.model.Staff;
-import src.model.enums.*;
+import src.model.enums.*;//
 
 /**
  * This class represents the administrator view, extending the main view.
