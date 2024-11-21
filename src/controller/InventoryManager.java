@@ -122,46 +122,50 @@ public class InventoryManager {
         }
     }
 
-    /**
-     * Updates the status of a replenish request.
-     * @param requestID the ID of the replenish request to be updated
-     * @param attributeCode the code representing the action to take (e.g., accept or decline)
-     * @return true if the replenish request is successfully updated
-     */
-    public static boolean updateReplenishRequests(String requestID, int attributeCode){
-        ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);     
-        Medication medicationToUpdate = null;
+    //approve or reject (ID or Reuqest)
+    public static boolean updateReplenishRequests(String requestID, int attributeCode) {
+        ReplenishRequest requestToUpdate = Database.REQUESTS.get(requestID);
+    
+        if (requestToUpdate == null) {
+            System.out.println("Request with ID " + requestID + " not found.");
+            return false; 
+        }
+    
         String medicineID = requestToUpdate.getMedicineID();
-        int amount;
-
+        Medication medicationToUpdate = Database.MEDICATION.get(medicineID);
+    
         switch (attributeCode) {
-            case 1:     
-                medicationToUpdate = Database.MEDICATION.get(medicineID);
-                amount = requestToUpdate.getMedicationAmount();
+            case 1:
+                if (medicationToUpdate == null) {
+                    System.out.println("Medication with ID " + medicineID + " not found.");
+                    return false;
+                }  
+                int amount = requestToUpdate.getMedicationAmount();
                 medicationToUpdate.addStock(amount);
                 requestToUpdate.setRequestStatus(RequestStatus.ACCEPTED);
                 break;
             case 2:
+                
                 requestToUpdate.setRequestStatus(RequestStatus.DECLINED);
                 break;
             case 3:
                 break;
             default:
-                break;
+                System.out.println("Invalid attribute code: " + attributeCode);
+                return false;
         }
-
+    
         Database.MEDICATION.put(medicineID, medicationToUpdate);
         Database.REQUESTS.put(requestID, requestToUpdate);
         Database.saveFileIntoDatabase(FileType.REQUESTS);
         Database.saveFileIntoDatabase(FileType.MEDICATION);
-        return true;   
+    
+        return true;
     }
+    
 
-    /**
-     * Searches for a medication by its ID.
-     * @param medicineID the ID of the medication to search for
-     * @return the medication object if found, null otherwise
-     */
+    
+
     public static Medication searchMedicineByID(String medicineID){
         if (Database.MEDICATION.containsKey(medicineID)) {
             Medication searchedMedication = Database.MEDICATION.get(medicineID);  
