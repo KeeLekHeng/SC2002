@@ -288,3 +288,4 @@ public class PrescriptionManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     }
 }
+

@@ -239,6 +239,7 @@ public class PatientView extends MainView {
             }
         } while (opt != 11);
     }
+    
 
     /**
      * Prompts the user to enter a new phone number or email based on the provided

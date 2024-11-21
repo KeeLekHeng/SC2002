@@ -102,6 +102,7 @@ public class DoctorView extends MainView {
                         if (medicationName.equalsIgnoreCase("done")) {
                             break;
                         }
+                        
                         System.out.println("Enter prescription amount (or type 'done' to cancel): ");
                         String amountInput = Helper.readString().trim();
                         if (amountInput.equalsIgnoreCase("done")) {

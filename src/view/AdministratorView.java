@@ -325,6 +325,7 @@ public class AdministratorView extends MainView {
                     Helper.pressAnyKeyToContinue();
                     return;
 
+                    
                 case 6:
                     Helper.clearScreen();
                     if (initializeStaff()) {
