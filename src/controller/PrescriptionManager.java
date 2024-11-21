@@ -206,7 +206,7 @@ public class PrescriptionManager {
         System.out.println(String.format("%-40s", "").replace(" ", "-"));
     
         for (Appointment appointment : Database.APPOINTMENT.values()) {
-            if (appointment.getAppointmentStatus() != AppointmentStatus.COMPLETED) {
+            if (appointment.getAppointmentStatus() == AppointmentStatus.COMPLETED) {
                 AppOutcomeRecord outcomeRecord = appointment.getAppOutcomeRecord();
                 if (outcomeRecord != null && outcomeRecord.getPrescriptionID() != null) {
                     String prescriptionID = outcomeRecord.getPrescriptionID();

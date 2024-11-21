@@ -181,6 +181,19 @@ public class InventoryManager {
     }
 
     /**
+     * Prints all medications along with their current stock levels.
+     */
+    public static void printMedicationStockLevels() {
+        System.out.println("Available Medications and Stock Levels:");
+        for (Medication medication : Database.MEDICATION.values()) {
+            System.out.printf("- %s (Stock: %d)%n", medication.getName(), medication.getStock());
+            if (medication.getLowStockAlert() < medication.getStock()){
+                System.out.print("| << Low Stock Alert Warning!! >>");
+            }
+        }
+    }
+
+    /**
      * Prints all medications in the inventory.
      */
     public static void printAllMedication() {

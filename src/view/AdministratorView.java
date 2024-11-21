@@ -246,6 +246,7 @@ public class AdministratorView extends MainView {
                 case 4:
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Hospital Staff > Remove Staff");
+                    StaffManager.viewStaff(1);
                     System.out.println("Enter Staff ID to Remove: ");
                     String removeID = Helper.readString();
                     if (StaffManager.removeStaff(removeID)) {
@@ -353,8 +354,8 @@ public class AdministratorView extends MainView {
     public void approveReplenishmentRequest() {
         Helper.clearScreen();
         printBreadCrumbs("Main Menu > Approve Replenishment Requests");
-        List<ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
-        if (replenishRequests.isEmpty()) {
+        List <ReplenishRequest> replenishRequests = InventoryManager.getPendingRequests();
+        if(replenishRequests == null) {
             System.out.println("No replenish requests currently.");
             Helper.pressAnyKeyToContinue();
             return;
@@ -375,7 +376,7 @@ public class AdministratorView extends MainView {
                     InventoryManager.updateReplenishRequests(requestID, opt);
                     break;
                 case 3:
-                    break;
+                    return;
             }
         }
         System.out.println("All request processed");
@@ -408,7 +409,7 @@ public class AdministratorView extends MainView {
                     boolean found;
                     Helper.clearScreen();
                     printBreadCrumbs("Main Menu > View and Manage Medication Inventory > Update Medication Stock");
-                    System.out.println("Enter Medication ID: ");
+                    PrescriptionManager.viewMedicationInventory();
                     String medicationID = Helper.readMedicineID();
                     if (InventoryManager.searchMedicineByID(medicationID) == null) {
                         System.out.println("Medication does not exist!");

@@ -41,7 +41,7 @@ public class HospitalAppView extends MainView {
         boolean isLoginSuccessful = false;
         String role = "";
         int tries = 0;
-
+        String password = "";
         System.out.println("Please enter your hospital ID and password to login");
         while (!isLoginSuccessful && tries < 5) {
             System.out.println("Hospital ID: ");
@@ -63,7 +63,7 @@ public class HospitalAppView extends MainView {
             }
 
             char[] passwordArray = console.readPassword("Password: ");
-            String password = new String(passwordArray);
+            password = new String(passwordArray);
 
             currentUserRole = LoginManager.LoginUser(hospitalID, password);
             if (currentUserRole.equals("unsuccessful")) {
@@ -80,6 +80,20 @@ public class HospitalAppView extends MainView {
                 System.out.println("Logged in as: " + currentUserRole);
             }
         }
+        
+         if(password.equals("password")){
+         Helper.clearScreen();
+         printBreadCrumbs("Security Alert");
+         System.out.
+         println("Your password is the default password. Please change your password for security reasons."
+         );
+         System.out.println("You will be redirected to create new password.");
+         Helper.pressAnyKeyToContinue();
+         Helper.clearScreen();
+         printBreadCrumbs("Create New Password");
+         LoginManager.createNewPassword(hospitalID);
+         }
+         
         Helper.clearScreen();
         return hospitalID;
     }
